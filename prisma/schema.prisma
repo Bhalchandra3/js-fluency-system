@@ -1,0 +1,142 @@
+// JavaScript Fluency System — Prisma Schema (Draft v1)
+// Single-user app — no User model needed; a single bearer token gates all API access.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum TopicStatus {
+  GREEN
+  YELLOW
+  RED
+}
+
+enum ConfidenceLevel {
+  EASY
+  OKAY
+  DIFFICULT
+  DIDNT_UNDERSTAND
+}
+
+enum SessionType {
+  REVISION
+  PRACTICE
+}
+
+enum QuestionFormat {
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+  OUTPUT_PREDICTION
+  CODE_WRITING
+  DEBUGGING
+}
+
+// ---------------------------------------------------------------------------
+// Core models
+// ---------------------------------------------------------------------------
+
+model Topic {
+  id          String      @id @default(cuid())
+  name        String                                   // e.g. "Closures"
+  area        String      @default("JavaScript")       // JavaScript, TypeScript, Angular, Node.js... (spec §14)
+  category    String                                    // Fundamentals | Core | Asynchronous | Advanced (spec §13)
+
+  status      TopicStatus @default(RED)                 // spec §7
+  intervalDays Int        @default(1)                   // current step in 1/3/7/14/30 (spec §6)
+  nextRevisionDate DateTime @default(now())
+
+  questions     Question[]
+  logs          SessionLog[]
+  mistakes      Mistake[]
+  deepDiveNote  DeepDiveNote?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([nextRevisionDate])
+  @@index([status])
+}
+
+model Question {
+  id            String          @id @default(cuid())
+  topicId       String
+  topic         Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  sessionType   SessionType                              // REVISION (commute-mode) or PRACTICE (laptop-mode) — spec §5, §16
+  format        QuestionFormat
+  prompt        String                                    // question / task text
+  options       Json?                                     // for MULTIPLE_CHOICE: array of choice strings
+  correctAnswer String?                                    // correct option id, or reference answer/code
+  explanation   String?                                    // shown after answering — spec §10
+
+  logs          SessionLog[]
+
+  createdAt     DateTime        @default(now())
+
+  @@index([topicId, sessionType])
+}
+
+// One row per answered question — covers both "Revision History" and
+// "Practice History" from spec §19 (distinguished by sessionType).
+model SessionLog {
+  id          String          @id @default(cuid())
+  topicId     String
+  topic       Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  questionId  String
+  question    Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  sessionType SessionType
+  correct     Boolean?                                     // null for open-ended/self-assessed answers
+  confidence  ConfidenceLevel                               // spec §11
+
+  answeredAt  DateTime        @default(now())
+
+  @@index([topicId, answeredAt])
+  @@index([answeredAt])
+}
+
+// Spec §15 — Mistake Log
+model Mistake {
+  id                   String   @id @default(cuid())
+  topicId              String
+  topic                Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  mistakeText          String                              // what was misunderstood
+  correctUnderstanding String                              // the correction
+  turnedIntoQuestion   Boolean  @default(false)             // spec §15 — mistakes can become future questions
+
+  createdAt            DateTime @default(now())
+
+  @@index([topicId])
+}
+
+// Spec §12 — Deep Dive Queue. One active note-set per topic.
+model DeepDiveNote {
+  id        String   @id @default(cuid())
+  topicId   String   @unique
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  reason    String                                          // why it needs deeper study
+  notes     String?                                         // user's own notes/resources
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Spec §8, §19 — powers the dashboard's daily progress bar
+model DailyProgress {
+  id                String   @id @default(cuid())
+  date              DateTime @unique @db.Date
+  questionsAnswered Int      @default(0)
+  questionsPlanned  Int      @default(0)
+
+  @@index([date])
+}
