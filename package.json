@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postinstall": "prisma generate"
   },
   "prettier": {
     "printWidth": 100,
@@ -37,6 +38,7 @@
     "@angular/compiler-cli": "^20.3.0",
     "@prisma/client": "^7.10.0",
     "@types/jasmine": "~5.1.0",
+    "@vercel/node": "^13.0.1",
     "dotenv": "^18.0.1",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",

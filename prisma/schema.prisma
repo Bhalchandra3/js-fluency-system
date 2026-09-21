@@ -2,7 +2,8 @@
 // Single-user app — no User model needed; a single bearer token gates all API access.
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
