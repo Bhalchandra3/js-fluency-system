@@ -1,3 +1,4 @@
+// prisma\schema.prisma
 // JavaScript Fluency System — Prisma Schema (Draft v1)
 // Single-user app — no User model needed; a single bearer token gates all API access.
 

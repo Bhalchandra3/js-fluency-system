@@ -29,6 +29,8 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "@prisma/adapter-pg": "^7.10.0",
+    "pg": "^8.23.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -38,6 +40,7 @@
     "@angular/compiler-cli": "^20.3.0",
     "@prisma/client": "^7.10.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^26.6.2",
     "@vercel/node": "^13.0.1",
     "dotenv": "^18.0.1",
     "jasmine-core": "~5.9.0",
