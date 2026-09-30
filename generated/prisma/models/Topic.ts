@@ -37,6 +37,7 @@ export type TopicSumAggregateOutputType = {
 export type TopicMinAggregateOutputType = {
   id: string | null
   name: string | null
+  slug: string | null
   area: string | null
   category: string | null
   status: $Enums.TopicStatus | null
@@ -49,6 +50,7 @@ export type TopicMinAggregateOutputType = {
 export type TopicMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  slug: string | null
   area: string | null
   category: string | null
   status: $Enums.TopicStatus | null
@@ -61,6 +63,7 @@ export type TopicMaxAggregateOutputType = {
 export type TopicCountAggregateOutputType = {
   id: number
   name: number
+  slug: number
   area: number
   category: number
   status: number
@@ -83,6 +86,7 @@ export type TopicSumAggregateInputType = {
 export type TopicMinAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
   area?: true
   category?: true
   status?: true
@@ -95,6 +99,7 @@ export type TopicMinAggregateInputType = {
 export type TopicMaxAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
   area?: true
   category?: true
   status?: true
@@ -107,6 +112,7 @@ export type TopicMaxAggregateInputType = {
 export type TopicCountAggregateInputType = {
   id?: true
   name?: true
+  slug?: true
   area?: true
   category?: true
   status?: true
@@ -206,6 +212,7 @@ export type TopicGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type TopicGroupByOutputType = {
   id: string
   name: string
+  slug: string
   area: string
   category: string
   status: $Enums.TopicStatus
@@ -241,6 +248,7 @@ export type TopicWhereInput = {
   NOT?: Prisma.TopicWhereInput | Prisma.TopicWhereInput[]
   id?: Prisma.StringFilter<"Topic"> | string
   name?: Prisma.StringFilter<"Topic"> | string
+  slug?: Prisma.StringFilter<"Topic"> | string
   area?: Prisma.StringFilter<"Topic"> | string
   category?: Prisma.StringFilter<"Topic"> | string
   status?: Prisma.EnumTopicStatusFilter<"Topic"> | $Enums.TopicStatus
@@ -257,6 +265,7 @@ export type TopicWhereInput = {
 export type TopicOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   area?: Prisma.SortOrder
   category?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -272,10 +281,11 @@ export type TopicOrderByWithRelationInput = {
 
 export type TopicWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
+  slug?: string
   AND?: Prisma.TopicWhereInput | Prisma.TopicWhereInput[]
   OR?: Prisma.TopicWhereInput[]
   NOT?: Prisma.TopicWhereInput | Prisma.TopicWhereInput[]
-  name?: Prisma.StringFilter<"Topic"> | string
   area?: Prisma.StringFilter<"Topic"> | string
   category?: Prisma.StringFilter<"Topic"> | string
   status?: Prisma.EnumTopicStatusFilter<"Topic"> | $Enums.TopicStatus
@@ -287,11 +297,12 @@ export type TopicWhereUniqueInput = Prisma.AtLeast<{
   logs?: Prisma.SessionLogListRelationFilter
   mistakes?: Prisma.MistakeListRelationFilter
   deepDiveNote?: Prisma.XOR<Prisma.DeepDiveNoteNullableScalarRelationFilter, Prisma.DeepDiveNoteWhereInput> | null
-}, "id">
+}, "id" | "name" | "slug">
 
 export type TopicOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   area?: Prisma.SortOrder
   category?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -312,6 +323,7 @@ export type TopicScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TopicScalarWhereWithAggregatesInput | Prisma.TopicScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Topic"> | string
   name?: Prisma.StringWithAggregatesFilter<"Topic"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Topic"> | string
   area?: Prisma.StringWithAggregatesFilter<"Topic"> | string
   category?: Prisma.StringWithAggregatesFilter<"Topic"> | string
   status?: Prisma.EnumTopicStatusWithAggregatesFilter<"Topic"> | $Enums.TopicStatus
@@ -324,6 +336,7 @@ export type TopicScalarWhereWithAggregatesInput = {
 export type TopicCreateInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -340,6 +353,7 @@ export type TopicCreateInput = {
 export type TopicUncheckedCreateInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -356,6 +370,7 @@ export type TopicUncheckedCreateInput = {
 export type TopicUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -372,6 +387,7 @@ export type TopicUpdateInput = {
 export type TopicUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -388,6 +404,7 @@ export type TopicUncheckedUpdateInput = {
 export type TopicCreateManyInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -400,6 +417,7 @@ export type TopicCreateManyInput = {
 export type TopicUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -412,6 +430,7 @@ export type TopicUpdateManyMutationInput = {
 export type TopicUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -424,6 +443,7 @@ export type TopicUncheckedUpdateManyInput = {
 export type TopicCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   area?: Prisma.SortOrder
   category?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -440,6 +460,7 @@ export type TopicAvgOrderByAggregateInput = {
 export type TopicMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   area?: Prisma.SortOrder
   category?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -452,6 +473,7 @@ export type TopicMaxOrderByAggregateInput = {
 export type TopicMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   area?: Prisma.SortOrder
   category?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -549,6 +571,7 @@ export type TopicUpdateOneRequiredWithoutDeepDiveNoteNestedInput = {
 export type TopicCreateWithoutQuestionsInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -564,6 +587,7 @@ export type TopicCreateWithoutQuestionsInput = {
 export type TopicUncheckedCreateWithoutQuestionsInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -595,6 +619,7 @@ export type TopicUpdateToOneWithWhereWithoutQuestionsInput = {
 export type TopicUpdateWithoutQuestionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -610,6 +635,7 @@ export type TopicUpdateWithoutQuestionsInput = {
 export type TopicUncheckedUpdateWithoutQuestionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -625,6 +651,7 @@ export type TopicUncheckedUpdateWithoutQuestionsInput = {
 export type TopicCreateWithoutLogsInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -640,6 +667,7 @@ export type TopicCreateWithoutLogsInput = {
 export type TopicUncheckedCreateWithoutLogsInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -671,6 +699,7 @@ export type TopicUpdateToOneWithWhereWithoutLogsInput = {
 export type TopicUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -686,6 +715,7 @@ export type TopicUpdateWithoutLogsInput = {
 export type TopicUncheckedUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -701,6 +731,7 @@ export type TopicUncheckedUpdateWithoutLogsInput = {
 export type TopicCreateWithoutMistakesInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -716,6 +747,7 @@ export type TopicCreateWithoutMistakesInput = {
 export type TopicUncheckedCreateWithoutMistakesInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -747,6 +779,7 @@ export type TopicUpdateToOneWithWhereWithoutMistakesInput = {
 export type TopicUpdateWithoutMistakesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -762,6 +795,7 @@ export type TopicUpdateWithoutMistakesInput = {
 export type TopicUncheckedUpdateWithoutMistakesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -777,6 +811,7 @@ export type TopicUncheckedUpdateWithoutMistakesInput = {
 export type TopicCreateWithoutDeepDiveNoteInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -792,6 +827,7 @@ export type TopicCreateWithoutDeepDiveNoteInput = {
 export type TopicUncheckedCreateWithoutDeepDiveNoteInput = {
   id?: string
   name: string
+  slug: string
   area?: string
   category: string
   status?: $Enums.TopicStatus
@@ -823,6 +859,7 @@ export type TopicUpdateToOneWithWhereWithoutDeepDiveNoteInput = {
 export type TopicUpdateWithoutDeepDiveNoteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -838,6 +875,7 @@ export type TopicUpdateWithoutDeepDiveNoteInput = {
 export type TopicUncheckedUpdateWithoutDeepDiveNoteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   area?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTopicStatusFieldUpdateOperationsInput | $Enums.TopicStatus
@@ -902,6 +940,7 @@ export type TopicCountOutputTypeCountMistakesArgs<ExtArgs extends runtime.Types.
 export type TopicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
   area?: boolean
   category?: boolean
   status?: boolean
@@ -919,6 +958,7 @@ export type TopicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type TopicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
   area?: boolean
   category?: boolean
   status?: boolean
@@ -931,6 +971,7 @@ export type TopicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type TopicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  slug?: boolean
   area?: boolean
   category?: boolean
   status?: boolean
@@ -943,6 +984,7 @@ export type TopicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type TopicSelectScalar = {
   id?: boolean
   name?: boolean
+  slug?: boolean
   area?: boolean
   category?: boolean
   status?: boolean
@@ -952,7 +994,7 @@ export type TopicSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TopicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "area" | "category" | "status" | "intervalDays" | "nextRevisionDate" | "createdAt" | "updatedAt", ExtArgs["result"]["topic"]>
+export type TopicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "area" | "category" | "status" | "intervalDays" | "nextRevisionDate" | "createdAt" | "updatedAt", ExtArgs["result"]["topic"]>
 export type TopicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questions?: boolean | Prisma.Topic$questionsArgs<ExtArgs>
   logs?: boolean | Prisma.Topic$logsArgs<ExtArgs>
@@ -974,6 +1016,7 @@ export type $TopicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    slug: string
     area: string
     category: string
     status: $Enums.TopicStatus
@@ -1410,6 +1453,7 @@ export interface Prisma__TopicClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface TopicFieldRefs {
   readonly id: Prisma.FieldRef<"Topic", 'String'>
   readonly name: Prisma.FieldRef<"Topic", 'String'>
+  readonly slug: Prisma.FieldRef<"Topic", 'String'>
   readonly area: Prisma.FieldRef<"Topic", 'String'>
   readonly category: Prisma.FieldRef<"Topic", 'String'>
   readonly status: Prisma.FieldRef<"Topic", 'TopicStatus'>

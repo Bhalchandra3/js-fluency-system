@@ -1,3 +1,5 @@
+// api\health.ts
+
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { prisma } from './_lib/prisma.js';
 

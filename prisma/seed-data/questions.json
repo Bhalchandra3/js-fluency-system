@@ -1,0 +1,2580 @@
+[
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which declaration creates a block-scoped binding that cannot be reassigned after initialization?",
+    "options": [
+      "var x = 1;",
+      "let x = 1;",
+      "const x = 1;",
+      "x = 1;"
+    ],
+    "correctAnswer": "2",
+    "explanation": "const creates a block-scoped binding that cannot be reassigned. let is block-scoped but reassignable; var is function-scoped and reassignable; a bare assignment creates or updates a property on the global object in non-strict mode."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What is the temporal dead zone (TDZ) for a let or const binding?",
+    "correctAnswer": "The period from entering the scope until the declaration is initialized, during which accessing the binding throws a ReferenceError",
+    "explanation": "let and const are hoisted in the sense that the binding exists for the whole scope, but they stay uninitialized until the declaration line runs. Reading or writing them in that gap throws ReferenceError—that gap is the TDZ."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is logged to the console?",
+    "codeSnippet": "function demo() {\n  console.log(a);\n  var a = 2;\n  console.log(a);\n}\ndemo();",
+    "correctAnswer": "undefined\n2",
+    "explanation": "var a is function-scoped and hoisted, so the first console.log sees a as undefined (initialized, but not yet assigned). After a = 2 runs, the second log prints 2."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code throws when run. Identify the bug and how to fix it so both logs succeed with meaningful values.",
+    "codeSnippet": "console.log(count);\nlet count = 5;\nconsole.log(count);",
+    "correctAnswer": "Accessing count before its let declaration hits the TDZ and throws ReferenceError. Move the declaration above the first use, e.g. let count = 5; then both logs, or remove the premature first log.",
+    "explanation": "Unlike var, let is not initialized to undefined before its declaration line. The first console.log runs while count is still in the temporal dead zone, so it throws. Declaring (and initializing) before use removes the TDZ access."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function createCounter that returns an object with increment and getValue methods. The counter value must be private to the closure (not a property on the returned object) and start at 0.",
+    "codeSnippet": "function createCounter() {\n  // your code\n}",
+    "correctAnswer": "function createCounter() {\n  let value = 0;\n  return {\n    increment() { value += 1; },\n    getValue() { return value; }\n  };\n}",
+    "explanation": "Storing value in a let inside createCounter keeps it closed over by the methods. Callers can change and read the count only through the API, not by mutating a public property."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does typeof null return in JavaScript?",
+    "options": [
+      "\"null\"",
+      "\"object\"",
+      "\"undefined\"",
+      "\"number\""
+    ],
+    "correctAnswer": "1",
+    "explanation": "typeof null is \"object\" due to a long-standing historical quirk in the language. null is still a primitive; use === null (or Object.is) to check for it, not typeof."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Name the seven primitive types in modern JavaScript.",
+    "correctAnswer": "string, number, bigint, boolean, undefined, symbol, null",
+    "explanation": "Everything else is an object (including arrays, functions, dates, and plain objects). Primitives are immutable values; objects are reference types."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this data types example starting with `console.log(typeof []);`, what is logged to the console?",
+    "codeSnippet": "console.log(typeof []);\nconsole.log(typeof (() => {}));\nconsole.log(Array.isArray([]));",
+    "correctAnswer": "object\nfunction\ntrue",
+    "explanation": "Arrays are objects, so typeof [] is \"object\". Functions have their own typeof result \"function\". Array.isArray reliably distinguishes arrays from other objects."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This helper is meant to detect \"missing\" values (null or undefined), but it incorrectly treats 0 as missing. Fix the check.",
+    "codeSnippet": "function isMissing(value) {\n  return !value;\n}\n\nconsole.log(isMissing(0)); // currently true, should be false\nconsole.log(isMissing(null)); // should be true",
+    "correctAnswer": "function isMissing(value) {\n  return value == null; // or value === null || value === undefined\n}",
+    "explanation": "!value is true for all falsy values (0, \"\", false, NaN, null, undefined). Comparing with == null (or explicit === null / === undefined) targets only nullish values."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which expression creates a Symbol that is always unique from previous calls with the same description string?",
+    "options": [
+      "Symbol.for(\"id\")",
+      "Symbol(\"id\")",
+      "new Symbol(\"id\")",
+      "Object(\"id\")"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Symbol(\"id\") always creates a new unique symbol. Symbol.for(\"id\") reuses a global registry entry. Symbol is not a constructor, so new Symbol throws."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does the nullish coalescing operator (??) return when the left operand is 0?",
+    "options": [
+      "The right operand, because 0 is falsy",
+      "0, because 0 is not null or undefined",
+      "undefined",
+      "NaN"
+    ],
+    "correctAnswer": "1",
+    "explanation": "?? only falls through when the left side is null or undefined. Falsy values like 0, \"\", and false are kept, unlike ||."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In modern JavaScript, what is the result type/value of 5 / 2 (using the / operator on numbers)?",
+    "correctAnswer": "2.5 (a floating-point number)",
+    "explanation": "Unlike integer-only division in some languages, JavaScript number division yields an IEEE-754 floating-point result, so 5 / 2 is 2.5."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this operators example starting with `console.log(2 + 3 + \"4\");`, what is logged to the console?",
+    "codeSnippet": "console.log(2 + 3 + \"4\");\nconsole.log(\"2\" + 3 + 4);\nconsole.log(2 + 3 * 4);",
+    "correctAnswer": "54\n234\n14",
+    "explanation": "Left-to-right + with a string coerces neighbors to strings: 2+3 is 5 then \"4\" → \"54\"; \"2\"+3 → \"23\" then +4 → \"234\". * binds tighter than +, so 2+3*4 is 2+12=14."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function pickName(user) that returns user.name if it is neither null nor undefined; otherwise return the string \"anonymous\". Use nullish coalescing (do not treat empty string as missing).",
+    "codeSnippet": "function pickName(user) {\n  // your code\n}",
+    "correctAnswer": "function pickName(user) {\n  return user.name ?? \"anonymous\";\n}",
+    "explanation": "?? replaces only null/undefined. An empty string name is a deliberate value and should be returned as-is, which || would incorrectly replace."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This optional chaining expression is wrong for the intended check: \"does user.settings exist and is darkMode true?\". Fix it so missing settings do not throw and the result is a boolean.",
+    "codeSnippet": "const isDark = user?.settings.darkMode;\n// When settings is missing this throws; when present it may not be boolean",
+    "correctAnswer": "const isDark = user?.settings?.darkMode === true;",
+    "explanation": "user?.settings only guards user; accessing .darkMode on undefined settings still throws. Chain again (settings?.darkMode) and compare to true for a clear boolean."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is the result of Number(\"\")?",
+    "options": [
+      "NaN",
+      "0",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "An empty string converts to 0 under Number()/unary plus. Whitespace-only strings also become 0; non-numeric strings become NaN."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What string does String(null) produce?",
+    "correctAnswer": "\"null\"",
+    "explanation": "Explicit String(null) yields the characters n-u-l-l. This differs from template/coercion surprises elsewhere; null is not converted to an empty string by String()."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this type coercion example starting with `console.log(Boolean(\"0\"));`, what is logged to the console?",
+    "codeSnippet": "console.log(Boolean(\"0\"));\nconsole.log(Boolean(0));\nconsole.log(+\"  12  \");\nconsole.log(+\"12px\");",
+    "correctAnswer": "true\nfalse\n12\nNaN",
+    "explanation": "Non-empty strings are truthy, including \"0\". Numeric 0 is falsy. Unary + trims and parses decimal literals, so \"  12  \" → 12, but \"12px\" is not a valid full number literal → NaN."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This function tries to sum numeric string inputs but concatenates instead. Fix it so add(\"2\", \"3\") returns 5.",
+    "codeSnippet": "function add(a, b) {\n  return a + b;\n}",
+    "correctAnswer": "function add(a, b) {\n  return Number(a) + Number(b);\n}",
+    "explanation": "The + operator prefers string concatenation when either operand is a string. Converting both with Number (or unary +) forces numeric addition."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This function is meant to return true only when value is the boolean true. Fix the buggy check so it does not treat truthy non-booleans as true.",
+    "codeSnippet": "function isExactlyTrue(value) {\n  return value == true;\n}",
+    "correctAnswer": "function isExactlyTrue(value) {\n  return value === true;\n}",
+    "explanation": "== true coerces values (e.g. 1 == true), so many non-booleans pass. === true requires the boolean primitive true with no coercion."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which comparison is true?",
+    "options": [
+      "0 === \"0\"",
+      "0 == \"0\"",
+      "null === undefined",
+      "NaN === NaN"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Loose == coerces \"0\" to 0, so 0 == \"0\" is true. Strict === requires same type. null === undefined is false (though null == undefined is true). NaN is never === to itself."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Which built-in method returns true when comparing NaN to NaN, unlike === ?",
+    "correctAnswer": "Object.is (Object.is(NaN, NaN))",
+    "explanation": "Object.is uses SameValue comparison: Object.is(NaN, NaN) is true, and Object.is(+0, -0) is false—two cases where === differs."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this equality example starting with `console.log(null == undefined);`, what is logged to the console?",
+    "codeSnippet": "console.log(null == undefined);\nconsole.log(null === undefined);\nconsole.log(false == 0);\nconsole.log(false === 0);",
+    "correctAnswer": "true\nfalse\ntrue\nfalse",
+    "explanation": "null and undefined are loosely equal only to each other. false == 0 is true via coercion; === never coerces, so types must match."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This check is intended to detect whether two values are the exact same reference or SameValue, including treating NaN as equal to NaN. Using === fails for NaN. Fix sameValue.",
+    "codeSnippet": "function sameValue(a, b) {\n  return a === b;\n}\n\nconsole.log(sameValue(NaN, NaN)); // false, should be true",
+    "correctAnswer": "function sameValue(a, b) {\n  return Object.is(a, b);\n}",
+    "explanation": "Object.is implements SameValue semantics where NaN equals NaN. Relying on === cannot express that without a special case."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function isEmptyArrayOrNullish(value) that returns true only when value is null, undefined, or an array with length 0. Do not treat empty string or 0 as empty.",
+    "codeSnippet": "function isEmptyArrayOrNullish(value) {\n  // your code\n}",
+    "correctAnswer": "function isEmptyArrayOrNullish(value) {\n  return value == null || (Array.isArray(value) && value.length === 0);\n}",
+    "explanation": "value == null covers both null and undefined. Array.isArray avoids mistaking array-like objects; length === 0 defines emptiness without falsy coercion."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In an if (value) check, which of these values is truthy?",
+    "options": [
+      "0",
+      "\"\"",
+      "\"false\"",
+      "null"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Non-empty strings are truthy, including the string \"false\". 0, \"\", and null are falsy."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What does the expression condition ? a : b evaluate to when condition is falsy?",
+    "correctAnswer": "b (the expression after the colon)",
+    "explanation": "The ternary operator evaluates and returns the second branch when the condition is falsy, without evaluating the first branch's value for the result (the unused branch is not evaluated)."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this conditionals example starting with `const score = 0;`, what is logged to the console?",
+    "codeSnippet": "const score = 0;\nif (score) {\n  console.log(\"played\");\n} else if (score === 0) {\n  console.log(\"zero\");\n} else {\n  console.log(\"other\");\n}",
+    "correctAnswer": "zero",
+    "explanation": "0 is falsy, so the first if fails. score === 0 is true, so the else-if branch runs and logs \"zero\"."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This switch is meant to handle the string status codes, but \"0\" falls into the wrong case. Fix it so case \"0\" logs \"idle\" and default is unused for \"0\".",
+    "codeSnippet": "function handle(status) {\n  switch (status) {\n    case 0:\n      console.log(\"idle\");\n      break;\n    case \"1\":\n      console.log(\"active\");\n      break;\n    default:\n      console.log(\"unknown\");\n  }\n}\nhandle(\"0\");",
+    "correctAnswer": "Use case \"0\": (string) instead of case 0: (number). switch uses strict equality, so \"0\" !== 0.",
+    "explanation": "switch compares with ===. The number 0 never matches the string \"0\", so execution hits default. Matching the type of the discriminant fixes the branch."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write function grade(score) that returns \"A\" if score >= 90, \"B\" if score >= 80, \"C\" if score >= 70, otherwise \"F\". Assume score is a number.",
+    "codeSnippet": "function grade(score) {\n  // your code\n}",
+    "correctAnswer": "function grade(score) {\n  if (score >= 90) return \"A\";\n  if (score >= 80) return \"B\";\n  if (score >= 70) return \"C\";\n  return \"F\";\n}",
+    "explanation": "Order matters: check higher thresholds first so a score of 95 is not classified as B. Early returns keep the control flow clear."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which loop construct iterates the iterable values of an array (the elements), not the keys?",
+    "options": [
+      "for (const i in arr)",
+      "for (const value of arr)",
+      "arr.forEach is the only option",
+      "while (arr)"
+    ],
+    "correctAnswer": "1",
+    "explanation": "for...of walks the iterable protocol and yields values. for...in enumerates enumerable property keys (including inherited ones if present), which is usually wrong for array elements."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Inside a for loop body, what does the continue statement do?",
+    "correctAnswer": "Skips the rest of the current iteration and proceeds to the next iteration (after running the loop's update expression in a classic for)",
+    "explanation": "continue does not exit the loop; it jumps to the next iteration. In a for(;;) loop, the update clause still runs before the next condition check."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this loops example starting with `const nums = [10, 20, 30];`, what is logged to the console?",
+    "codeSnippet": "const nums = [10, 20, 30];\nlet sum = 0;\nfor (const n of nums) {\n  if (n === 20) continue;\n  sum += n;\n}\nconsole.log(sum);",
+    "correctAnswer": "40",
+    "explanation": "10 and 30 are added; when n is 20, continue skips sum += n. Total is 40."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This loop is intended to push 0,1,2 into results, but it hangs or misbehaves. Fix the classic for-loop.",
+    "codeSnippet": "const results = [];\nfor (let i = 0; i < 3; ) {\n  results.push(i);\n}\nconsole.log(results);",
+    "correctAnswer": "Add an increment, e.g. for (let i = 0; i < 3; i++) { results.push(i); }",
+    "explanation": "Without updating i, the condition i < 3 stays true forever (or never progresses), so the loop does not produce [0,1,2]. The update clause (or an increment in the body) is required."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write function sumPositive(nums) that returns the sum of only positive numbers in the array using a loop (not reduce).",
+    "codeSnippet": "function sumPositive(nums) {\n  // your code\n}",
+    "correctAnswer": "function sumPositive(nums) {\n  let total = 0;\n  for (const n of nums) {\n    if (n > 0) total += n;\n  }\n  return total;\n}",
+    "explanation": "Iterating with for...of visits each element; guarding with n > 0 excludes zero and negatives before accumulating."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is a key difference between a function declaration and a const arrow function expression regarding hoisting?",
+    "options": [
+      "Both can be called before their line in the same scope with identical TDZ rules",
+      "Function declarations are hoisted and callable before their line; const arrow bindings are in the TDZ until initialized",
+      "Arrow functions are always hoisted above declarations",
+      "Only arrow functions create a new this binding when called as methods"
+    ],
+    "correctAnswer": "1",
+    "explanation": "A function declaration is initialized during instantiation of the scope, so it can be invoked earlier in that scope. A const fn = () => {} binding exists in the TDZ until that line runs."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In a concise arrow function with an expression body, what do you write to return an object literal without wrapping it in a block?",
+    "correctAnswer": "Wrap the object in parentheses, e.g. () => ({ a: 1 })",
+    "explanation": "Without parentheses, { is parsed as a block body, not an object literal. ({ ... }) forces an expression that evaluates to an object."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this functions example starting with `function greet(name = \"world\", punct = \"!\") {`, what is logged to the console?",
+    "codeSnippet": "function greet(name = \"world\", punct = \"!\") {\n  return \"Hello, \" + name + punct;\n}\nconsole.log(greet());\nconsole.log(greet(\"Ada\"));\nconsole.log(greet(undefined, \"?\"));",
+    "correctAnswer": "Hello, world!\nHello, Ada!\nHello, world?",
+    "explanation": "Default parameters apply when the argument is missing or explicitly undefined. greet() uses both defaults; greet(\"Ada\") keeps the default punct; greet(undefined, \"?\") retriggers the name default but overrides punct."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This function should return the sum of all numeric arguments, but it always returns NaN when called as sum(1, 2, 3). Fix it.",
+    "codeSnippet": "function sum() {\n  let total = 0;\n  for (let i = 0; i <= arguments.length; i++) {\n    total += arguments[i];\n  }\n  return total;\n}",
+    "correctAnswer": "Use i < arguments.length (not <=). The extra iteration reads arguments[length] which is undefined and makes total NaN.",
+    "explanation": "Valid indices are 0 .. length-1. Looping to <= length adds undefined once; number + undefined is NaN, which poisons the sum."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function once(fn) that returns a new function which calls fn at most one time and returns that first result on later calls (ignore later arguments).",
+    "codeSnippet": "function once(fn) {\n  // your code\n}",
+    "correctAnswer": "function once(fn) {\n  let called = false;\n  let result;\n  return function (...args) {\n    if (!called) {\n      called = true;\n      result = fn.apply(this, args);\n    }\n    return result;\n  };\n}",
+    "explanation": "A closure stores whether fn has run and caches its return value. Subsequent invocations skip calling fn again and replay the cached result."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Where is a let variable declared inside an if block visible?",
+    "options": [
+      "Throughout the entire enclosing function",
+      "Only within that block (and nested blocks)",
+      "Globally",
+      "Only after the function returns"
+    ],
+    "correctAnswer": "1",
+    "explanation": "let and const are block-scoped. A binding declared inside { } of an if is not visible outside that block."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What is lexical scope?",
+    "correctAnswer": "The rule that a function resolves free variables from the scope where it was defined (written), not where it is called",
+    "explanation": "Closures capture the lexical environment of their definition site. Call-site location does not change which outer bindings an inner function sees."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this scope example starting with `let x = \"outer\";`, what is logged to the console?",
+    "codeSnippet": "let x = \"outer\";\nfunction run() {\n  console.log(x);\n  let x = \"inner\";\n  console.log(x);\n}\nrun();",
+    "correctAnswer": "ReferenceError (on the first console.log)",
+    "explanation": "The inner let x shadows the outer x for the whole function body, so the first log accesses the inner binding while it is still in the TDZ and throws."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code intends each button handler to log its own index 0,1,2 but all log 3. Fix the loop binding issue (assume buttons is a NodeList/array of 3 elements in a browser-like environment, or treat buttons[i].onClick as assigning a function).",
+    "codeSnippet": "for (var i = 0; i < 3; i++) {\n  buttons[i].onClick = function () {\n    console.log(i);\n  };\n}",
+    "correctAnswer": "Use let i in the for loop (for (let i = 0; i < 3; i++)), or capture with an IIFE/const index = i inside the loop, so each handler closes over a distinct binding.",
+    "explanation": "var i is one function-scoped binding shared by all handlers; after the loop it is 3. let creates a new binding per iteration, so each closure sees the correct index."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write function makeMultiplier(factor) that returns a function which multiplies its argument by factor, relying on closure over factor.",
+    "codeSnippet": "function makeMultiplier(factor) {\n  // your code\n}",
+    "correctAnswer": "function makeMultiplier(factor) {\n  return function (n) {\n    return n * factor;\n  };\n}",
+    "explanation": "The returned function closes over factor from makeMultiplier's scope, so each multiplier remembers its own factor."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which statement about var hoisting is accurate?",
+    "options": [
+      "var declarations and their initializers both move to the top and run immediately",
+      "The declaration is hoisted and initialized to undefined; the assignment stays in place",
+      "var is not hoisted at all",
+      "var is hoisted only inside block scope"
+    ],
+    "correctAnswer": "1",
+    "explanation": "var bindings are created at function (or global) scope entry and set to undefined. The right-hand side assignment executes when that line runs."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Can you call a function created as `const f = function() {}` before that line in the same scope? Why or why not?",
+    "correctAnswer": "No — the const binding is in the TDZ until initialized, so calling f early throws ReferenceError",
+    "explanation": "Unlike a function declaration, a function expression assigned to const/let is not available before initialization. The name exists but is uninitialized until the assignment runs."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this hoisting example starting with `console.log(typeof foo);`, what is logged to the console?",
+    "codeSnippet": "console.log(typeof foo);\nconsole.log(typeof bar);\nfunction foo() {}\nvar bar = function () {};",
+    "correctAnswer": "function\nundefined",
+    "explanation": "foo is a function declaration, fully available when typeof runs. bar is a var, so the binding exists as undefined until the assignment; typeof undefined is \"undefined\"."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This module-like snippet throws when calling helper before its declaration. The author expected function-declaration hoisting. Fix the code so helper can be called at the top.",
+    "codeSnippet": "helper();\nconst helper = function () {\n  console.log(\"ok\");\n};",
+    "correctAnswer": "Change to a function declaration: function helper() { console.log(\"ok\"); } helper(); — or move the const initialization above the call.",
+    "explanation": "const helper = function(){} is not a hoisted callable declaration. A function declaration is initialized during scope setup and can be invoked earlier; alternatively, reorder so initialization precedes the call."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function explainOrder() that returns [\"a:undefined\", \"b:TDZ\"] by probing a var binding a and a let binding b before their initializing assignments run.",
+    "codeSnippet": "function explainOrder() {\n  // Probe a and b before: var a = 1; let b = 2;\n}",
+    "correctAnswer": "function explainOrder() {\n  const result = [];\n  result.push(typeof a === \"undefined\" ? \"a:undefined\" : \"a:other\");\n  try {\n    void b;\n    result.push(\"b:readable\");\n  } catch {\n    result.push(\"b:TDZ\");\n  }\n  var a = 1;\n  let b = 2;\n  return result;\n}",
+    "explanation": "var a is hoisted and initialized to undefined, so it is readable before its assignment. let b is in the temporal dead zone before initialization, so accessing it throws until the let line runs."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does Array.isArray([]) return, and why is it preferred over typeof for detecting arrays?",
+    "options": [
+      "false — typeof already distinguishes arrays",
+      "true — typeof [] is \"object\", so Array.isArray is the reliable check",
+      "true — typeof [] is \"array\"",
+      "undefined — Array.isArray only works on Array instances from the same realm"
+    ],
+    "correctAnswer": "1",
+    "explanation": "typeof [] returns \"object\", so it cannot tell arrays from plain objects. Array.isArray([]) returns true and is the standard way to detect arrays."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this arrays example starting with `const a = [1, 2, 3];`, what is logged to the console?",
+    "codeSnippet": "const a = [1, 2, 3];\nconst b = a;\nb.push(4);\nconsole.log(a.length, a[3]);",
+    "correctAnswer": "4 4",
+    "explanation": "Arrays are reference values. b aliases the same array as a, so pushing onto b mutates a. Length becomes 4 and index 3 holds 4."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function last(arr) that returns the last element of arr, or undefined if arr is empty. Do not mutate arr.",
+    "codeSnippet": "function last(arr) {\n  // your code\n}",
+    "correctAnswer": "function last(arr) {\n  return arr[arr.length - 1];\n}",
+    "explanation": "Indexing at length - 1 reads the final element. For length 0, arr[-1] is undefined, which is the desired empty-array behavior without mutation."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In JavaScript, are sparse array holes the same as elements whose value is undefined? Answer yes or no, then briefly explain.",
+    "correctAnswer": "No — holes are missing indexes; undefined is a real stored value at that index.",
+    "explanation": "A hole means the index is not present (hasOwnProperty is false). An explicit undefined is an own property with value undefined. Methods like map skip holes differently than undefined entries."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This function should remove the first element and return the remaining array without mutating the original. Fix it.",
+    "codeSnippet": "function withoutFirst(arr) {\n  arr.shift();\n  return arr;\n}",
+    "correctAnswer": "function withoutFirst(arr) {\n  return arr.slice(1);\n}",
+    "explanation": "shift mutates the original array. slice(1) returns a new array from index 1 onward and leaves arr unchanged."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Given const o = { a: 1 }; what does Object.keys(o) return?",
+    "options": [
+      "[\"a\"]",
+      "[a]",
+      "{ a: 1 }",
+      "[\"0\"]"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Object.keys returns an array of the object's own enumerable string property names. For { a: 1 } that is [\"a\"]."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this objects example starting with `const user = { name: \"Ada\" };`, what is logged to the console?",
+    "codeSnippet": "const user = { name: \"Ada\" };\nconst copy = user;\ncopy.name = \"Grace\";\nconsole.log(user.name);",
+    "correctAnswer": "Grace",
+    "explanation": "Objects are assigned by reference. copy and user point to the same object, so mutating copy.name also changes user.name."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function shallowClone(obj) that returns a new object with the same own enumerable properties as obj (one level deep).",
+    "codeSnippet": "function shallowClone(obj) {\n  // your code\n}",
+    "correctAnswer": "function shallowClone(obj) {\n  return { ...obj };\n}",
+    "explanation": "Object spread copies own enumerable properties into a new object. Nested objects remain shared references (shallow clone)."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What is the difference between obj.key and obj[\"key\"] when accessing a property named key?",
+    "correctAnswer": "They access the same property when the name is a valid identifier; bracket notation is required for dynamic or non-identifier names.",
+    "explanation": "Dot notation only works with fixed identifier-like names. Bracket notation accepts any expression (variables, strings with spaces/hyphens), but for the literal name \"key\" both forms read the same property."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This function should return true only when obj has an own property prop. Fix the bug.",
+    "codeSnippet": "function hasOwn(obj, prop) {\n  return prop in obj;\n}",
+    "correctAnswer": "function hasOwn(obj, prop) {\n  return Object.hasOwn(obj, prop);\n}",
+    "explanation": "The in operator walks the prototype chain. Object.hasOwn (or Object.prototype.hasOwnProperty.call) checks only own properties."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Are JavaScript strings mutable?",
+    "options": [
+      "Yes — you can assign to str[0]",
+      "No — string methods return new strings; the original is unchanged",
+      "Only when created with new String()",
+      "Only in strict mode"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Primitive strings are immutable. Operations like toUpperCase or slice return new strings; assigning to an index does not change the original string."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this strings example starting with `const s = \"hello\";`, what is logged to the console?",
+    "codeSnippet": "const s = \"hello\";\nconsole.log(s.slice(1, 4), s);",
+    "correctAnswer": "ell hello",
+    "explanation": "slice(1, 4) extracts characters from index 1 up to (not including) 4, producing \"ell\". The original string s remains \"hello\" because strings are immutable."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function isBlank(str) that returns true if str has length 0 or contains only whitespace characters.",
+    "codeSnippet": "function isBlank(str) {\n  // your code\n}",
+    "correctAnswer": "function isBlank(str) {\n  return str.trim().length === 0;\n}",
+    "explanation": "trim removes leading and trailing whitespace. If nothing remains, the string was empty or whitespace-only."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What does \"abc\".includes(\"\") return, and why?",
+    "correctAnswer": "true — every string is considered to include the empty substring.",
+    "explanation": "By specification, the empty string is a substring of every string, so includes(\"\") is true (including for \"\")."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should reverse a string. Fix it.",
+    "codeSnippet": "function reverseString(str) {\n  return str.reverse();\n}",
+    "correctAnswer": "function reverseString(str) {\n  return str.split(\"\").reverse().join(\"\");\n}",
+    "explanation": "Strings have no reverse method; reverse belongs to arrays. Split into characters, reverse the array, then join back into a string."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What values do a and b receive after: const [a, , b] = [10, 20, 30];",
+    "options": [
+      "a = 10, b = 20",
+      "a = 10, b = 30",
+      "a = 20, b = 30",
+      "a = 10, b = undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The empty slot between commas skips the second element. a takes 10 and b takes 30."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this destructuring example starting with `const { x = 5, y } = { y: 2 };`, what is logged to the console?",
+    "codeSnippet": "const { x = 5, y } = { y: 2 };\nconsole.log(x, y);",
+    "correctAnswer": "5 2",
+    "explanation": "x is missing on the source object, so the default 5 applies. y is present and receives 2. Defaults only apply when the extracted value is undefined."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Using destructuring, write a one-liner that extracts name and age from person into variables, renaming age to years.",
+    "codeSnippet": "const person = { name: \"Sam\", age: 30 };\n// your one-liner",
+    "correctAnswer": "const { name, age: years } = person;",
+    "explanation": "age: years renames the extracted property: the value of person.age is bound to the variable years, while name keeps its property name."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why does const { a } = null; throw, while const { a } = {}; does not?",
+    "correctAnswer": "Destructuring requires a coercible object; null/undefined cannot be converted, so it throws. {} is a valid object with missing a, so a is undefined.",
+    "explanation": "Object destructuring ToObjects the right-hand side. null and undefined throw TypeError. An empty object is fine; missing properties simply yield undefined."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should swap x and y. Fix the bug.",
+    "codeSnippet": "let x = 1;\nlet y = 2;\n[x, y] = x, y;",
+    "correctAnswer": "let x = 1;\nlet y = 2;\n[x, y] = [y, x];",
+    "explanation": "The buggy line is parsed as ([x, y] = x), y due to comma-operator precedence, so it does not swap. Assigning from [y, x] correctly swaps both values."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does [...\"hi\"] produce?",
+    "options": [
+      "[\"hi\"]",
+      "[\"h\", \"i\"]",
+      "\"h i\"",
+      "TypeError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Strings are iterable. Spreading a string into an array yields one element per character: [\"h\", \"i\"]."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this spread example starting with `const a = [1, 2];`, what is logged to the console?",
+    "codeSnippet": "const a = [1, 2];\nconst b = [3, 4];\nconsole.log([...a, ...b]);",
+    "correctAnswer": "[1, 2, 3, 4]",
+    "explanation": "Array spread expands each iterable's elements into the new array in order, concatenating a and b without nesting."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function mergePrefs(defaults, overrides) that returns a new object where overrides win on conflicting keys, without mutating either argument.",
+    "codeSnippet": "function mergePrefs(defaults, overrides) {\n  // your code\n}",
+    "correctAnswer": "function mergePrefs(defaults, overrides) {\n  return { ...defaults, ...overrides };\n}",
+    "explanation": "Later spreads overwrite earlier keys with the same name. Spreading into a new object leaves defaults and overrides unchanged."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "When spreading two objects with the same key, which value wins and why?",
+    "correctAnswer": "The value from the later spread wins because properties are assigned left to right and later keys overwrite earlier ones.",
+    "explanation": "Object spread copies enumerable own properties in source order. Duplicate keys from a subsequent source replace earlier values."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should clone an array. Fix it so the clone is independent of the original.",
+    "codeSnippet": "function cloneArr(arr) {\n  return arr;\n}",
+    "correctAnswer": "function cloneArr(arr) {\n  return [...arr];\n}",
+    "explanation": "Returning arr shares the same reference. [...arr] creates a new array with the same elements (shallow copy)."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In function f(a, ...rest) {}, what is rest when called as f(1, 2, 3)?",
+    "options": [
+      "2",
+      "[2, 3]",
+      "{ 2, 3 }",
+      "arguments"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest parameters collect remaining arguments into a real array. After binding a to 1, rest is [2, 3]."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this rest example starting with `const [first, ...rest] = [10, 20, 30];`, what is logged to the console?",
+    "codeSnippet": "const [first, ...rest] = [10, 20, 30];\nconsole.log(first, rest);",
+    "correctAnswer": "10 [20, 30]",
+    "explanation": "Array rest gathers leftover elements after first into a new array rest: [20, 30]."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write sumAll(...nums) that returns the sum of all numeric arguments (0 if none).",
+    "codeSnippet": "function sumAll(...nums) {\n  // your code\n}",
+    "correctAnswer": "function sumAll(...nums) {\n  return nums.reduce((acc, n) => acc + n, 0);\n}",
+    "explanation": "Rest packs arguments into nums. reduce with initial 0 sums them; with no arguments nums is [] and the result is 0."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Can a rest parameter appear before other parameters in a function signature? Why or why not?",
+    "correctAnswer": "No — rest must be the last parameter because it collects all remaining arguments.",
+    "explanation": "If rest were not last, the engine could not know where the \"remaining\" arguments end. SyntaxError if rest is not final."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should log all leftover props after pulling out id. Fix the syntax/logic.",
+    "codeSnippet": "const user = { id: 1, name: \"A\", role: \"admin\" };\nconst { ...rest, id } = user;\nconsole.log(rest);",
+    "correctAnswer": "const user = { id: 1, name: \"A\", role: \"admin\" };\nconst { id, ...rest } = user;\nconsole.log(rest);",
+    "explanation": "Object rest must be last in the pattern. Put id first, then ...rest to collect the remaining properties { name, role }."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is a callback function?",
+    "options": [
+      "A function that always runs asynchronously",
+      "A function passed as an argument to be invoked by another function later",
+      "Any arrow function",
+      "A function that returns another function"
+    ],
+    "correctAnswer": "1",
+    "explanation": "A callback is a function you pass in so the callee can call it when appropriate. Callbacks may be sync or async depending on the API."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is logged (order matters)?",
+    "codeSnippet": "function runTwice(fn) {\n  fn(\"A\");\n  fn(\"B\");\n}\nrunTwice((msg) => console.log(msg));",
+    "correctAnswer": "A\nB",
+    "explanation": "runTwice synchronously invokes the callback twice with \"A\" then \"B\", so those values log in that order."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write withDelay(fn, ms) that schedules fn to run after ms milliseconds (use setTimeout).",
+    "codeSnippet": "function withDelay(fn, ms) {\n  // your code\n}",
+    "correctAnswer": "function withDelay(fn, ms) {\n  setTimeout(fn, ms);\n}",
+    "explanation": "setTimeout accepts a callback and delay. Passing fn schedules it to run after ms without calling it immediately."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why can forgetting to invoke a callback (writing onDone instead of onDone()) make a program appear \"stuck\"?",
+    "correctAnswer": "The continuation never runs, so later work that depends on the callback never executes.",
+    "explanation": "Callbacks are how asynchronous or higher-level APIs signal completion. If you never call the callback, the next step never starts."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "mapNums should return a new array of transformed values. Fix the bug.",
+    "codeSnippet": "function mapNums(arr, cb) {\n  const out = [];\n  for (const n of arr) {\n    out.push(cb);\n  }\n  return out;\n}",
+    "correctAnswer": "function mapNums(arr, cb) {\n  const out = [];\n  for (const n of arr) {\n    out.push(cb(n));\n  }\n  return out;\n}",
+    "explanation": "Pushing cb stores the function itself. Calling cb(n) applies the transformation and pushes the result."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which best defines a higher-order function?",
+    "options": [
+      "A function declared inside another function",
+      "A function that takes a function as an argument, returns a function, or both",
+      "Any async function",
+      "A function with more than two parameters"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Higher-order means operating on functions as values: accepting them as arguments and/or returning them."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this higher order functions example starting with `function twice(fn) {`, what is logged to the console?",
+    "codeSnippet": "function twice(fn) {\n  return function (x) {\n    return fn(fn(x));\n  };\n}\nconst add1 = (n) => n + 1;\nconsole.log(twice(add1)(3));",
+    "correctAnswer": "5",
+    "explanation": "twice(add1) returns a function that applies add1 twice: 3 → 4 → 5."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write createMultiplier(factor) that returns a function multiplying its argument by factor.",
+    "codeSnippet": "function createMultiplier(factor) {\n  // your code\n}",
+    "correctAnswer": "function createMultiplier(factor) {\n  return function (n) {\n    return n * factor;\n  };\n}",
+    "explanation": "Returning an inner function that closes over factor makes createMultiplier a higher-order factory for specialized multipliers."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Is Array.prototype.filter a higher-order function? Why?",
+    "correctAnswer": "Yes — it accepts a predicate function as an argument and calls it for each element.",
+    "explanation": "filter takes a function and uses it to decide which elements to keep, which is the definition of higher-order behavior."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "applyAll should call every function in fns with value and return an array of results. Fix it.",
+    "codeSnippet": "function applyAll(fns, value) {\n  return fns.map(fn);\n}",
+    "correctAnswer": "function applyAll(fns, value) {\n  return fns.map((fn) => fn(value));\n}",
+    "explanation": "map(fn) passes each function as the element to map's callback incorrectly and does not invoke with value. Map over fns and call each with value."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which method returns a new array and does not mutate the original?",
+    "options": [
+      "push",
+      "splice",
+      "map",
+      "sort (without copying first)"
+    ],
+    "correctAnswer": "2",
+    "explanation": "map builds and returns a new array. push, splice, and in-place sort mutate the original array."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this array methods example starting with `const nums = [1, 2, 3, 4];`, what is logged to the console?",
+    "codeSnippet": "const nums = [1, 2, 3, 4];\nconsole.log(nums.filter((n) => n % 2 === 0).map((n) => n * 10));",
+    "correctAnswer": "[20, 40]",
+    "explanation": "filter keeps 2 and 4; map multiplies each by 10, producing [20, 40]. Neither call mutates nums."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Using reduce, write sum(arr) that returns the sum of numbers in arr (0 for empty).",
+    "codeSnippet": "function sum(arr) {\n  // your code\n}",
+    "correctAnswer": "function sum(arr) {\n  return arr.reduce((acc, n) => acc + n, 0);\n}",
+    "explanation": "reduce folds the array into one value. Initializing with 0 handles empty arrays and starts the accumulation correctly."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What does [1, 2, 3].find((n) => n > 5) return?",
+    "correctAnswer": "undefined",
+    "explanation": "find returns the first matching element, or undefined if none match. No element is greater than 5."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should check whether every score is at least 50. Fix it.",
+    "codeSnippet": "function allPassing(scores) {\n  return scores.some((s) => s >= 50);\n}",
+    "correctAnswer": "function allPassing(scores) {\n  return scores.every((s) => s >= 50);\n}",
+    "explanation": "some returns true if any element passes. every requires all elements to satisfy the predicate."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does Object.entries({ a: 1, b: 2 }) return?",
+    "options": [
+      "[\"a\", \"b\"]",
+      "[[\"a\", 1], [\"b\", 2]]",
+      "{ a: 1, b: 2 }",
+      "[1, 2]"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Object.entries returns an array of [key, value] pairs for own enumerable string-keyed properties."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this object methods example starting with `const obj = Object.assign({}, { x: 1 }, { x: ...`, what is logged to the console?",
+    "codeSnippet": "const obj = Object.assign({}, { x: 1 }, { x: 2, y: 3 });\nconsole.log(obj);",
+    "correctAnswer": "{ x: 2, y: 3 }",
+    "explanation": "Object.assign copies properties left to right onto the target. Later sources overwrite x, and y is added, yielding { x: 2, y: 3 }."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write invert(obj) that returns a new object swapping keys and values (assume values are unique strings or numbers).",
+    "codeSnippet": "function invert(obj) {\n  // your code\n}",
+    "correctAnswer": "function invert(obj) {\n  return Object.fromEntries(\n    Object.entries(obj).map(([k, v]) => [v, k])\n  );\n}",
+    "explanation": "entries gives [key, value] pairs; mapping swaps them; fromEntries rebuilds an object from the swapped pairs."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Does Object.freeze(obj) prevent adding new properties? What happens if you try in non-strict mode?",
+    "correctAnswer": "Yes it prevents adds; in non-strict mode the assignment fails silently, in strict mode it throws.",
+    "explanation": "freeze makes an object non-extensible and properties non-writable/non-configurable. Failed mutations throw in strict mode and are ignored otherwise."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should list only the object's own property names. Fix it.",
+    "codeSnippet": "function ownNames(obj) {\n  const names = [];\n  for (const key in obj) {\n    names.push(key);\n  }\n  return names;\n}",
+    "correctAnswer": "function ownNames(obj) {\n  return Object.keys(obj);\n}",
+    "explanation": "for...in includes enumerable inherited keys. Object.keys returns only own enumerable string keys."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In a normal function call foo() (non-strict, browser global), what is this?",
+    "options": [
+      "undefined",
+      "the global object (e.g. window)",
+      "foo itself",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "For a plain function call in non-strict mode, this defaults to the global object. In strict mode it would be undefined."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this this keyword example starting with `const obj = {`, what is logged to the console?",
+    "codeSnippet": "const obj = {\n  n: 1,\n  getN() {\n    return this.n;\n  },\n};\nconst fn = obj.getN;\nconsole.log(obj.getN(), fn());",
+    "correctAnswer": "1 undefined",
+    "explanation": "Method call obj.getN() sets this to obj. Extracting fn loses that binding, so this is not obj (undefined.n in strict modules / common runtimes yields undefined for the second log)."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Given method greet on person, create boundGreet so that boundGreet() always uses person as this.",
+    "codeSnippet": "const person = {\n  name: \"Alex\",\n  greet() {\n    return `Hi, ${this.name}`;\n  },\n};\n// create boundGreet",
+    "correctAnswer": "const boundGreet = person.greet.bind(person);",
+    "explanation": "bind returns a new function with this permanently set to person, so calling boundGreet() still reads person.name."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "How does call differ from apply when setting this for a function?",
+    "correctAnswer": "call takes arguments individually; apply takes them as an array (or array-like). Both set this to the first argument.",
+    "explanation": "fn.call(thisArg, a, b) vs fn.apply(thisArg, [a, b]). Same this-binding behavior; argument packaging differs."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Button handler should log the button's id. Fix the this-binding issue.",
+    "codeSnippet": "const button = {\n  id: \"save\",\n  onClick: () => {\n    console.log(this.id);\n  },\n};\nbutton.onClick();",
+    "correctAnswer": "const button = {\n  id: \"save\",\n  onClick() {\n    console.log(this.id);\n  },\n};\nbutton.onClick();",
+    "explanation": "Arrow functions do not get this from the call site; they lexically capture this from the enclosing scope. A method shorthand binds this to button when called as button.onClick()."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Do arrow functions have their own this binding?",
+    "options": [
+      "Yes — like function declarations",
+      "No — they inherit this from the enclosing lexical scope",
+      "Only when used as object methods",
+      "Only in strict mode"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Arrow functions are lexically scoped for this (and arguments, super). They do not bind their own this based on how they are called."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this arrow functions example starting with `const add = (a, b) => a + b;`, what is logged to the console?",
+    "codeSnippet": "const add = (a, b) => a + b;\nconsole.log(add(2, 3));",
+    "correctAnswer": "5",
+    "explanation": "A concise arrow body without braces implicitly returns the expression result, so add(2, 3) returns 5."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Rewrite as an arrow function named double that returns n * 2.",
+    "codeSnippet": "function double(n) {\n  return n * 2;\n}",
+    "correctAnswer": "const double = (n) => n * 2;",
+    "explanation": "Arrow syntax with a concise body implicitly returns n * 2. Parentheses around a single parameter are optional but valid."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why is an arrow function usually a poor choice for an object method that needs to use this?",
+    "correctAnswer": "Because this is lexical and will not refer to the object when the method is called.",
+    "explanation": "Method this should come from the receiver. Arrows ignore call-site binding and keep outer this, so obj.method() will not set this to obj."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This arrow should return an object { ok: true }. Fix the syntax so it does not return undefined.",
+    "codeSnippet": "const make = () => { ok: true };\nconsole.log(make());",
+    "correctAnswer": "const make = () => ({ ok: true });\nconsole.log(make());",
+    "explanation": "Braces start a block body, so ok: true is a labeled statement, not an object. Wrap the object in parentheses: ({ ok: true })."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is a closure?",
+    "options": [
+      "A function bundled with its lexical environment, retaining access to outer variables",
+      "Any function inside a class",
+      "A private field syntax",
+      "A function that cannot access outer variables"
+    ],
+    "correctAnswer": "0",
+    "explanation": "A closure is a function that remembers the variables from the scope where it was created, even after that outer function has returned."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this closures example starting with `function makeCounter() {`, what is logged to the console?",
+    "codeSnippet": "function makeCounter() {\n  let count = 0;\n  return function () {\n    count += 1;\n    return count;\n  };\n}\nconst c = makeCounter();\nconsole.log(c(), c());",
+    "correctAnswer": "1 2",
+    "explanation": "The inner function closes over count. Each call increments the same persistent count variable: first 1, then 2."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write createSecret(secret) that returns an object with get() returning secret and set(next) updating it. Outer code should not access secret directly.",
+    "codeSnippet": "function createSecret(secret) {\n  // your code\n}",
+    "correctAnswer": "function createSecret(secret) {\n  return {\n    get() {\n      return secret;\n    },\n    set(next) {\n      secret = next;\n    },\n  };\n}",
+    "explanation": "get/set close over the secret parameter. Only those methods can read or write it, encapsulating the value."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In a for loop with var i from 0 to 2 scheduling setTimeout(() => console.log(i), 0), why do all timeouts often print 3?",
+    "correctAnswer": "var is function-scoped, so all callbacks share one i that is 3 after the loop ends.",
+    "explanation": "Each timeout closes over the same i. By the time callbacks run, the loop finished and i is 3. let per iteration would fix it."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Each function in funcs should log its own index 0, 1, 2. Fix the closure bug.",
+    "codeSnippet": "const funcs = [];\nfor (var i = 0; i < 3; i++) {\n  funcs.push(function () {\n    console.log(i);\n  });\n}\nfuncs.forEach((f) => f());",
+    "correctAnswer": "const funcs = [];\nfor (let i = 0; i < 3; i++) {\n  funcs.push(function () {\n    console.log(i);\n  });\n}\nfuncs.forEach((f) => f());",
+    "explanation": "let creates a new binding per iteration, so each function closes over a different i (0, 1, 2) instead of one shared var."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In ESM, which statement correctly imports the default export from \"./math.js\" as sum?",
+    "options": [
+      "import { sum } from \"./math.js\";",
+      "import sum from \"./math.js\";",
+      "const sum = require(\"./math.js\");",
+      "import * as sum from \"./math.js\";"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Default exports are imported without braces: import sum from \"./math.js\". Named exports use { sum }. require is CommonJS, not ESM."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "If util.js contains export const answer = 42; and main.js runs the import below, what is logged?",
+    "codeSnippet": "import { answer } from \"./util.js\";\nconsole.log(answer);",
+    "correctAnswer": "42",
+    "explanation": "Named ESM imports bind to the exported live binding. answer is 42 from util.js."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write ESM exports for a module that provides a named export square and a default export cube.",
+    "codeSnippet": "// math.js\nfunction square(n) {\n  return n * n;\n}\nfunction cube(n) {\n  return n * n * n;\n}\n// add exports",
+    "correctAnswer": "export { square };\nexport default cube;",
+    "explanation": "export { square } creates a named export. export default cube sets the module's default export for import cube from \"./math.js\"."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Are ESM modules strict mode by default? Answer yes or no.",
+    "correctAnswer": "Yes",
+    "explanation": "ES modules always run in strict mode; you do not need \"use strict\" at the top of a .js module file for that behavior."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Fix this ESM import/export mismatch so main can import add.",
+    "codeSnippet": "// add.js\nexport default function add(a, b) {\n  return a + b;\n}\n\n// main.js\nimport { add } from \"./add.js\";\nconsole.log(add(1, 2));",
+    "correctAnswer": "// Option A — named export:\nexport function add(a, b) {\n  return a + b;\n}\nimport { add } from \"./add.js\";\n\n// Option B — default import:\nexport default function add(a, b) {\n  return a + b;\n}\nimport add from \"./add.js\";",
+    "explanation": "import { add } expects a named export. A default export must be imported without braces (or the module must export { add } as a named export)."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does throw new Error(\"fail\") do when not caught?",
+    "options": [
+      "Returns the Error object to the caller",
+      "Stops normal execution and propagates the exception up the call stack",
+      "Logs the message and continues",
+      "Converts the error into a rejected Promise automatically in sync code"
+    ],
+    "correctAnswer": "1",
+    "explanation": "throw raises an exception. Without a matching catch, it unwinds the stack and typically terminates the current execution path with an uncaught error."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this error handling example starting with `try {`, what is logged to the console?",
+    "codeSnippet": "try {\n  throw new Error(\"boom\");\n  console.log(\"after\");\n} catch (err) {\n  console.log(err.message);\n} finally {\n  console.log(\"done\");\n}",
+    "correctAnswer": "boom\ndone",
+    "explanation": "throw jumps to catch, so \"after\" never runs. catch logs err.message (\"boom\"). finally always runs afterward, logging \"done\"."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write parseJson(text) that returns the parsed value, or null if JSON.parse throws.",
+    "codeSnippet": "function parseJson(text) {\n  // your code\n}",
+    "correctAnswer": "function parseJson(text) {\n  try {\n    return JSON.parse(text);\n  } catch {\n    return null;\n  }\n}",
+    "explanation": "JSON.parse throws SyntaxError on invalid input. try/catch converts that failure into a null return instead of propagating."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Does a finally block run if the try block returns successfully? Answer yes or no, briefly why.",
+    "correctAnswer": "Yes — finally runs on the way out whether try completes, throws, or returns.",
+    "explanation": "finally is for cleanup. The engine runs it before the function actually returns or before the exception continues propagating."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This should rethrow unknown errors but return 0 for TypeError. Fix the logic.",
+    "codeSnippet": "function safeLen(value) {\n  try {\n    return value.length;\n  } catch (err) {\n    if (err instanceof TypeError) {\n      throw err;\n    }\n    return 0;\n  }\n}",
+    "correctAnswer": "function safeLen(value) {\n  try {\n    return value.length;\n  } catch (err) {\n    if (err instanceof TypeError) {\n      return 0;\n    }\n    throw err;\n  }\n}",
+    "explanation": "The branches were reversed. TypeError (e.g. null.length) should return 0; other errors should be rethrown so they are not swallowed."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is the key difference between synchronous and asynchronous code in JavaScript?",
+    "options": [
+      "Synchronous code always runs on a separate thread; asynchronous code runs on the main thread",
+      "Synchronous code blocks further execution until it finishes; asynchronous work can be scheduled and continued later without blocking the call stack the whole time",
+      "Asynchronous code cannot use callbacks or promises",
+      "Synchronous code never uses the call stack"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Synchronous statements run to completion on the call stack before the next statement. Asynchronous APIs schedule work (via Web APIs, promises, etc.) so the engine can keep processing other tasks instead of blocking for the whole duration."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is printed to the console?",
+    "codeSnippet": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');",
+    "correctAnswer": "A\nC\nB",
+    "explanation": "A and C run synchronously on the call stack. setTimeout schedules a macrotask, so B runs only after the current synchronous work finishes and the event loop picks that timer callback."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In one sentence, why can a long synchronous loop make a page feel frozen even if no network request is in progress?",
+    "correctAnswer": "It occupies the call stack continuously, so the event loop cannot process UI events, timers, or other callbacks until the loop finishes.",
+    "explanation": "JavaScript in the browser is single-threaded for the main thread. Long sync work blocks rendering and input handling because those also depend on the event loop getting turns."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code was meant to log 'done' after 'work' without blocking, but 'done' still waits for the heavy loop. What is wrong and how would you fix the intent conceptually?",
+    "codeSnippet": "function heavy() {\n  let x = 0;\n  for (let i = 0; i < 1e9; i++) x++;\n  console.log('work');\n}\nheavy();\nconsole.log('done');",
+    "correctAnswer": "heavy() is fully synchronous, so done cannot run until the loop completes. To avoid blocking the main thread you must break work into async chunks (e.g. setTimeout/requestAnimationFrame scheduling) or move it off-thread (Web Worker)—not merely call a sync function first.",
+    "explanation": "Calling a sync CPU-heavy function is still blocking. setTimeout after heavy() would not help either—the timer callback still waits for heavy() to finish. Only making the work itself asynchronous or off-main-thread fixes the freeze."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "PRACTICE",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which statement is true?",
+    "options": [
+      "await always pauses the entire JavaScript engine for all tabs",
+      "Promise callbacks run in parallel on multiple CPU cores by default",
+      "Asynchronous scheduling lets other tasks run between starting an async operation and handling its result",
+      "console.log is always asynchronous"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Async APIs schedule continuation work; other tasks can run in between. await only suspends the current async function. Promise reactions are still queued on the same JS thread (microtasks), not automatically parallelized across cores."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does the JavaScript call stack track?",
+    "options": [
+      "All pending network responses waiting in the browser",
+      "The ordered frames of function executions currently in progress (LIFO)",
+      "Only microtask queue entries",
+      "Compiled machine code for every function in the program"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The call stack is a LIFO structure of active execution contexts/frames. When a function is called it is pushed; when it returns it is popped."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this call stack example starting with `function a() {`, what is logged to the console?",
+    "codeSnippet": "function a() {\n  console.log('a-start');\n  b();\n  console.log('a-end');\n}\nfunction b() {\n  console.log('b');\n}\na();",
+    "correctAnswer": "a-start\nb\na-end",
+    "explanation": "a pushes, logs a-start, calls b (b pushes, logs, pops), then a logs a-end and pops. Nested calls run to completion before the outer function continues."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What runtime error typically occurs when recursive calls never bottom out and frames keep stacking?",
+    "correctAnswer": "RangeError: Maximum call stack size exceeded",
+    "explanation": "Each recursive call adds a frame. Without a base case (or enough stack space), the engine throws a RangeError when the stack limit is hit."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does this recurse forever and crash? Fix the logic so it stops correctly.",
+    "codeSnippet": "function countdown(n) {\n  console.log(n);\n  countdown(n - 1);\n}\ncountdown(3);",
+    "correctAnswer": "Add a base case, e.g. if (n < 0) return; before the recursive call (or stop when n === 0 after logging).",
+    "explanation": "Without a terminating condition, countdown keeps calling itself and the call stack grows until it overflows."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "PRACTICE",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "While a synchronous function is mid-execution on the call stack, can a setTimeout(fn, 0) callback run?",
+    "options": [
+      "Yes, immediately when the timer fires, even mid-function",
+      "Yes, but only if the function uses await",
+      "No — timer callbacks wait until the call stack is empty (and after microtasks, per the event loop)",
+      "Only if the timeout was scheduled inside that same function"
+    ],
+    "correctAnswer": "2",
+    "explanation": "JavaScript does not preempt a running sync function for a timer. The callback is queued and only runs once the stack is clear and the event loop reaches that macrotask (after draining microtasks)."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "After the call stack becomes empty, what does the event loop generally prioritize next?",
+    "options": [
+      "The next macrotask (timer/UI) before any microtasks",
+      "All queued microtasks until the microtask queue is empty, then a macrotask",
+      "Only fetch responses, ignoring promises",
+      "Garbage collection exclusively"
+    ],
+    "correctAnswer": "1",
+    "explanation": "When the stack is empty, the engine drains the microtask queue completely (promise jobs, queueMicrotask) before taking the next macrotask from the task queue."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "Predict the console output order.",
+    "codeSnippet": "console.log('1');\nsetTimeout(() => console.log('2'), 0);\nPromise.resolve().then(() => console.log('3'));\nconsole.log('4');",
+    "correctAnswer": "1\n4\n3\n2",
+    "explanation": "1 and 4 are sync. The promise then callback is a microtask and runs before the setTimeout macrotask, so 3 before 2."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this event loop example starting with `setTimeout(() => console.log('timeout'), 0);`, what is logged to the console?",
+    "codeSnippet": "setTimeout(() => console.log('timeout'), 0);\nPromise.resolve()\n  .then(() => {\n    console.log('micro1');\n    return Promise.resolve();\n  })\n  .then(() => console.log('micro2'));\nconsole.log('sync');",
+    "correctAnswer": "sync\nmicro1\nmicro2\ntimeout",
+    "explanation": "Sync runs first. Both promise reactions are microtasks and are drained before the timeout macrotask. Chained then callbacks still run as microtasks in order."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Name the three core pieces involved when explaining how async callbacks eventually run in the browser (besides Web APIs themselves).",
+    "correctAnswer": "Call stack, microtask queue (job queue), and task/macrotask queue — coordinated by the event loop.",
+    "explanation": "Sync code uses the call stack. Promise jobs go to the microtask queue; timers/IO/UI messages go to the task queue. The event loop decides when to pull from those queues."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "A developer expects 'timer' before 'then' because setTimeout was written first. Why is the actual order the opposite, and what misconception is at play?",
+    "codeSnippet": "setTimeout(() => console.log('timer'), 0);\nPromise.resolve().then(() => console.log('then'));",
+    "correctAnswer": "Source order does not decide queue priority. Both are scheduled during sync execution, but promise handlers are microtasks and run before the next timer macrotask.",
+    "explanation": "Writing setTimeout first only means the timer is registered first. After the stack clears, microtasks still run before macrotasks."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In the browser model, where do setTimeout and fetch primarily do their waiting/work while JS continues?",
+    "options": [
+      "Inside the JavaScript call stack as nested frames",
+      "In browser-provided Web APIs / host environment, then callbacks or promise reactions are queued for JS later",
+      "Only inside the microtask queue for the entire wait duration",
+      "In Node.js child processes exclusively"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Timers, fetch networking, DOM events, etc. are host/Web API capabilities. When ready, they enqueue a task or resolve a promise so JS can handle the result."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What logs, and in what order?",
+    "codeSnippet": "console.log('start');\nsetTimeout(() => console.log('timeout'), 0);\nconsole.log('end');",
+    "correctAnswer": "start\nend\ntimeout",
+    "explanation": "setTimeout hands the delay to the Web API timer; the callback becomes a macrotask after the delay and only runs after sync code finishes."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Is setTimeout part of the ECMAScript language core, or a host/Web API? Answer with which one.",
+    "correctAnswer": "Host/Web API (browser or other host), not part of the ECMAScript language specification itself.",
+    "explanation": "ECMAScript defines language semantics (promises, etc.). Timers historically come from the HTML/host environment. In browsers they are Web APIs on window."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "PRACTICE",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "When fetch('https://example.com') is called in a browser, what happens immediately on the call stack?",
+    "options": [
+      "The entire HTTP response body is read synchronously before fetch returns",
+      "fetch returns a Promise right away while the network request proceeds via browser networking APIs",
+      "fetch blocks until DNS, TCP, and TLS all complete",
+      "fetch pushes the response handler onto the call stack immediately"
+    ],
+    "correctAnswer": "1",
+    "explanation": "fetch is asynchronous: it returns a Promise immediately. Networking is handled by the browser; when the response is ready the promise settles and microtasks can run handlers."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code never prints 'fired' during a long sync loop. Explain why in terms of Web APIs and the event loop.",
+    "codeSnippet": "setTimeout(() => console.log('fired'), 10);\nconst start = Date.now();\nwhile (Date.now() - start < 500) {}\nconsole.log('loop done');",
+    "correctAnswer": "The timer is registered with the Web API, but its callback cannot run until the call stack is empty. The 500ms busy loop blocks the stack, so 'fired' waits until after 'loop done'.",
+    "explanation": "Delay expiry alone is not enough; the event loop only runs the timer task when JS is idle. Long sync work delays timer callbacks."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which of the following schedules a microtask?",
+    "options": [
+      "setTimeout(fn, 0)",
+      "setInterval(fn, 0)",
+      "Promise.resolve().then(fn)",
+      "A click event listener alone"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Promise then/catch/finally reactions (and queueMicrotask) enqueue microtasks. setTimeout/setInterval enqueue macrotasks. DOM events are typically tasks when dispatched to JS."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this microtasks example starting with `console.log('A');`, what is logged to the console?",
+    "codeSnippet": "console.log('A');\nqueueMicrotask(() => console.log('B'));\nPromise.resolve().then(() => console.log('C'));\nconsole.log('D');",
+    "correctAnswer": "A\nD\nB\nC",
+    "explanation": "A and D are synchronous. After the stack clears, microtasks run in queue order: queueMicrotask callback first, then the promise then callback."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this microtasks example starting with `Promise.resolve().then(() => {`, what is logged to the console?",
+    "codeSnippet": "Promise.resolve().then(() => {\n  console.log('m1');\n  Promise.resolve().then(() => console.log('m2'));\n});\nsetTimeout(() => console.log('t'), 0);\nconsole.log('s');",
+    "correctAnswer": "s\nm1\nm2\nt",
+    "explanation": "Sync s first. Microtasks drain fully before the timer: m1 runs, schedules m2 as another microtask, m2 runs, then macrotask t."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why can an infinite chain of scheduling new microtasks from microtasks starve timers and rendering?",
+    "correctAnswer": "The event loop drains the entire microtask queue before the next macrotask; continuously enqueueing new microtasks never lets macrotasks (timers, paint) run.",
+    "explanation": "Microtask checkpoint keeps going while the queue is non-empty. Endless microtasks block timers and UI updates."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "The author expected 'timeout' between 'first' and 'second'. Fix the mental model: what actually happens and why?",
+    "codeSnippet": "Promise.resolve().then(() => {\n  console.log('first');\n  Promise.resolve().then(() => console.log('second'));\n});\nsetTimeout(() => console.log('timeout'), 0);",
+    "correctAnswer": "Output is first, second, timeout. Nested promise then also queues a microtask, so both microtasks finish before any macrotask timeout.",
+    "explanation": "Microtasks are processed continuously until empty. A then scheduled inside another microtask still runs before setTimeout."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which API schedules a macrotask (task) rather than a microtask in the browser?",
+    "options": [
+      "queueMicrotask(fn)",
+      "Promise.resolve().then(fn)",
+      "setTimeout(fn, 0)",
+      "await on an already-resolved Promise (the continuation after await)"
+    ],
+    "correctAnswer": "2",
+    "explanation": "setTimeout queues a timer task (macrotask). Promise reactions and queueMicrotask are microtasks. await continuations are also microtask-scheduled when the awaited promise settles."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What order is logged?",
+    "codeSnippet": "setTimeout(() => console.log('T1'), 0);\nsetTimeout(() => console.log('T2'), 0);\nPromise.resolve().then(() => console.log('M'));\nconsole.log('S');",
+    "correctAnswer": "S\nM\nT1\nT2",
+    "explanation": "Sync S, then microtask M, then macrotasks in order T1 then T2."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "Predict the output.",
+    "codeSnippet": "setTimeout(() => {\n  console.log('macrotask');\n  Promise.resolve().then(() => console.log('micro-after-macro'));\n}, 0);\nPromise.resolve().then(() => console.log('micro-first'));\nconsole.log('sync');",
+    "correctAnswer": "sync\nmicro-first\nmacrotask\nmicro-after-macro",
+    "explanation": "After sync, the initial microtask runs. Then the timeout macrotask runs; promise then scheduled inside it becomes a new microtask that runs before the next macrotask."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Between two setTimeout(..., 0) callbacks, when do newly queued microtasks from the first callback run?",
+    "correctAnswer": "Immediately after that first macrotask finishes (microtask checkpoint), before the second setTimeout macrotask starts.",
+    "explanation": "Each task is followed by draining microtasks. Promise work scheduled inside a timer runs before the next timer."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a short snippet that logs 'macro' using a macrotask and 'micro' using a microtask such that 'micro' always appears before 'macro' after an initial sync 'start' log.",
+    "codeSnippet": "// Desired order: start, micro, macro",
+    "correctAnswer": "console.log('start');\nPromise.resolve().then(() => console.log('micro'));\nsetTimeout(() => console.log('macro'), 0);",
+    "explanation": "Promise.then is a microtask; setTimeout is a macrotask. After sync 'start', microtasks run before the timer."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A Promise is in which states over its lifetime?",
+    "options": [
+      "only pending or done",
+      "pending, fulfilled, or rejected (settled = fulfilled or rejected)",
+      "open, locked, or closed",
+      "sync, async, or deferred"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Promises start pending, then settle once as fulfilled or rejected. Settled is the umbrella term for fulfilled/rejected."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this promises example starting with `console.log('1');`, what is logged to the console?",
+    "codeSnippet": "console.log('1');\nnew Promise((resolve) => {\n  console.log('2');\n  resolve();\n  console.log('3');\n}).then(() => console.log('4'));\nconsole.log('5');",
+    "correctAnswer": "1\n2\n3\n5\n4",
+    "explanation": "The executor runs synchronously (2, 3). then schedules a microtask (4) which runs after current sync work (5)."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What prints?",
+    "codeSnippet": "Promise.resolve(1)\n  .then((x) => { console.log(x); return x + 1; })\n  .then((x) => { console.log(x); throw new Error('fail'); })\n  .catch((err) => { console.log(err.message); return 10; })\n  .then((x) => console.log(x));",
+    "correctAnswer": "1\n2\nfail\n10",
+    "explanation": "Values chain through then. A throw rejects the chain into catch, which can recover by returning a value for the next then."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Does calling resolve() twice inside a Promise executor change the fulfillment value the second time? Answer yes or no and briefly why.",
+    "correctAnswer": "No — a promise settles at most once; later resolve/reject calls are ignored.",
+    "explanation": "Promise state is immutable after settlement. Only the first settle operation wins."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This catch never runs for the thrown error. Why, and how do you fix it?",
+    "codeSnippet": "new Promise(() => {\n  throw new Error('boom');\n}).then(() => {\n  console.log('ok');\n});\n// missing handling — unhandled rejection",
+    "correctAnswer": "Attach .catch(...) (or a rejecting handler) on the promise chain. The throw inside the executor rejects the promise, but without a rejection handler it becomes an unhandled rejection.",
+    "explanation": "Executor throws reject the promise. You still need catch/then-onRejected or await try/catch in an async function to handle it."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does an async function always return?",
+    "options": [
+      "undefined unless you return a Promise explicitly",
+      "A Promise (non-promise returns are wrapped; throws become rejections)",
+      "A Generator object",
+      "A synchronous value only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "async functions return promises. Returned values fulfill that promise; thrown errors reject it."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is the console output order?",
+    "codeSnippet": "async function f() {\n  console.log('A');\n  await null;\n  console.log('B');\n}\nconsole.log('C');\nf();\nconsole.log('D');",
+    "correctAnswer": "C\nA\nD\nB",
+    "explanation": "f runs until await: logs A, then schedules the rest as a microtask. Sync D runs next, then B after await resumes."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this async await example starting with `async function main() {`, what is logged to the console?",
+    "codeSnippet": "async function main() {\n  console.log('1');\n  await Promise.resolve();\n  console.log('2');\n}\nmain();\nPromise.resolve().then(() => console.log('3'));\nconsole.log('4');",
+    "correctAnswer": "1\n4\n2\n3",
+    "explanation": "main logs 1 then awaits an already-fulfilled promise, scheduling its continuation as a microtask. Then another then microtask is queued. Sync 4 runs. Microtasks run in order: 2 then 3."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "How do you catch a rejection when using await inside an async function?",
+    "correctAnswer": "Wrap the await in try/catch (or let the async function reject and handle that promise with .catch).",
+    "explanation": "await turns rejection into a throw at the await expression, so try/catch works like synchronous error handling."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Rewrite the promise chain into async/await with try/catch that logs the user name or the error message.",
+    "codeSnippet": "function loadUser() {\n  return Promise.resolve({ name: 'Ada' });\n}\n\nloadUser()\n  .then((user) => console.log(user.name))\n  .catch((err) => console.log(err.message));",
+    "correctAnswer": "async function run() {\n  try {\n    const user = await loadUser();\n    console.log(user.name);\n  } catch (err) {\n    console.log(err.message);\n  }\n}\nrun();",
+    "explanation": "await suspends until loadUser settles; failures are caught with try/catch around the await."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does Promise.all do when every input promise fulfills?",
+    "options": [
+      "Fulfills with the value of the last promise only",
+      "Fulfills with an array of results in the same order as the iterable inputs",
+      "Fulfills with a Set of unique values",
+      "Always rejects after the first fulfillment"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Promise.all preserves input order in the result array, regardless of which promise settled first."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this promise all example starting with `Promise.all([`, what is logged to the console?",
+    "codeSnippet": "Promise.all([\n  Promise.resolve('a'),\n  Promise.resolve('b'),\n  Promise.resolve('c')\n]).then((vals) => console.log(vals.join(',')));",
+    "correctAnswer": "a,b,c",
+    "explanation": "All fulfill; results are ['a','b','c'] in input order."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What happens?",
+    "codeSnippet": "Promise.all([\n  Promise.resolve(1),\n  Promise.reject(new Error('nope')),\n  Promise.resolve(3)\n]).then(\n  (vals) => console.log('ok', vals),\n  (err) => console.log('fail', err.message)\n);",
+    "correctAnswer": "fail nope",
+    "explanation": "Promise.all rejects immediately (short-circuits) when any input rejects; remaining results are discarded for the all result."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "If one of ten promises passed to Promise.all rejects, does Promise.all wait for the other nine before rejecting?",
+    "correctAnswer": "No — it rejects as soon as the first rejection happens (though the other promises may still settle independently).",
+    "explanation": "The aggregate promise rejects on first rejection. Other operations may continue, but they do not fulfill the Promise.all result."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Using Promise.all, write a function fetchBoth(url1, url2) that returns a Promise of [text1, text2] from two successful fetch().then(r => r.text()) calls (assume ok responses).",
+    "codeSnippet": "// fetchBoth(url1, url2) => Promise<[string, string]>",
+    "correctAnswer": "function fetchBoth(url1, url2) {\n  return Promise.all([\n    fetch(url1).then((r) => r.text()),\n    fetch(url2).then((r) => r.text())\n  ]);\n}",
+    "explanation": "Promise.all runs both requests concurrently and yields a two-element array in URL order."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "How does Promise.allSettled differ from Promise.all when one input rejects?",
+    "options": [
+      "allSettled also rejects immediately with that reason",
+      "allSettled waits for all inputs and fulfills with per-item status objects (fulfilled or rejected)",
+      "allSettled ignores rejections and returns only fulfilled values",
+      "allSettled cancels the other promises"
+    ],
+    "correctAnswer": "1",
+    "explanation": "allSettled never short-circuits on rejection; it reports each outcome as {status, value} or {status, reason}."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is logged (JSON-like summary of statuses and values/reasons)?",
+    "codeSnippet": "Promise.allSettled([\n  Promise.resolve('yes'),\n  Promise.reject('no')\n]).then((results) => {\n  console.log(results.map((r) =>\n    r.status === 'fulfilled' ? r.status + ':' + r.value : r.status + ':' + r.reason\n  ).join('|'));\n});",
+    "correctAnswer": "fulfilled:yes|rejected:no",
+    "explanation": "Both settle; allSettled fulfills with descriptors for success and failure."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "PRACTICE",
+    "format": "SHORT_ANSWER",
+    "prompt": "For a fulfilled entry in Promise.allSettled results, which property holds the value — and for rejected, which holds the error reason?",
+    "correctAnswer": "fulfilled → value; rejected → reason (both have status).",
+    "explanation": "Shape is { status: 'fulfilled', value } or { status: 'rejected', reason }."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.allSettled([...]) itself rejects when:",
+    "options": [
+      "Any input rejects",
+      "Any input fulfills",
+      "It essentially always fulfills with the array of outcomes once all inputs settle (unless used incorrectly)",
+      "The array is non-empty"
+    ],
+    "correctAnswer": "2",
+    "explanation": "The allSettled promise fulfills with the report array after all settle. Individual rejections are data in that array, not a rejection of allSettled."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write an async function summarize(promises) that uses Promise.allSettled and returns { ok: number, failed: number } counting fulfilled vs rejected.",
+    "codeSnippet": "// summarize(promises: Promise<unknown>[])",
+    "correctAnswer": "async function summarize(promises) {\n  const results = await Promise.allSettled(promises);\n  let ok = 0;\n  let failed = 0;\n  for (const r of results) {\n    if (r.status === 'fulfilled') ok++;\n    else failed++;\n  }\n  return { ok, failed };\n}",
+    "explanation": "allSettled gives a complete status list so you can tally successes and failures without losing data on the first rejection."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.race settles how?",
+    "options": [
+      "Only when every promise fulfills",
+      "With the same fulfillment or rejection as the first input promise that settles",
+      "Always with an array of all values",
+      "Only on rejection"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Race mirrors the first settled input—whether that settlement is fulfill or reject."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this promise race example starting with `Promise.race([`, what is logged to the console?",
+    "codeSnippet": "Promise.race([\n  new Promise((resolve) => setTimeout(() => resolve('slow'), 50)),\n  Promise.resolve('fast')\n]).then((v) => console.log(v));",
+    "correctAnswer": "fast",
+    "explanation": "The already-resolved promise settles first, so race fulfills with 'fast'."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is printed?",
+    "codeSnippet": "Promise.race([\n  new Promise((_, reject) => setTimeout(() => reject(new Error('early')), 0)),\n  new Promise((resolve) => setTimeout(() => resolve('later'), 10))\n]).then(\n  (v) => console.log('v', v),\n  (e) => console.log('e', e.message)\n);",
+    "correctAnswer": "e early",
+    "explanation": "The rejecting timer is first to settle (0ms macrotask before 10ms), so race rejects with that error."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "After Promise.race has settled from the winner, do the other racing promises get cancelled automatically?",
+    "correctAnswer": "No — other promises continue unless you implement cancellation separately (e.g. AbortController for fetch).",
+    "explanation": "Race only affects the aggregate promise. Losing promises still run to completion unless you cancel their underlying work."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write withTimeout(promise, ms) using Promise.race so that if promise is too slow it rejects with Error('timeout').",
+    "codeSnippet": "// withTimeout(promise, ms) => Promise",
+    "correctAnswer": "function withTimeout(promise, ms) {\n  const timeout = new Promise((_, reject) => {\n    setTimeout(() => reject(new Error('timeout')), ms);\n  });\n  return Promise.race([promise, timeout]);\n}",
+    "explanation": "Whichever settles first wins: the real result or the timeout rejection."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.any fulfills when:",
+    "options": [
+      "The first promise settles for any reason (fulfill or reject)",
+      "The first promise fulfills; rejections are ignored until one fulfills",
+      "All promises fulfill",
+      "All promises reject"
+    ],
+    "correctAnswer": "1",
+    "explanation": "any waits for the first fulfillment. Rejections do not win the race unless every input rejects."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this promise any example starting with `Promise.any([`, what is logged to the console?",
+    "codeSnippet": "Promise.any([\n  Promise.reject(new Error('a')),\n  Promise.resolve('b'),\n  Promise.resolve('c')\n]).then((v) => console.log(v));",
+    "correctAnswer": "b",
+    "explanation": "The first fulfillment is 'b'; earlier rejection is skipped for any's success path."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is the rejection type/name when all fail?",
+    "codeSnippet": "Promise.any([\n  Promise.reject('x'),\n  Promise.reject('y')\n]).catch((err) => console.log(err.name));",
+    "correctAnswer": "AggregateError",
+    "explanation": "If every input rejects, Promise.any rejects with AggregateError whose .errors lists the reasons."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Contrast Promise.race and Promise.any in one sentence regarding a fast rejection vs a slower fulfillment.",
+    "correctAnswer": "race adopts the first settlement (so a fast rejection wins); any ignores rejections until a fulfillment (or AggregateError if all reject).",
+    "explanation": "That difference is the main practical distinction between race and any."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "A developer used Promise.race to pick the first successful mirror URL, but failures from the fastest endpoint make the whole thing fail even when another mirror would succeed. Which combinator should they use instead, and why?",
+    "codeSnippet": "Promise.race([\n  fetch(mirrorA).then((r) => r.json()),\n  fetch(mirrorB).then((r) => r.json())\n]);",
+    "correctAnswer": "Use Promise.any so the first successful fulfillment wins; transient fast rejections will not fail the aggregate while another mirror can still fulfill.",
+    "explanation": "race is first-settle; any is first-fulfill. For 'first success among mirrors', any is the right tool."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In browsers, fetch(url) returns:",
+    "options": [
+      "A Response object synchronously",
+      "A Promise that resolves to a Response (for network success), even for HTTP 404",
+      "Parsed JSON automatically",
+      "undefined after sending the request"
+    ],
+    "correctAnswer": "1",
+    "explanation": "fetch resolves with a Response when it gets an HTTP response. HTTP error statuses like 404 still fulfill the promise; only network failures reject."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "PRACTICE",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why is checking response.ok (or status) necessary after await fetch(url) if you care about HTTP errors?",
+    "correctAnswer": "Because fetch only rejects on network failure; HTTP 4xx/5xx still resolve to a Response with ok === false.",
+    "explanation": "You must inspect the Response and throw or handle non-OK statuses yourself if that is an error for your app."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write an async function getJson(url) that fetch-es, throws Error('HTTP ' + status) if !response.ok, otherwise returns response.json().",
+    "codeSnippet": "// getJson(url)",
+    "correctAnswer": "async function getJson(url) {\n  const response = await fetch(url);\n  if (!response.ok) {\n    throw new Error('HTTP ' + response.status);\n  }\n  return response.json();\n}",
+    "explanation": "This pattern treats non-OK HTTP statuses as errors while still using the fetch Promise + json() body parse."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Calling response.json() more than once on the same Response body typically:",
+    "options": [
+      "Always works and re-parses the network bytes",
+      "Fails because the body stream can be consumed only once",
+      "Returns the cached string form of the body",
+      "Blocks until a second network round-trip completes"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The body is a stream. After json()/text() consumes it, reading again rejects unless you clone the response first."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code logs undefined for data on a JSON API. What is wrong?",
+    "codeSnippet": "async function load() {\n  const data = await fetch('/api/item');\n  console.log(data.name);\n}\nload();",
+    "correctAnswer": "fetch resolves to a Response, not parsed JSON. Use const response = await fetch(...); const data = await response.json(); then use data.name (and ideally check response.ok).",
+    "explanation": "You must parse the body with json()/text() etc. The Response object does not expose JSON fields directly as data.name."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which two phases does a JavaScript execution context go through when a function is invoked?",
+    "options": [
+      "Parsing and compilation",
+      "Creation (hoisting/bindings) then execution",
+      "Garbage collection then evaluation",
+      "Module linking then instantiation"
+    ],
+    "correctAnswer": "1",
+    "explanation": "When a function runs, its execution context is created first (variable environment, scope chain, this binding), then the code executes."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Name the three primary components typically associated with a function execution context in JavaScript.",
+    "correctAnswer": "Variable Environment (or Lexical Environment), Scope Chain (outer lexical environment reference), and this binding",
+    "explanation": "An execution context holds the environment for bindings, a link to the outer environment for identifier resolution, and the value of this for that call."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What is logged when this code runs?",
+    "codeSnippet": "var x = 'global';\nfunction outer() {\n  var x = 'outer';\n  function inner() {\n    console.log(x);\n  }\n  return inner;\n}\nconst fn = outer();\nfn();",
+    "correctAnswer": "outer",
+    "explanation": "inner closes over outer's lexical environment, so x resolves to 'outer' even though fn is called from the global context."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code throws ReferenceError for a. Why, in terms of execution context / temporal dead zone?",
+    "codeSnippet": "function demo() {\n  console.log(a);\n  let a = 1;\n}\ndemo();",
+    "correctAnswer": "During the creation phase, let a is declared in the lexical environment but remains uninitialized until the let line runs; accessing a before that is a TDZ ReferenceError.",
+    "explanation": "Unlike var (initialized to undefined on entry), let/const bindings exist but are unusable until their declaration is evaluated."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function makeCounter that returns an object with increment and get methods. Each call to makeCounter must create a separate execution context so counters are independent.",
+    "codeSnippet": "// makeCounter(): { increment(): number, get(): number }",
+    "correctAnswer": "function makeCounter() {\n  let count = 0;\n  return {\n    increment() { return ++count; },\n    get() { return count; }\n  };\n}",
+    "explanation": "Each makeCounter() invocation creates its own lexical environment for count; returned methods close over that environment."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does a Lexical Environment primarily record?",
+    "options": [
+      "Only the current value of this",
+      "Identifier bindings for the current scope plus a reference to an outer environment",
+      "The call stack frames of all pending microtasks",
+      "Heap addresses of all allocated objects"
+    ],
+    "correctAnswer": "1",
+    "explanation": "A Lexical Environment is an Environment Record of bindings paired with an outer lexical environment reference used for scope chain lookup."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In one sentence, how does identifier resolution use the lexical environment chain?",
+    "correctAnswer": "The engine looks up the identifier in the current Environment Record, then follows the outer reference until the binding is found or the chain ends.",
+    "explanation": "Lexical scoping is implemented by walking outer environment links established at definition time, not call time."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this lexical environment example starting with `let value = 1;`, what is logged to the console?",
+    "codeSnippet": "let value = 1;\n{\n  let value = 2;\n  {\n    console.log(value);\n  }\n}",
+    "correctAnswer": "2",
+    "explanation": "The inner block's lexical environment has an outer reference to the middle block where value is 2; that binding is found before the outer 1."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does this catch block throw when logging e after the catch?",
+    "codeSnippet": "try {\n  throw new Error('boom');\n} catch (e) {\n  // handled\n}\nconsole.log(e);",
+    "correctAnswer": "The catch binding e exists only in the catch block's lexical environment; outside that block e is not in scope.",
+    "explanation": "catch (e) creates a block-scoped binding; it is not part of the surrounding function/global environment."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function createGreeter(prefix) that returns a function greeting(name) which concatenates prefix and name using closure over createGreeter's lexical environment.",
+    "codeSnippet": "// createGreeter(prefix: string) => (name: string) => string",
+    "correctAnswer": "function createGreeter(prefix) {\n  return function greeting(name) {\n    return prefix + name;\n  };\n}",
+    "explanation": "greeting closes over the lexical environment of createGreeter, retaining access to prefix after createGreeter returns."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "For a constructor function Foo, what does Foo.prototype refer to?",
+    "options": [
+      "The instance created by new Foo()",
+      "The object that becomes the [[Prototype]] of instances created by new Foo()",
+      "Always Object.prototype",
+      "The function's outer lexical environment"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Foo.prototype is the object assigned as the internal [[Prototype]] of objects created with new Foo()."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What is the difference between obj.__proto__ (or Object.getPrototypeOf(obj)) and a constructor's .prototype property?",
+    "correctAnswer": "Object.getPrototypeOf(obj) is the instance's [[Prototype]]; Constructor.prototype is the object that will be set as [[Prototype]] for new instances of that constructor.",
+    "explanation": "Instances link to Constructor.prototype; Constructor.prototype is not the same as Constructor's own [[Prototype]] (which is Function.prototype)."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this prototype example starting with `function Dog(name) {`, what is logged to the console?",
+    "codeSnippet": "function Dog(name) {\n  this.name = name;\n}\nDog.prototype.speak = function () {\n  return this.name + ' says woof';\n};\nconst d = new Dog('Rex');\nconsole.log(d.speak());\nconsole.log(Object.hasOwn(d, 'speak'));",
+    "correctAnswer": "Rex says woof\nfalse",
+    "explanation": "speak is found on Dog.prototype via the prototype link; it is not an own property of d."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does reassigning Dog.prototype break existing instances' method lookup while mutating Dog.prototype.bark would not?",
+    "codeSnippet": "function Dog() {}\nconst a = new Dog();\nDog.prototype = { bark() { return 'woof'; } };\nconst b = new Dog();\nconsole.log(typeof a.bark);\nconsole.log(typeof b.bark);",
+    "correctAnswer": "a still points to the old prototype object; only new instances (b) get the replaced Dog.prototype. Mutating the existing prototype object would update shared methods for all instances linked to it.",
+    "explanation": "[[Prototype]] is a reference set at construction time; replacing Constructor.prototype does not retarget existing instances."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Implement a constructor Vehicle that stores brand on the instance, and add a method describe on Vehicle.prototype that returns 'Vehicle: ' + this.brand.",
+    "codeSnippet": "// Vehicle(brand)\n// Vehicle.prototype.describe()",
+    "correctAnswer": "function Vehicle(brand) {\n  this.brand = brand;\n}\nVehicle.prototype.describe = function () {\n  return 'Vehicle: ' + this.brand;\n};",
+    "explanation": "Own data on the instance plus shared behavior on the constructor's prototype is the classic prototype pattern."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "When property lookup fails on an object and on every object along its [[Prototype]] chain, what happens?",
+    "options": [
+      "A ReferenceError is always thrown",
+      "undefined is returned for ordinary property access",
+      "Object.prototype is mutated",
+      "The property is auto-created on the global object"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Ordinary get returns undefined when the chain ends (usually at null after Object.prototype) without finding the property."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "For a plain object created with {}, what is typically the end of its prototype chain?",
+    "correctAnswer": "Object.prototype, then null",
+    "explanation": "Ordinary objects delegate to Object.prototype; Object.getPrototypeOf(Object.prototype) is null."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this prototype chain example starting with `const proto = { x: 1 };`, what is logged to the console?",
+    "codeSnippet": "const proto = { x: 1 };\nconst obj = Object.create(proto);\nobj.y = 2;\nconsole.log(obj.x, obj.y);\nconsole.log(Object.getPrototypeOf(obj) === proto);",
+    "correctAnswer": "1 2\ntrue",
+    "explanation": "y is own; x is found on proto via the prototype chain; Object.create sets [[Prototype]] to proto."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This shadowing surprises the author. Why does setting obj.value not change parent.value?",
+    "codeSnippet": "const parent = { value: 10 };\nconst obj = Object.create(parent);\nobj.value = 20;\nconsole.log(parent.value);\nconsole.log(obj.value);",
+    "correctAnswer": "Assignment creates an own property on obj that shadows parent.value; it does not write through to the prototype unless a setter exists on the prototype.",
+    "explanation": "Ordinary assignment on a receiver adds/updates an own data property, leaving the prototype's property unchanged."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Using Object.create, build a two-level chain: animal with method eat returning 'eating', and dog whose [[Prototype]] is animal, with method bark returning 'woof'. Return dog.",
+    "codeSnippet": "function makeDog() {\n  // return dog object\n}",
+    "correctAnswer": "function makeDog() {\n  const animal = {\n    eat() { return 'eating'; }\n  };\n  const dog = Object.create(animal);\n  dog.bark = function () { return 'woof'; };\n  return dog;\n}",
+    "explanation": "Object.create(animal) links dog to animal so eat is found via the prototype chain while bark is own."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In modern JavaScript, class syntax is primarily syntactic sugar over which mechanism?",
+    "options": [
+      "Prototypal inheritance and constructor functions",
+      "Multiple inheritance via mixins only",
+      "Structural typing at compile time",
+      "Copying methods onto every instance by default"
+    ],
+    "correctAnswer": "0",
+    "explanation": "class declares a constructor function and puts methods on its .prototype; instances still use the prototype chain."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Are class declarations hoisted like function declarations? What happens if you use a class before its declaration?",
+    "correctAnswer": "Class declarations are hoisted into the TDZ like let; using the class before initialization throws ReferenceError.",
+    "explanation": "Unlike function declarations, classes cannot be used before the declaration is evaluated."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this classes example starting with `class Counter {`, what is logged to the console?",
+    "codeSnippet": "class Counter {\n  static species = 'Counter';\n  #n = 0;\n  inc() { return ++this.#n; }\n}\nconst c = new Counter();\nconsole.log(c.inc());\nconsole.log(Counter.species);\nconsole.log(typeof c.inc);",
+    "correctAnswer": "1\nCounter\nfunction",
+    "explanation": "inc is an instance method on the prototype; #n is private per instance; species is a static (constructor) property."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does calling Point.distance without new or as a method fail / behave incorrectly here?",
+    "codeSnippet": "class Point {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n  distance() {\n    return Math.hypot(this.x, this.y);\n  }\n}\nconst d = Point.distance;\nconsole.log(d());",
+    "correctAnswer": "Extracting distance loses the receiver; this is undefined in strict class bodies, so this.x throws TypeError. Call as instance.distance() or bind the instance.",
+    "explanation": "Class methods are not bound; they rely on the call-site this value."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a class Rectangle with constructor(width, height), a getter area, and a method scale(factor) that multiplies width and height by factor and returns this.",
+    "codeSnippet": "// class Rectangle { ... }",
+    "correctAnswer": "class Rectangle {\n  constructor(width, height) {\n    this.width = width;\n    this.height = height;\n  }\n  get area() {\n    return this.width * this.height;\n  }\n  scale(factor) {\n    this.width *= factor;\n    this.height *= factor;\n    return this;\n  }\n}",
+    "explanation": "Getters live on the prototype; scale mutates instance fields and supports chaining by returning this."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "When class Child extends Parent, which statement is true?",
+    "options": [
+      "Child.prototype's [[Prototype]] is Parent.prototype",
+      "Child instances copy all Parent methods as own properties",
+      "Parent.constructor becomes Child's [[Prototype]] only",
+      "extends only works for built-in Error subclasses"
+    ],
+    "correctAnswer": "0",
+    "explanation": "extends wires Child.prototype → Parent.prototype and Child → Parent (for static inheritance)."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "In a derived class constructor, when must super() be called relative to using this?",
+    "correctAnswer": "super() must be called before accessing this in the derived constructor.",
+    "explanation": "The base constructor initializes the instance; using this beforehand throws a ReferenceError."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this inheritance example starting with `class Animal {`, what is logged to the console?",
+    "codeSnippet": "class Animal {\n  speak() { return 'sound'; }\n}\nclass Dog extends Animal {\n  speak() { return super.speak() + ' woof'; }\n}\nconst d = new Dog();\nconsole.log(d.speak());\nconsole.log(d instanceof Animal);",
+    "correctAnswer": "sound woof\ntrue",
+    "explanation": "super.speak() calls Animal.prototype.speak; instanceof walks the prototype chain so Dog instances are Animals."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Fix the derived constructor so this code runs without error and name is set.",
+    "codeSnippet": "class Person {\n  constructor(name) {\n    this.name = name;\n  }\n}\nclass Employee extends Person {\n  constructor(name, role) {\n    this.role = role;\n    this.name = name;\n  }\n}\nnew Employee('Ada', 'Engineer');",
+    "correctAnswer": "Call super(name) first, then set this.role. Example: constructor(name, role) { super(name); this.role = role; }",
+    "explanation": "Derived constructors cannot initialize this until the parent constructor has run via super(...)."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Implement class Stack extending Array with a method peek() that returns the last element without removing it (undefined if empty).",
+    "codeSnippet": "// class Stack extends Array { peek() { ... } }",
+    "correctAnswer": "class Stack extends Array {\n  peek() {\n    return this[this.length - 1];\n  }\n}",
+    "explanation": "Subclassing Array inherits length and indexing; peek reads the last index without pop."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What must an object implement to be iterable (usable with for...of)?",
+    "options": [
+      "A next() method only",
+      "A [Symbol.iterator] method that returns an iterator",
+      "A length property and numeric keys only",
+      "A toJSON method"
+    ],
+    "correctAnswer": "1",
+    "explanation": "for...of calls obj[Symbol.iterator]() to obtain an iterator with a next() method."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What shape does iterator.next() return?",
+    "correctAnswer": "An IteratorResult object: { value, done } where done is a boolean",
+    "explanation": "When done is true, iteration is finished; value may be the return value or undefined."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this iterators example starting with `const arr = ['a', 'b'];`, what is logged to the console?",
+    "codeSnippet": "const arr = ['a', 'b'];\nconst it = arr[Symbol.iterator]();\nconsole.log(it.next());\nconsole.log(it.next());\nconsole.log(it.next());",
+    "correctAnswer": "{ value: 'a', done: false }\n{ value: 'b', done: false }\n{ value: undefined, done: true }",
+    "explanation": "Array iterators yield each element then a final { done: true } result."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does for...of throw on range? Fix it so for (const n of range) works for start..end inclusive.",
+    "codeSnippet": "const range = {\n  start: 1,\n  end: 3,\n  next() {\n    if (this.current === undefined) this.current = this.start;\n    if (this.current > this.end) return { done: true };\n    return { value: this.current++, done: false };\n  }\n};",
+    "correctAnswer": "range is an iterator-like object but not iterable; add [Symbol.iterator]() { this.current = this.start; return this; } (or return a fresh iterator) so for...of can obtain an iterator.",
+    "explanation": "Iterable protocol requires Symbol.iterator; having next alone is not enough for for...of."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function createCountdown(n) that returns an iterable which yields n, n-1, ... 1.",
+    "codeSnippet": "// createCountdown(n) => iterable",
+    "correctAnswer": "function createCountdown(n) {\n  return {\n    [Symbol.iterator]() {\n      let current = n;\n      return {\n        next() {\n          if (current < 1) return { done: true, value: undefined };\n          return { done: false, value: current-- };\n        }\n      };\n    }\n  };\n}",
+    "explanation": "Symbol.iterator returns a fresh iterator so multiple for...of loops can each countdown independently."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Calling a generator function (function*) returns what?",
+    "options": [
+      "The final yielded value immediately",
+      "A generator object that is both an iterator and iterable",
+      "A Promise that resolves to IteratorResult",
+      "An array of all yielded values"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Generators are suspended; you pull values via next(), and the generator is iterable via Symbol.iterator."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "What does yield express inside a generator, and what does next(value) do with that value?",
+    "correctAnswer": "yield pauses and produces a value to the caller; the argument to the subsequent next(value) becomes the result of that yield expression.",
+    "explanation": "Generators support two-way communication: yield out, next(in)."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this generators example starting with `function* gen() {`, what is logged to the console?",
+    "codeSnippet": "function* gen() {\n  const a = yield 1;\n  const b = yield a + 2;\n  return b;\n}\nconst g = gen();\nconsole.log(g.next());\nconsole.log(g.next(10));\nconsole.log(g.next(20));",
+    "correctAnswer": "{ value: 1, done: false }\n{ value: 12, done: false }\n{ value: 20, done: true }",
+    "explanation": "First next starts until yield 1; next(10) assigns 10 to a and yields 12; next(20) assigns 20 to b and completes with return value 20."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does this infinite loop hang, and how should consumers pull values safely?",
+    "codeSnippet": "function* forever() {\n  let i = 0;\n  while (true) yield i++;\n}\nconst values = [...forever()];",
+    "correctAnswer": "Spread/for...of run until done:true; an infinite generator never finishes. Consume with a bounded loop or take N calls to next() instead of spreading.",
+    "explanation": "Eager consumption of an infinite generator never terminates."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a generator function* idMaker() that yields 1, then 2, then 3, then returns 'done'.",
+    "codeSnippet": "// function* idMaker() { ... }",
+    "correctAnswer": "function* idMaker() {\n  yield 1;\n  yield 2;\n  yield 3;\n  return 'done';\n}",
+    "explanation": "Each yield produces { value, done: false }; return produces the final { value: 'done', done: true } (ignored by for...of)."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which statement about Map is correct?",
+    "options": [
+      "Keys must be strings or symbols only",
+      "Any value can be a key, and insertion order is preserved",
+      "Map always stringifies keys like plain objects",
+      "Map does not expose size"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Map allows object/function/primitive keys (by reference for objects) and iterates in insertion order; .size is available."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why can Map use an object as a key more reliably than a plain object using that object coerced to a string?",
+    "correctAnswer": "Map compares keys by SameValueZero / reference identity for objects, whereas object property keys are strings/symbols (objects become \"[object Object]\").",
+    "explanation": "Distinct objects remain distinct Map keys; they collide if used as object property names via coercion."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this map example starting with `const m = new Map();`, what is logged to the console?",
+    "codeSnippet": "const m = new Map();\nconst k = { id: 1 };\nm.set(k, 'A');\nm.set({ id: 1 }, 'B');\nm.set(k, 'C');\nconsole.log(m.size);\nconsole.log(m.get(k));\nconsole.log([...m.values()]);",
+    "correctAnswer": "2\nC\nC B",
+    "explanation": "The second set uses a different object key; resetting k overwrites 'A' with 'C'; size is 2; values iterate in insertion order."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This code unexpectedly keeps growing. What is wrong with using Map this way for request metadata keyed by body objects created per call?",
+    "codeSnippet": "const cache = new Map();\nfunction remember(body, meta) {\n  cache.set(body, meta);\n}",
+    "correctAnswer": "Each new body object is a distinct key, so entries accumulate and strongly retain keys/values. Prefer a stable key, WeakMap if keys are objects you want GC'd, or explicit deletion.",
+    "explanation": "Map holds strong references; ephemeral object keys prevent GC and inflate the Map."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function countChars(str) that returns a Map from each character to its occurrence count, preserving first-seen insertion order.",
+    "codeSnippet": "// countChars(str: string): Map<string, number>",
+    "correctAnswer": "function countChars(str) {\n  const map = new Map();\n  for (const ch of str) {\n    map.set(ch, (map.get(ch) || 0) + 1);\n  }\n  return map;\n}",
+    "explanation": "Map.set on an existing key updates in place without changing insertion order of that key."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does Set store?",
+    "options": [
+      "Unique values using SameValueZero equality, in insertion order",
+      "Key-value pairs like Map",
+      "Only object references",
+      "Duplicate values allowed if types differ"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Set keeps unique values (NaN equals NaN for membership); iteration follows insertion order."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Does new Set([NaN, NaN]).size equal 1 or 2? Why?",
+    "correctAnswer": "1, because Set uses SameValueZero, under which NaN is considered equal to NaN.",
+    "explanation": "Unlike ===, SameValueZero treats NaN as equal to itself for Map/Set membership."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this set example starting with `const s = new Set([1, 2, 2, 3]);`, what is logged to the console?",
+    "codeSnippet": "const s = new Set([1, 2, 2, 3]);\ns.add(3);\ns.add(4);\nconsole.log(s.size);\nconsole.log([...s]);\nconsole.log(s.has(2));",
+    "correctAnswer": "4\n[1, 2, 3, 4]\ntrue",
+    "explanation": "Duplicates are ignored; size reflects unique values; spread preserves insertion order."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does uniqueObjects not deduplicate these 'same-looking' objects?",
+    "codeSnippet": "const uniqueObjects = new Set();\nuniqueObjects.add({ id: 1 });\nuniqueObjects.add({ id: 1 });\nconsole.log(uniqueObjects.size);",
+    "correctAnswer": "Objects are compared by reference; two literals are different identities, so both remain. Dedupe by a primitive key or a canonicalized representation.",
+    "explanation": "Set uniqueness for objects is reference-based, not deep equality."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function intersection(a, b) that returns a new Set of values present in both Set a and Set b.",
+    "codeSnippet": "// intersection(a: Set, b: Set): Set",
+    "correctAnswer": "function intersection(a, b) {\n  const result = new Set();\n  for (const value of a) {\n    if (b.has(value)) result.add(value);\n  }\n  return result;\n}",
+    "explanation": "Iterate the smaller set when optimizing; has is O(1) average for membership checks."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which constraint is true for WeakMap keys?",
+    "options": [
+      "Keys may be any primitive or object",
+      "Keys must be strings or symbols only",
+      "Keys must be objects (primitives are invalid)",
+      "Keys must be numbers"
+    ],
+    "correctAnswer": "2",
+    "explanation": "WeakMap keys must be objects (including functions); primitives throw TypeError. Values may be any type."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why is WeakMap not iterable and why does it lack a size property?",
+    "correctAnswer": "Because keys are held weakly, the set of entries is nondeterministic under GC; enumeration/size would be unreliable, so the API omits them.",
+    "explanation": "Weak references allow keys to be collected; iteration would expose GC timing."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "What happens when this runs? Describe the outcome of the set call and whether wm.has(1) is reachable.",
+    "codeSnippet": "const wm = new WeakMap();\nwm.set(1, 'nope');",
+    "correctAnswer": "TypeError: Invalid value used as weak map key (primitives cannot be WeakMap keys).",
+    "explanation": "WeakMap.set requires an object key; number 1 is rejected."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Private metadata on DOM nodes was stored in a Map and leaked memory after nodes were removed. How should this be redesigned with WeakMap?",
+    "codeSnippet": "const meta = new Map();\nfunction track(node, info) {\n  meta.set(node, info);\n}",
+    "correctAnswer": "Use const meta = new WeakMap(); track remains meta.set(node, info). When node becomes unreachable elsewhere, the entry can be garbage-collected.",
+    "explanation": "WeakMap does not prevent GC of its keys; Map strongly retains them."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Implement a createPrivateStore() that returns { set(obj, value), get(obj) } backed by a WeakMap for per-object private data.",
+    "codeSnippet": "// createPrivateStore(): { set, get }",
+    "correctAnswer": "function createPrivateStore() {\n  const wm = new WeakMap();\n  return {\n    set(obj, value) { wm.set(obj, value); },\n    get(obj) { return wm.get(obj); }\n  };\n}",
+    "explanation": "A closed-over WeakMap is a classic pattern for associating data without exposing it on the object or blocking GC."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What can a WeakSet contain?",
+    "options": [
+      "Only object values (no primitives), held weakly",
+      "Any primitives and objects",
+      "Key-value pairs",
+      "Strings only"
+    ],
+    "correctAnswer": "0",
+    "explanation": "WeakSet stores unique object references weakly; adding a primitive throws."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Name a practical use case for WeakSet compared to Set.",
+    "correctAnswer": "Marking objects as 'seen' or 'visited' (e.g., circular-structure guards) without preventing those objects from being garbage-collected.",
+    "explanation": "WeakSet membership does not strongly retain the object."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "For this weakset example starting with `const ws = new WeakSet();`, what is logged to the console?",
+    "codeSnippet": "const ws = new WeakSet();\nconst obj = {};\nws.add(obj);\nconsole.log(ws.has(obj));\nconsole.log(ws.has({}));",
+    "correctAnswer": "true\nfalse",
+    "explanation": "has checks reference identity; a new {} is a different object."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Why does this throw, and how do you store primitive tags instead?",
+    "codeSnippet": "const ws = new WeakSet();\nws.add('tagged');",
+    "correctAnswer": "WeakSet only accepts objects. Wrap primitives in objects, use a Set for primitives, or store tags on a WeakMap keyed by related objects.",
+    "explanation": "Weak collections require garbage-collectable object identity as keys/values."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function createCycleGuard() returning { enter(obj), leave(obj) } using WeakSet so recursive traversals can detect re-entering the same object.",
+    "codeSnippet": "// createCycleGuard(): { enter(obj): boolean, leave(obj): void }\n// enter returns false if obj was already present",
+    "correctAnswer": "function createCycleGuard() {\n  const seen = new WeakSet();\n  return {\n    enter(obj) {\n      if (seen.has(obj)) return false;\n      seen.add(obj);\n      return true;\n    },\n    leave(obj) {\n      seen.delete(obj);\n    }\n  };\n}",
+    "explanation": "enter/leave bracket traversal of a node; WeakSet avoids retaining the graph after traversal ends."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In JavaScript engines, when is an object generally eligible for reclamation?",
+    "options": [
+      "Immediately when any variable that once referenced it goes out of scope",
+      "When it becomes unreachable from roots (no live references via the reference graph)",
+      "Only when the programmer calls free()",
+      "Never for objects with methods"
+    ],
+    "correctAnswer": "1",
+    "explanation": "JS uses automatic memory management; reachability from roots (stack, globals, closures, etc.) determines liveness."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "How can a closure unintentionally retain memory?",
+    "correctAnswer": "A long-lived function may close over variables that reference large objects, keeping those objects reachable even if the rest of the scope is unused.",
+    "explanation": "Closures retain their lexical environment bindings, which can pin large graphs in memory."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "After disconnect(), can the large array referenced inside the listener become unreachable? Answer yes or no, with the key reason.",
+    "codeSnippet": "const listeners = new Set();\nfunction connect() {\n  const payload = new Array(1e5).fill(0);\n  const onEvent = () => payload.length;\n  listeners.add(onEvent);\n  return () => listeners.delete(onEvent);\n}\nconst disconnect = connect();\ndisconnect();",
+    "correctAnswer": "Yes — delete removes the only remaining reference to onEvent, so the closure and payload can become unreachable.",
+    "explanation": "Unregistering listeners is required so closures (and captured data) are no longer retained by long-lived collections."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "This module-level cache grows forever. Identify the memory-management issue and a fix.",
+    "codeSnippet": "const cache = {};\nexport function getUser(id) {\n  if (!cache[id]) {\n    cache[id] = fetchUser(id);\n  }\n  return cache[id];\n}",
+    "correctAnswer": "Unbounded strong cache retains every user forever. Fix with LRU eviction, TTL, size limit, or WeakRef/WeakMap when keys allow, and delete stale entries.",
+    "explanation": "Global/module caches are common leak sources without eviction policies."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function retainOnce(factory) that calls factory() once, caches the result in a local variable, and returns a getter; include a clear() method that nulls the cached value so it can become unreachable.",
+    "codeSnippet": "// retainOnce(factory) => { get(): any, clear(): void }",
+    "correctAnswer": "function retainOnce(factory) {\n  let value;\n  let ready = false;\n  return {\n    get() {\n      if (!ready) {\n        value = factory();\n        ready = true;\n      }\n      return value;\n    },\n    clear() {\n      value = undefined;\n      ready = false;\n    }\n  };\n}",
+    "explanation": "clear drops the strong reference so previously cached data can be garbage-collected if nothing else points to it."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Mark-and-sweep garbage collectors primarily reclaim objects that are:",
+    "options": [
+      "Older than a fixed number of milliseconds",
+      "Unreachable from GC roots after a mark phase",
+      "Stored in WeakMap values only",
+      "Named with temporary variable names"
+    ],
+    "correctAnswer": "1",
+    "explanation": "GC marks reachable objects from roots, then sweeps unmarked (unreachable) objects."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "SHORT_ANSWER",
+    "prompt": "Why can reference cycles between two objects still be collected by modern JS engines?",
+    "correctAnswer": "Because reachability-based collectors (mark-and-sweep) reclaim cycles that are not reachable from roots; reference counting alone would fail on cycles.",
+    "explanation": "JS engines do not rely solely on reference counting for heap objects."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "PRACTICE",
+    "format": "OUTPUT_PREDICTION",
+    "prompt": "After nulling root, which objects are eligible for GC? Answer with object names.",
+    "codeSnippet": "let root = { name: 'A' };\nconst B = { name: 'B' };\nroot.ref = B;\nB.ref = root;\nroot = null;",
+    "correctAnswer": "Both A and B (the cycle) are eligible if nothing else references them.",
+    "explanation": "Breaking the root reference makes the A↔B cycle unreachable despite mutual references."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "PRACTICE",
+    "format": "DEBUGGING",
+    "prompt": "Observers still fire after disconnect() because of a GC-related mistake. What retains the observer?",
+    "codeSnippet": "const observers = [];\nfunction subscribe(fn) {\n  observers.push(fn);\n  return () => {\n    /* forgot to remove */\n  };\n}\nfunction disconnect() {\n  // intended to drop listeners\n}",
+    "correctAnswer": "subscribers remain in the observers array, so their closures stay reachable. disconnect/unsubscribe must splice/filter them out (or clear the array).",
+    "explanation": "Event listener registries are classic retained-memory bugs; GC cannot collect reachable callbacks."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "PRACTICE",
+    "format": "CODE_WRITING",
+    "prompt": "Write a function linkCycle() that creates two objects referencing each other and returns a function unlink() that breaks both references so the pair can become unreachable when the caller drops its handles.",
+    "codeSnippet": "// linkCycle(): { a, b, unlink() }",
+    "correctAnswer": "function linkCycle() {\n  const a = { name: 'a' };\n  const b = { name: 'b' };\n  a.other = b;\n  b.other = a;\n  return {\n    a,\n    b,\n    unlink() {\n      a.other = null;\n      b.other = null;\n    }\n  };\n}",
+    "explanation": "unlink clears cross-references; once callers release a/b, nothing keeps the objects alive. (Cycles alone would also be collectible if unreachable, but clearing refs documents intent.)"
+  }
+]
