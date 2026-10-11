@@ -1,4 +1,4 @@
-# Current Step — Phase 2 Step 10 (Seed Questions into Neon)
+# Current Step — Phase 2 Complete (Steps 11–12 Production Verification)
 
 > Working record for the active step only.
 > Overall status: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
@@ -8,94 +8,75 @@
 
 **Phase:** 2 — Topics + Questions
 
-**Step:** 10 — Load questions through the seed process
+**Step:** 12 — Production smoke test (final Phase 2 step)
 
 ---
 
 ## 1. Objective
 
-Load the validated 260-question bank into Neon via `prisma/seed.ts`, reconcile obsolete prompt rows from pre-review seeds, and verify Topic → Question relationships against `questions.json`.
+Verify production deployment, bearer-token authentication, and the Phase 2 data/API flow on Vercel + Neon, then close Phase 2 when governing exit criteria are met.
 
-**Out of scope:** deployment, production smoke tests, schema/migration changes, question-content edits.
+Canonical order: [`docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order (1).md`](./docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order%20(1).md)
 
 ---
 
-## 2. Execution summary (verified)
+## 2. Prior step (Step 10) — recorded
 
-### Phase A — Backup
+- Commit on `master`: `aba4f9feaeaf9e317468d7944677df1a2e6dfc47`
+- Neon: 52 topics, 260 questions, 5 per topic
+- Nine obsolete questions replaced/removed after verification; seven content-only updates verified
+- No orphans; no duplicate `(topicId, prompt)` groups
+- Backup under `.local/` (gitignored)
 
-- Target confirmed Neon (`*.neon.tech` hostname only; credentials not logged).
-- Baseline before writes: topics **52**, questions **260**, 5/topic, 0 orphans, 0 duplicate prompts, SessionLog/Mistake **0**.
-- Backed up all **9** obsolete records to:
-  `.local/step10-backups/obsolete-questions-2026-10-11T16-40-47-638Z.json`
-  (directory ignored via `/.local/` in `.gitignore`; backup verified 9/9 IDs present).
+---
 
-### Phase B — Seed
-
-```bash
-npx prisma db seed
-```
-
-Result: `created=9, updated=7, skipped=244` (exit 0). Post-seed question count temporarily **269**.
-
-### Phase C — Pre-delete verification
-
-- Replacement questions vs JSON indexes 43, 87, 100, 101, 114, 141, 159, 198, 213: **9/9** match.
-- Content-only IDs updated in place: **7/7** match.
-- SessionLog/Mistake still 0.
-- All 9 obsolete IDs still present with expected topic slugs → safe to delete.
-
-### Phase D — Deletes
-
-Deleted exactly these IDs (each guarded by ID + topic slug; rowCount=1 each):
-
-| Topic | Deleted ID |
-|---|---|
-| `scope` | `cmuocsbrb002nfcuyy671eglu` |
-| `higher-order-functions` | `cmuocss0e003vfcuy6gsconaq` |
-| `this-keyword` | `cmuocsww60048fcuyfdpzg7en` |
-| `this-keyword` | `cmuocsxab0049fcuy0x8olix1` |
-| `closures` | `cmuoct26c004mfcuykt007syw` |
-| `web-apis` | `cmuoctcbs005dfcuyle0ghelg` |
-| `promises` | `cmuoctiza005vfcuyirup459l` |
-| `lexical-environment` | `cmuoctxbd006yfcuyp17eqmwy` |
-| `classes` | `cmuocu2tn007dfcuyn66yz5h0` |
-
-### Phase E — Final integrity
+## 3. Step 11 — Production deployment and authentication (verified)
 
 | Check | Result |
 |---|---|
-| Topics | 52 |
-| Questions | 260 |
-| Questions per topic | 5 exactly |
-| Every JSON `(topicSlug, prompt)` → one DB row | Pass |
-| Obsolete IDs / prompts remaining | 0 |
-| Orphans / duplicate prompts | 0 / 0 |
-| Content-only 7 still match JSON | Pass |
-| SessionLog / Mistake | 0 / 0 (unchanged) |
+| Vercel deployment | Ready (Production) |
+| Deployed commit | `aba4f9f` |
+| `GET /api/health` | `200` — `status: "ok"`, `dbConnected: true`, `topicCount: 52` |
+| `GET /api/topics` (no token) | `401 Unauthorized` |
+| `GET /api/topics` (invalid token) | `401 Unauthorized` |
+| `GET /api/topics` (valid bearer token) | `200 OK` |
 
-Seed was **not** re-run after cleanup.
+Bearer token was not written into documentation or logs.
 
 ---
 
-## 3. Checklist
+## 4. Step 12 — Production smoke test (verified)
 
-- [x] Preflight / backup
-- [x] `npx prisma db seed`
-- [x] Verify 9 replacements + 7 content updates
-- [x] Delete 9 obsolete IDs only
-- [x] Final integrity vs `questions.json`
-- [x] Mark Step 10 complete in tracker
-
-### Explicitly not done (later steps)
-
-- [ ] Step 11 — Deploy and verify authentication in production
-- [ ] Step 12 — Production smoke test
+| Check | Result |
+|---|---|
+| Production health endpoint | Pass (`200`, DB connected, `topicCount: 52`) |
+| Unauthenticated topics rejected | Pass (`401`) |
+| Authenticated topics returns real data | Pass (`200`, `status: "ok"`, `topics` array) |
+| Topic object fields | Present: `id`, `name`, `slug`, `area`, `category`, `status`, `intervalDays`, `nextRevisionDate`, `createdAt`, `updatedAt` |
+| Topics array length / unique slugs | **52 / 52** (read-only automated check against production response) |
+| Seeded questions + Topic relations | Established in Step 10 Neon verification (same DB reported by production health) |
+| Production Prisma/module errors | None observed (health + topics succeeded) |
 
 ---
 
-## 4. Next action
+## 5. Checklist
 
-**Phase 2 Step 11 — deploy and verify authentication in production** (then Step 12 smoke test).
+- [x] Step 10 — questions seeded and relationships verified
+- [x] Step 11 — production deploy + auth matrix
+- [x] Step 12 — production smoke test
+- [x] Phase 2 exit criteria satisfied (see tracker §4.6)
+- [x] Tracker updated for Phase 2 complete
 
-Do not treat local Neon seed success as production verification.
+---
+
+## 6. Next action
+
+**Phase 3 — Revision Scheduling** (defined in the Phase 2 development-order handoff and [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)):
+
+- Spaced repetition intervals 1/3/7/14/30
+- Due-today determination
+- Revision session flow, answer submission, confidence capture
+- Today’s Revision API + Angular screen
+- Initial dashboard data
+
+Do not begin Phase 3 implementation until the tracker active step is explicitly started.

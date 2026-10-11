@@ -11,11 +11,11 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | Phase 2 — Topics + Questions |
-| **Active step** | Step 11 — Deploy and verify authentication in production |
-| **Completed through** | Steps 1–10 (question bank seeded to Neon; Topic → Question relationships verified) |
-| **Next action** | Step 11 — production auth verification (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
-| **Phase 2 complete?** | **No** — production deploy/auth and smoke tests pending |
+| **Current phase** | Phase 3 — Revision Scheduling |
+| **Active step** | Phase 3 planning / start (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Completed through** | Phase 2 Steps 1–12 (topics/questions seeded; production auth + smoke verified) |
+| **Next action** | Begin Phase 3 — Revision Scheduling (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 
 ---
 
@@ -24,7 +24,7 @@
 | Phase | Objective | Status |
 |---|---|---|
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
-| **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | 🔵 In progress |
+| **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ⬜ Not started |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
@@ -83,9 +83,9 @@ Key locked rules (summary only):
 | 7 | Build `GET /api/topics` | Steps 5–6 | ✅ Complete |
 | 8 | Test `GET /api/topics` locally | Step 7 | ✅ Complete |
 | 9 | Generate the AI question bank | Steps 1–3; format locked | ✅ Complete — see below |
-| 10 | Load questions through the seed process | Step 9 complete | ✅ Complete — see below |
-| 11 | Deploy and verify authentication in production | Steps 7–8; env configured | ⬜ Pending |
-| 12 | Production smoke test (full Phase 2 flow) | Steps 9–11 | ⬜ Pending |
+| 10 | Load questions through the seed process | Step 9 complete | ✅ Complete — see §4.4b |
+| 11 | Deploy and verify authentication in production | Steps 7–8; env configured | ✅ Complete — see §4.4c |
+| 12 | Production smoke test (full Phase 2 flow) | Steps 9–11 | ✅ Complete — see §4.4d |
 
 ### 4.4 Step 9 status (historical)
 
@@ -115,7 +115,32 @@ Key locked rules (summary only):
 | Final counts | 52 topics, 260 questions, 5/topic |
 | JSON ↔ DB parity | Every `(topicSlug, prompt)` maps 1:1; 0 content mismatches |
 | Backup of obsolete rows | `.local/step10-backups/obsolete-questions-2026-10-11T16-40-47-638Z.json` |
-| Production deploy/auth | Not part of Step 10 |
+| Commit on `master` | `aba4f9feaeaf9e317468d7944677df1a2e6dfc47` |
+
+### 4.4c Step 11 status (production deploy + auth)
+
+**Complete.**
+
+| Fact | Evidence |
+|---|---|
+| Vercel Production deployment | Ready; commit `aba4f9f` |
+| `GET /api/health` | `200` — `status: "ok"`, `dbConnected: true`, `topicCount: 52` |
+| Topics without token | `401` |
+| Topics with invalid token | `401` |
+| Topics with valid bearer token | `200` + topic payload |
+
+### 4.4d Step 12 status (production smoke test)
+
+**Complete.**
+
+| Fact | Evidence |
+|---|---|
+| Health path intact | Production `/api/health` `200` with DB connected |
+| Auth gate | Missing/invalid token → `401`; valid → `200` |
+| Real Topic data | Response `status: "ok"` with `topics` array |
+| Topic fields | `id`, `name`, `slug`, `area`, `category`, `status`, `intervalDays`, `nextRevisionDate`, `createdAt`, `updatedAt` |
+| Topic count / unique slugs | **52 / 52** (read-only production response check) |
+| Questions in Neon + relations | Verified in Step 10; production health reports `topicCount: 52` against the same data store |
 
 ### 4.5 Verified work (Steps 1–8 highlights)
 
@@ -124,28 +149,32 @@ Key locked rules (summary only):
 - `prisma/seed.ts` + `prisma.config.ts` seed via `tsx`.
 - Local bearer auth; `/api/health` local OK (`topicCount: 52`); health remains unauthenticated.
 - Local `GET /api/topics`: missing/invalid → `401`; valid → `200` with 52 topics.
-- Production `/api/topics` auth/deploy **not** verified.
+- Production deploy/auth verified in Steps 11–12 (§4.4c–4.4d).
 
 ### 4.6 Phase 2 completion checklist
+
+Aligned with governing Phase 2 development-order exit criteria:
 
 - [x] `Topic` / `Question` models finalized; migrations applied as needed
 - [x] Question-bank format finalized
 - [x] Initial topic roadmap created
 - [x] `prisma/seed.ts` implemented
 - [x] Topics seeded into Neon
-- [x] AI question bank generated **and content ready for seeding** (Step 9 complete)
+- [x] AI question bank generated
 - [x] Questions seeded into Neon (Step 10)
 - [x] Topic → Question relationships verified (Step 10)
 - [x] Bearer-token auth verified locally
 - [x] `GET /api/topics` implemented and verified locally
-- [ ] `GET /api/topics` deployed
-- [ ] Production authentication verified
-- [ ] Production API returns real Topic data
-- [x] Neon DB contains real Topic/Question data (local/intended Neon; production deploy path still pending Steps 11–12)
-- [x] `/api/health` still functional (local verified post-auth; prod health verified in Phase 1)
-- [ ] No unresolved Phase 2 blockers
+- [x] `GET /api/topics` deployed (Step 11)
+- [x] Production authentication verified (Step 11)
+- [x] Production API returns real Topic data (Steps 11–12)
+- [x] Production / Neon DB contains real Topic/Question data
+- [x] Phase 1 `/api/health` remains functional in production
+- [x] No unresolved Phase 2 data/API blockers
 
-### 4.7 Phase 3 handoff (when Phase 2 completes)
+### 4.7 Phase 3 handoff
+
+Phase 2 is complete. Next: **Phase 3 — Revision Scheduling**.
 
 Spaced repetition (1/3/7/14/30), due-today determination, revision session flow, answer submission, confidence capture, next-revision updates, Today’s Revision API + Angular screen, initial dashboard data—built on finalized Topic/Question data and authenticated API infrastructure.
 
