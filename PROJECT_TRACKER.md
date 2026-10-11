@@ -1,0 +1,182 @@
+# JavaScript Fluency System — Project Tracker
+
+> Authoritative progress tracker.
+> Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
+> Active step detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
+> Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
+
+---
+
+## 1. Current snapshot
+
+| Field | Value |
+|---|---|
+| **Current phase** | Phase 2 — Topics + Questions |
+| **Active step** | Step 11 — Deploy and verify authentication in production |
+| **Completed through** | Steps 1–10 (question bank seeded to Neon; Topic → Question relationships verified) |
+| **Next action** | Step 11 — production auth verification (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Phase 2 complete?** | **No** — production deploy/auth and smoke tests pending |
+
+---
+
+## 2. Phase overview
+
+| Phase | Objective | Status |
+|---|---|---|
+| **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
+| **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | 🔵 In progress |
+| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ⬜ Not started |
+| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
+| **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
+| **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
+| **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
+
+Phase 1 product wording in the original website spec (“static learning dashboard”) is superseded for tracking by the skeleton/infra definition above; later phase intents align with the product specification.
+
+---
+
+## 3. Phase 1 — summary (complete)
+
+Verified historically (see archived execution history):
+
+- Single-user + free-tier stack locked; Prisma v7; Neon migration applied.
+- Repo structure: Angular features, `api/` serverless routes, `shared-types/`, `prisma/`.
+- Production deploy at `js-fluency-system.vercel.app`; `/api/health` verified in production.
+- ESM import-extension production bug fixed by removing `"type": "module"` from `package.json`.
+
+Archive: [`docs/archive/JavaScript_Fluency_System_Execution_History_Updated_Phase2_Step8.md`](./docs/archive/JavaScript_Fluency_System_Execution_History_Updated_Phase2_Step8.md)
+
+---
+
+## 4. Phase 2 — Topics + Questions
+
+### 4.1 Objective
+
+Establish initial learning data and the first authenticated API flow so Phase 3 can build scheduling on real topics/questions.
+
+Canonical plan source (archived):
+[`docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order (1).md`](./docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order%20(1).md)
+
+### 4.2 Locked question-bank contract
+
+Authoritative format: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
+
+Key locked rules (summary only):
+
+- Root: top-level JSON array in `prisma/seed-data/questions.json`
+- Topic link: `topicSlug` → `topics.json` slug
+- No `id` / `topicId` / `difficulty` / `hints` in JSON
+- Fields: `sessionType`, `format`, `prompt`, optional `options`, `correctAnswer`, `explanation`, `codeSnippet`
+- MCQ: `options` string array; `correctAnswer` zero-based index as string
+- Coverage minimum: **5 questions per topic** (260 for 52 topics)
+
+### 4.3 Execution order and status
+
+| # | Step | Depends on | Status |
+|---|---|---|---|
+| 1 | Finalize `Topic` and `Question` Prisma models | Phase 1 | ✅ Complete |
+| 2 | Finalize question-bank format (JSON + `seed.ts`) | Step 1 | ✅ Complete |
+| 3 | Build topic roadmap seed data (`topics.json`) | Spec roadmap + Step 1 | ✅ Complete |
+| 4 | Implement `prisma/seed.ts` | Steps 2–3 | ✅ Complete |
+| 5 | Seed and verify Neon (topics) | Step 4 | ✅ Complete |
+| 6 | Verify bearer-token authentication | `api/_lib/auth.ts` | ✅ Complete |
+| 7 | Build `GET /api/topics` | Steps 5–6 | ✅ Complete |
+| 8 | Test `GET /api/topics` locally | Step 7 | ✅ Complete |
+| 9 | Generate the AI question bank | Steps 1–3; format locked | ✅ Complete — see below |
+| 10 | Load questions through the seed process | Step 9 complete | ✅ Complete — see below |
+| 11 | Deploy and verify authentication in production | Steps 7–8; env configured | ⬜ Pending |
+| 12 | Production smoke test (full Phase 2 flow) | Steps 9–11 | ⬜ Pending |
+
+### 4.4 Step 9 status (historical)
+
+**Complete.** Question bank was contract-validated and content-reviewed (Steps 9.1–9.5). Seeding into Neon and Topic → Question verification were completed in **Step 10** (see §4.4b).
+
+| Fact | Evidence |
+|---|---|
+| `questions.json` exists with **260** questions | Repo file count |
+| All **52** topics have ≥5 questions | Repo validation |
+| Category sizes: 10 / 15 / 13 / 14 topics; 50 / 75 / 65 / 70 questions | `topics.json` + bank recount |
+| Fundamentals content reviewed | Step 9.1 |
+| Core JavaScript content reviewed | Step 9.2 |
+| Asynchronous JavaScript content reviewed | Step 9.3 |
+| Advanced JavaScript content reviewed | Step 9.4 |
+| Final cross-topic audit | Step 9.5 complete (3 redundancy differentiations applied) |
+| Contract / integrity validation | Pass — 0 issues; no exact duplicate prompts |
+| Neon seeding / DB relationships | Out of scope for Step 9 — completed in Step 10 (§4.4b) |
+
+### 4.4b Step 10 status (detail in CURRENT_STEP)
+
+**Complete.** Neon synchronized with validated `questions.json`.
+
+| Fact | Evidence |
+|---|---|
+| Seed command | `npx prisma db seed` → `created=9, updated=7, skipped=244` |
+| Obsolete rows removed | 9 exact IDs deleted after replacement verification |
+| Final counts | 52 topics, 260 questions, 5/topic |
+| JSON ↔ DB parity | Every `(topicSlug, prompt)` maps 1:1; 0 content mismatches |
+| Backup of obsolete rows | `.local/step10-backups/obsolete-questions-2026-10-11T16-40-47-638Z.json` |
+| Production deploy/auth | Not part of Step 10 |
+
+### 4.5 Verified work (Steps 1–8 highlights)
+
+- Models finalized; `Question.codeSnippet` nullable; migrations applied.
+- `topics.json`: 52 topics, unique slugs; seeded to Neon; idempotent re-seed verified.
+- `prisma/seed.ts` + `prisma.config.ts` seed via `tsx`.
+- Local bearer auth; `/api/health` local OK (`topicCount: 52`); health remains unauthenticated.
+- Local `GET /api/topics`: missing/invalid → `401`; valid → `200` with 52 topics.
+- Production `/api/topics` auth/deploy **not** verified.
+
+### 4.6 Phase 2 completion checklist
+
+- [x] `Topic` / `Question` models finalized; migrations applied as needed
+- [x] Question-bank format finalized
+- [x] Initial topic roadmap created
+- [x] `prisma/seed.ts` implemented
+- [x] Topics seeded into Neon
+- [x] AI question bank generated **and content ready for seeding** (Step 9 complete)
+- [x] Questions seeded into Neon (Step 10)
+- [x] Topic → Question relationships verified (Step 10)
+- [x] Bearer-token auth verified locally
+- [x] `GET /api/topics` implemented and verified locally
+- [ ] `GET /api/topics` deployed
+- [ ] Production authentication verified
+- [ ] Production API returns real Topic data
+- [x] Neon DB contains real Topic/Question data (local/intended Neon; production deploy path still pending Steps 11–12)
+- [x] `/api/health` still functional (local verified post-auth; prod health verified in Phase 1)
+- [ ] No unresolved Phase 2 blockers
+
+### 4.7 Phase 3 handoff (when Phase 2 completes)
+
+Spaced repetition (1/3/7/14/30), due-today determination, revision session flow, answer submission, confidence capture, next-revision updates, Today’s Revision API + Angular screen, initial dashboard data—built on finalized Topic/Question data and authenticated API infrastructure.
+
+---
+
+## 5. Step-execution rules
+
+1. Read [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) and this tracker before Phase 2 changes.
+2. Do not skip the execution order without a documented technical reason.
+3. Do not mark a step complete from code creation alone—verify behavior with evidence.
+4. Prefer minimal scope; reuse existing conventions.
+5. Prefer reproducible seeds over manual DB edits.
+6. Keep seed content separate from loader logic.
+7. Never hard-code or expose secrets (especially bearer tokens).
+8. Test authenticated APIs with missing, invalid, and valid tokens.
+9. Test production separately from local.
+10. Do not regenerate/redesign Prisma schema without checking schema + specification.
+11. Do not generate question content against an unlocked schema.
+12. Preserve single-user architecture unless the specification changes.
+13. After each verified decision or step, update this tracker and [`CURRENT_STEP.md`](./CURRENT_STEP.md)—do not rely on chat history.
+
+---
+
+## 6. Important links
+
+| Resource | Path |
+|---|---|
+| Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
+| Current step | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
+| Question-bank contract | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) |
+| Topics seed | [`prisma/seed-data/topics.json`](./prisma/seed-data/topics.json) |
+| Questions seed | [`prisma/seed-data/questions.json`](./prisma/seed-data/questions.json) |
+| Archived sources | [`docs/archive/`](./docs/archive/) |

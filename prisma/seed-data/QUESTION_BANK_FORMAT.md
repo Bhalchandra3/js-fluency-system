@@ -7,9 +7,10 @@ It does **not** require schema changes.
 
 Related files:
 
-- Content file (created in Step 9): `prisma/seed-data/questions.json`
+- Content file: `prisma/seed-data/questions.json`
 - Topic references resolve against: `prisma/seed-data/topics.json`
-- Future loader (Step 10): `prisma/seed.ts`
+- Seed loader: `prisma/seed.ts`
+- Progress tracking: `PROJECT_TRACKER.md`, `CURRENT_STEP.md`
 
 ---
 
@@ -255,5 +256,5 @@ Future Step 10 seed logic MUST:
 ## 11. Status
 
 - Contract status: **documented and locked for Phase 2 Step 9 generation**
-- `questions.json`: **not created yet** (created in Step 9)
+- `questions.json`: **exists** at `prisma/seed-data/questions.json` (content generation/review tracked in `CURRENT_STEP.md` / `PROJECT_TRACKER.md`)
 - Schema changes required: **none**

@@ -1,59 +1,51 @@
-# JsFluencySystem
+# JavaScript Fluency System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.26.
+Personal JavaScript revision and practice app (Angular + Vercel serverless API + Prisma/Neon). Goal: low-friction daily study toward job-ready full-stack fluency.
 
-## Development server
+## Documentation
 
-To start a local development server, run:
+| Document | Purpose |
+|---|---|
+| [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) | Product requirements, architecture, constraints |
+| [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Phases, steps, status, next action |
+| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Active step checklist and handoff |
+| [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook |
+| [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Locked question-bank JSON contract |
+
+Archived pre-consolidation sources: [`docs/archive/`](./docs/archive/).
+
+## Quick start
+
+Prefer the full local API + frontend workflow:
+
+```bash
+npm install
+npx prisma generate
+npx vercel dev
+```
+
+App is normally available at `http://localhost:3000`. See [`LOCAL_README.md`](./LOCAL_README.md) for Prisma Studio, migrations, seeding, and related commands.
+
+Angular-only frontend (without the Vercel API):
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Useful commands
 
 ```bash
 ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
 ng test
+npx prisma studio
+npx prisma db seed
 ```
 
-## Running end-to-end tests
+## Stack (summary)
 
-For end-to-end (e2e) testing, run:
+- Frontend: Angular + TypeScript + SCSS
+- API: Vercel serverless functions
+- Database: Neon PostgreSQL via Prisma
+- Auth: single bearer token (server env)
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Details: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md).

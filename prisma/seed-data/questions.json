@@ -431,10 +431,10 @@
     "topicSlug": "scope",
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
-    "prompt": "This code intends each button handler to log its own index 0,1,2 but all log 3. Fix the loop binding issue (assume buttons is a NodeList/array of 3 elements in a browser-like environment, or treat buttons[i].onClick as assigning a function).",
-    "codeSnippet": "for (var i = 0; i < 3; i++) {\n  buttons[i].onClick = function () {\n    console.log(i);\n  };\n}",
-    "correctAnswer": "Use let i in the for loop (for (let i = 0; i < 3; i++)), or capture with an IIFE/const index = i inside the loop, so each handler closes over a distinct binding.",
-    "explanation": "var i is one function-scoped binding shared by all handlers; after the loop it is 3. let creates a new binding per iteration, so each closure sees the correct index."
+    "prompt": "This code intends each stored function to log its own index 0, 1, or 2, but every function logs 3. Fix the loop binding issue.",
+    "codeSnippet": "const handlers = [];\nfor (var i = 0; i < 3; i++) {\n  handlers.push(function () {\n    console.log(i);\n  });\n}\nhandlers[0]();\nhandlers[1]();\nhandlers[2]();",
+    "correctAnswer": "Use let i in the for loop (for (let i = 0; i < 3; i++)), or capture with an IIFE / const index = i inside the loop, so each function closes over a distinct binding.",
+    "explanation": "var i is one function-scoped binding shared by all closures; after the loop it is 3. let creates a new binding per iteration, so each function sees the correct index."
   },
   {
     "topicSlug": "scope",
@@ -687,8 +687,8 @@
     "format": "DEBUGGING",
     "prompt": "This should swap x and y. Fix the bug.",
     "codeSnippet": "let x = 1;\nlet y = 2;\n[x, y] = x, y;",
-    "correctAnswer": "let x = 1;\nlet y = 2;\n[x, y] = [y, x];",
-    "explanation": "The buggy line is parsed as ([x, y] = x), y due to comma-operator precedence, so it does not swap. Assigning from [y, x] correctly swaps both values."
+    "correctAnswer": "The line parses as ([x, y] = x), y because of the comma operator, so destructuring tries to iterate the number x and throws TypeError. Fix: [x, y] = [y, x];",
+    "explanation": "Without an array on the right-hand side, the comma operator makes the destructuring RHS just x (a number), which is not iterable. Assigning from [y, x] swaps both values correctly."
   },
   {
     "topicSlug": "spread",
@@ -864,10 +864,10 @@
     "topicSlug": "higher-order-functions",
     "sessionType": "PRACTICE",
     "format": "CODE_WRITING",
-    "prompt": "Write createMultiplier(factor) that returns a function multiplying its argument by factor.",
-    "codeSnippet": "function createMultiplier(factor) {\n  // your code\n}",
-    "correctAnswer": "function createMultiplier(factor) {\n  return function (n) {\n    return n * factor;\n  };\n}",
-    "explanation": "Returning an inner function that closes over factor makes createMultiplier a higher-order factory for specialized multipliers."
+    "prompt": "Write withMapper(transform) that returns a function which takes an array and returns a new array by mapping each element with transform.",
+    "codeSnippet": "function withMapper(transform) {\n  // your code\n}",
+    "correctAnswer": "function withMapper(transform) {\n  return function (items) {\n    return items.map(transform);\n  };\n}",
+    "explanation": "withMapper both accepts a function and returns a function — classic higher-order composition. The returned mapper applies the captured transform to each array element."
   },
   {
     "topicSlug": "higher-order-functions",
@@ -882,9 +882,9 @@
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
     "prompt": "applyAll should call every function in fns with value and return an array of results. Fix it.",
-    "codeSnippet": "function applyAll(fns, value) {\n  return fns.map(fn);\n}",
+    "codeSnippet": "function applyAll(fns, value) {\n  return fns.map((fn) => fn);\n}",
     "correctAnswer": "function applyAll(fns, value) {\n  return fns.map((fn) => fn(value));\n}",
-    "explanation": "map(fn) passes each function as the element to map's callback incorrectly and does not invoke with value. Map over fns and call each with value."
+    "explanation": "Mapping with (fn) => fn returns each function unchanged and never calls it with value. Invoke each function as fn(value) to collect the results."
   },
   {
     "topicSlug": "array-methods",
@@ -988,24 +988,24 @@
     "topicSlug": "this-keyword",
     "sessionType": "REVISION",
     "format": "MULTIPLE_CHOICE",
-    "prompt": "In a normal function call foo() (non-strict, browser global), what is this?",
+    "prompt": "In a normal (non-method) function call foo() in non-strict mode, what is this?",
     "options": [
       "undefined",
-      "the global object (e.g. window)",
+      "the global object",
       "foo itself",
       "null"
     ],
     "correctAnswer": "1",
-    "explanation": "For a plain function call in non-strict mode, this defaults to the global object. In strict mode it would be undefined."
+    "explanation": "For a plain function call in non-strict mode, this defaults to the global object. In strict mode (including ES modules), this is undefined for the same call style."
   },
   {
     "topicSlug": "this-keyword",
     "sessionType": "PRACTICE",
     "format": "OUTPUT_PREDICTION",
-    "prompt": "For this this keyword example starting with `const obj = {`, what is logged to the console?",
-    "codeSnippet": "const obj = {\n  n: 1,\n  getN() {\n    return this.n;\n  },\n};\nconst fn = obj.getN;\nconsole.log(obj.getN(), fn());",
-    "correctAnswer": "1 undefined",
-    "explanation": "Method call obj.getN() sets this to obj. Extracting fn loses that binding, so this is not obj (undefined.n in strict modules / common runtimes yields undefined for the second log)."
+    "prompt": "For this this-keyword example (strict mode), what is logged to the console?",
+    "codeSnippet": "\"use strict\";\nconst obj = {\n  n: 1,\n  getN() {\n    return this.n;\n  },\n};\nconsole.log(obj.getN());\nconst fn = obj.getN;\ntry {\n  console.log(fn());\n} catch (err) {\n  console.log(err.name);\n}",
+    "correctAnswer": "1\nTypeError",
+    "explanation": "Method call obj.getN() sets this to obj, so 1 is logged. Assigning fn = obj.getN loses the method receiver; in strict mode fn() has this === undefined, so reading this.n throws TypeError."
   },
   {
     "topicSlug": "this-keyword",
@@ -1126,10 +1126,10 @@
     "topicSlug": "closures",
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
-    "prompt": "Each function in funcs should log its own index 0, 1, 2. Fix the closure bug.",
-    "codeSnippet": "const funcs = [];\nfor (var i = 0; i < 3; i++) {\n  funcs.push(function () {\n    console.log(i);\n  });\n}\nfuncs.forEach((f) => f());",
-    "correctAnswer": "const funcs = [];\nfor (let i = 0; i < 3; i++) {\n  funcs.push(function () {\n    console.log(i);\n  });\n}\nfuncs.forEach((f) => f());",
-    "explanation": "let creates a new binding per iteration, so each function closes over a different i (0, 1, 2) instead of one shared var."
+    "prompt": "makeCounter should give each caller an independent counter, but a and b share one count (logs 1, then 2, then 3). Fix the shared-state bug.",
+    "codeSnippet": "let count = 0;\nfunction makeCounter() {\n  return function () {\n    count += 1;\n    return count;\n  };\n}\nconst a = makeCounter();\nconst b = makeCounter();\nconsole.log(a(), a(), b());",
+    "correctAnswer": "function makeCounter() {\n  let count = 0;\n  return function () {\n    count += 1;\n    return count;\n  };\n}\nconst a = makeCounter();\nconst b = makeCounter();\nconsole.log(a(), a(), b()); // 1 2 1",
+    "explanation": "count was declared outside makeCounter, so every returned function closes over the same binding. Moving let count inside makeCounter gives each invocation its own enclosed state."
   },
   {
     "topicSlug": "modules",
@@ -1266,8 +1266,8 @@
     "format": "DEBUGGING",
     "prompt": "This code was meant to log 'done' after 'work' without blocking, but 'done' still waits for the heavy loop. What is wrong and how would you fix the intent conceptually?",
     "codeSnippet": "function heavy() {\n  let x = 0;\n  for (let i = 0; i < 1e9; i++) x++;\n  console.log('work');\n}\nheavy();\nconsole.log('done');",
-    "correctAnswer": "heavy() is fully synchronous, so done cannot run until the loop completes. To avoid blocking the main thread you must break work into async chunks (e.g. setTimeout/requestAnimationFrame scheduling) or move it off-thread (Web Worker)—not merely call a sync function first.",
-    "explanation": "Calling a sync CPU-heavy function is still blocking. setTimeout after heavy() would not help either—the timer callback still waits for heavy() to finish. Only making the work itself asynchronous or off-main-thread fixes the freeze."
+    "correctAnswer": "heavy() is fully synchronous, so done cannot run until the loop completes. To avoid blocking the JS thread, break the work into async chunks (e.g. schedule slices with setTimeout) or move it off the main thread where a Worker API is available—not merely call a sync function first.",
+    "explanation": "Calling a sync CPU-heavy function is still blocking. Scheduling setTimeout after heavy() does not help—the timer callback still waits for heavy() to finish. Only making the work itself asynchronous or off-thread fixes the freeze."
   },
   {
     "topicSlug": "sync-vs-async",
@@ -1320,7 +1320,7 @@
     "format": "DEBUGGING",
     "prompt": "Why does this recurse forever and crash? Fix the logic so it stops correctly.",
     "codeSnippet": "function countdown(n) {\n  console.log(n);\n  countdown(n - 1);\n}\ncountdown(3);",
-    "correctAnswer": "Add a base case, e.g. if (n < 0) return; before the recursive call (or stop when n === 0 after logging).",
+    "correctAnswer": "Add a base case that stops recursion, e.g. function countdown(n) { if (n < 0) return; console.log(n); countdown(n - 1); } which logs 3..0, or after logging use if (n === 0) return; before the recursive call.",
     "explanation": "Without a terminating condition, countdown keeps calling itself and the call stack grows until it overflows."
   },
   {
@@ -1404,10 +1404,10 @@
     "topicSlug": "web-apis",
     "sessionType": "PRACTICE",
     "format": "OUTPUT_PREDICTION",
-    "prompt": "What logs, and in what order?",
-    "codeSnippet": "console.log('start');\nsetTimeout(() => console.log('timeout'), 0);\nconsole.log('end');",
-    "correctAnswer": "start\nend\ntimeout",
-    "explanation": "setTimeout hands the delay to the Web API timer; the callback becomes a macrotask after the delay and only runs after sync code finishes."
+    "prompt": "What logs, and in what order? (Focus on how clearTimeout interacts with the host timer API.)",
+    "codeSnippet": "console.log('start');\nconst id = setTimeout(() => console.log('cancelled'), 0);\nclearTimeout(id);\nsetTimeout(() => console.log('kept'), 0);\nconsole.log('end');",
+    "correctAnswer": "start\nend\nkept",
+    "explanation": "Both timers are registered with the host/Web API. clearTimeout cancels the first callback so it never queues. Sync logs run next, then the remaining timer macrotask logs kept."
   },
   {
     "topicSlug": "web-apis",
@@ -1582,7 +1582,7 @@
     "topicSlug": "promises",
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
-    "prompt": "This catch never runs for the thrown error. Why, and how do you fix it?",
+    "prompt": "This rejection goes unhandled. Why, and how do you fix it?",
     "codeSnippet": "new Promise(() => {\n  throw new Error('boom');\n}).then(() => {\n  console.log('ok');\n});\n// missing handling — unhandled rejection",
     "correctAnswer": "Attach .catch(...) (or a rejecting handler) on the promise chain. The throw inside the executor rejects the promise, but without a rejection handler it becomes an unhandled rejection.",
     "explanation": "Executor throws reject the promise. You still need catch/then-onRejected or await try/catch in an async function to handle it."
@@ -1975,7 +1975,7 @@
     "topicSlug": "lexical-environment",
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
-    "prompt": "Why does this catch block throw when logging e after the catch?",
+    "prompt": "Why does console.log(e) after the catch throw ReferenceError?",
     "codeSnippet": "try {\n  throw new Error('boom');\n} catch (e) {\n  // handled\n}\nconsole.log(e);",
     "correctAnswer": "The catch binding e exists only in the catch block's lexical environment; outside that block e is not in scope.",
     "explanation": "catch (e) creates a block-scoped binding; it is not part of the surrounding function/global environment."
@@ -2122,10 +2122,10 @@
     "topicSlug": "classes",
     "sessionType": "PRACTICE",
     "format": "DEBUGGING",
-    "prompt": "Why does calling Point.distance without new or as a method fail / behave incorrectly here?",
-    "codeSnippet": "class Point {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n  distance() {\n    return Math.hypot(this.x, this.y);\n  }\n}\nconst d = Point.distance;\nconsole.log(d());",
-    "correctAnswer": "Extracting distance loses the receiver; this is undefined in strict class bodies, so this.x throws TypeError. Call as instance.distance() or bind the instance.",
-    "explanation": "Class methods are not bound; they rely on the call-site this value."
+    "prompt": "Why does extracting distance from an instance and calling it as a bare function fail here?",
+    "codeSnippet": "class Point {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n  distance() {\n    return Math.hypot(this.x, this.y);\n  }\n}\nconst p = new Point(3, 4);\nconst d = p.distance;\nconsole.log(d());",
+    "correctAnswer": "Extracting distance loses the receiver; class methods run in strict mode, so this is undefined and this.x throws TypeError. Call as p.distance() or use d.call(p) / bind the instance.",
+    "explanation": "Class methods are not auto-bound; they rely on the call-site this value. Note: Point.distance would be undefined because distance lives on the prototype as an instance method, not as a static."
   },
   {
     "topicSlug": "classes",
@@ -2311,8 +2311,8 @@
     "format": "OUTPUT_PREDICTION",
     "prompt": "For this map example starting with `const m = new Map();`, what is logged to the console?",
     "codeSnippet": "const m = new Map();\nconst k = { id: 1 };\nm.set(k, 'A');\nm.set({ id: 1 }, 'B');\nm.set(k, 'C');\nconsole.log(m.size);\nconsole.log(m.get(k));\nconsole.log([...m.values()]);",
-    "correctAnswer": "2\nC\nC B",
-    "explanation": "The second set uses a different object key; resetting k overwrites 'A' with 'C'; size is 2; values iterate in insertion order."
+    "correctAnswer": "2\nC\n[ 'C', 'B' ]",
+    "explanation": "The second set uses a different object key; resetting k overwrites 'A' with 'C'; size is 2; values iterate in insertion order as [ 'C', 'B' ]."
   },
   {
     "topicSlug": "map",
@@ -2360,8 +2360,8 @@
     "format": "OUTPUT_PREDICTION",
     "prompt": "For this set example starting with `const s = new Set([1, 2, 2, 3]);`, what is logged to the console?",
     "codeSnippet": "const s = new Set([1, 2, 2, 3]);\ns.add(3);\ns.add(4);\nconsole.log(s.size);\nconsole.log([...s]);\nconsole.log(s.has(2));",
-    "correctAnswer": "4\n[1, 2, 3, 4]\ntrue",
-    "explanation": "Duplicates are ignored; size reflects unique values; spread preserves insertion order."
+    "correctAnswer": "4\n[ 1, 2, 3, 4 ]\ntrue",
+    "explanation": "Duplicates are ignored; size reflects unique values; spread preserves insertion order as [ 1, 2, 3, 4 ]."
   },
   {
     "topicSlug": "set",
@@ -2555,9 +2555,9 @@
     "sessionType": "PRACTICE",
     "format": "OUTPUT_PREDICTION",
     "prompt": "After nulling root, which objects are eligible for GC? Answer with object names.",
-    "codeSnippet": "let root = { name: 'A' };\nconst B = { name: 'B' };\nroot.ref = B;\nB.ref = root;\nroot = null;",
-    "correctAnswer": "Both A and B (the cycle) are eligible if nothing else references them.",
-    "explanation": "Breaking the root reference makes the A↔B cycle unreachable despite mutual references."
+    "codeSnippet": "let root = { name: 'A' };\nroot.child = { name: 'B' };\nroot.child.back = root;\nroot = null;",
+    "correctAnswer": "Both A and B — the cycle is unreachable once root is nulled (no other live bindings remain).",
+    "explanation": "Mutual references alone do not keep objects alive. After the only external root is cleared, mark-and-sweep can collect the whole unreachable cycle."
   },
   {
     "topicSlug": "garbage-collection",

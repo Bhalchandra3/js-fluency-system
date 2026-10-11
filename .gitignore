@@ -17,6 +17,9 @@ yarn-error.log
 .env.*
 !.env.example
 
+# Local agent/ops artifacts (backups, scratch) — not source
+/.local/
+
 # IDEs and editors
 .idea/
 .project
