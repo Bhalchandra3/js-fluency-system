@@ -11,10 +11,10 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | Phase 3 — Revision Scheduling |
-| **Active step** | Phase 3 planning / start (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Current phase** | None active — Phase 2 complete; Phase 3 not started |
+| **Active step** | None (`CURRENT_STEP.md` cleared; awaiting Phase 3 start per §5.1) |
 | **Completed through** | Phase 2 Steps 1–12 (topics/questions seeded; production auth + smoke verified) |
-| **Next action** | Begin Phase 3 — Revision Scheduling (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Next action** | Start Phase 3 — Revision Scheduling: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the phase before implementation (see §4.8 and §5.1) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 
 ---
@@ -104,7 +104,7 @@ Key locked rules (summary only):
 | Contract / integrity validation | Pass — 0 issues; no exact duplicate prompts |
 | Neon seeding / DB relationships | Out of scope for Step 9 — completed in Step 10 (§4.4b) |
 
-### 4.4b Step 10 status (detail in CURRENT_STEP)
+### 4.4b Step 10 status
 
 **Complete.** Neon synchronized with validated `questions.json`.
 
@@ -112,9 +112,11 @@ Key locked rules (summary only):
 |---|---|
 | Seed command | `npx prisma db seed` → `created=9, updated=7, skipped=244` |
 | Obsolete rows removed | 9 exact IDs deleted after replacement verification |
+| Content-only updates | 7 questions updated (content-only) and verified |
 | Final counts | 52 topics, 260 questions, 5/topic |
 | JSON ↔ DB parity | Every `(topicSlug, prompt)` maps 1:1; 0 content mismatches |
-| Backup of obsolete rows | `.local/step10-backups/obsolete-questions-2026-10-11T16-40-47-638Z.json` |
+| Integrity | No orphans; no duplicate `(topicId, prompt)` groups |
+| Backup of obsolete rows | `.local/step10-backups/obsolete-questions-2026-10-11T16-40-47-638Z.json` (under gitignored `.local/`) |
 | Commit on `master` | `aba4f9feaeaf9e317468d7944677df1a2e6dfc47` |
 
 ### 4.4c Step 11 status (production deploy + auth)
@@ -128,6 +130,7 @@ Key locked rules (summary only):
 | Topics without token | `401` |
 | Topics with invalid token | `401` |
 | Topics with valid bearer token | `200` + topic payload |
+| Secret handling | Bearer token was not written into documentation or logs |
 
 ### 4.4d Step 12 status (production smoke test)
 
@@ -141,6 +144,7 @@ Key locked rules (summary only):
 | Topic fields | `id`, `name`, `slug`, `area`, `category`, `status`, `intervalDays`, `nextRevisionDate`, `createdAt`, `updatedAt` |
 | Topic count / unique slugs | **52 / 52** (read-only production response check) |
 | Questions in Neon + relations | Verified in Step 10; production health reports `topicCount: 52` against the same data store |
+| Production Prisma/module errors | None observed (health + topics succeeded) |
 
 ### 4.5 Verified work (Steps 1–8 highlights)
 
@@ -172,11 +176,24 @@ Aligned with governing Phase 2 development-order exit criteria:
 - [x] Phase 1 `/api/health` remains functional in production
 - [x] No unresolved Phase 2 data/API blockers
 
-### 4.7 Phase 3 handoff
+### 4.7 Phase 2 conclusions
 
-Phase 2 is complete. Next: **Phase 3 — Revision Scheduling**.
+- Phase 2 exit criteria are satisfied (§4.6); Steps 1–12 are complete and verified.
+- Production path verified: client → Vercel API → bearer auth → Prisma → Neon → seeded Topics (52) with Questions established in Neon.
+- No unresolved Phase 2 data/API blockers were recorded at closeout.
+- Canonical Phase 2 plan remains archived at [`docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order (1).md`](./docs/archive/JavaScript_Fluency_System_Phase_2_Development_Order%20(1).md).
 
-Spaced repetition (1/3/7/14/30), due-today determination, revision session flow, answer submission, confidence capture, next-revision updates, Today’s Revision API + Angular screen, initial dashboard data—built on finalized Topic/Question data and authenticated API infrastructure.
+### 4.8 Phase 3 handoff
+
+Phase 2 is complete. **Phase 3 is not started.**
+
+| Handoff item | Detail |
+|---|---|
+| **Next phase** | Phase 3 — Revision Scheduling |
+| **Intended scope** | Spaced repetition intervals 1/3/7/14/30; due-today determination; revision session flow; answer submission; confidence capture; next-revision updates; Today’s Revision API + Angular screen; initial dashboard data |
+| **Prerequisites** | Finalized Topic/Question data and authenticated API infrastructure from Phase 2 |
+| **Unresolved at handoff** | None recorded in the Phase 2 closeout working record |
+| **Recommended starting action** | When Phase 3 formally starts: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the entire phase (ordered steps, dependencies, approvals, exit criteria) before implementation (§5.1). Do not begin Phase 3 implementation until that plan exists. |
 
 ---
 
