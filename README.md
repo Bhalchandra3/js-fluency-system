@@ -6,9 +6,9 @@ Personal JavaScript revision and practice app (Angular + Vercel serverless API +
 
 | Document | Purpose |
 |---|---|
-| [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) | Product requirements, architecture, constraints |
-| [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Phases, steps, status, next action |
-| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Active step checklist and handoff |
+| [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) | Product requirements and architecture reference |
+| [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Overall project progress, completed-phase history, and handoff record |
+| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Complete working record for the entire active phase |
 | [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook |
 | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Locked question-bank JSON contract |
 

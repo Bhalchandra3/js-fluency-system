@@ -1,8 +1,8 @@
 # JavaScript Fluency System — Project Tracker
 
-> Authoritative progress tracker.
+> Authoritative progress tracker: overall project status, completed-phase history, major decisions, conclusions, and next-phase handoff.
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
-> Active step detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
+> Active phase working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
 > Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
 
 ---
@@ -180,10 +180,36 @@ Spaced repetition (1/3/7/14/30), due-today determination, revision session flow,
 
 ---
 
-## 5. Step-execution rules
+## 5. Phase lifecycle and step-execution rules
 
-1. Read [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) and this tracker before Phase 2 changes.
-2. Do not skip the execution order without a documented technical reason.
+Operational process for every phase. Product requirements remain in [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md). The active phase’s full working record lives in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
+
+### 5.1 Phase start
+
+1. Review [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md), this tracker (including the previous phase’s handoff), and any unresolved decisions.
+2. Initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) for the new phase only when that phase actually starts (not as part of completing the previous phase).
+3. Plan the entire phase in [`CURRENT_STEP.md`](./CURRENT_STEP.md) **before** implementation: ordered steps, dependencies, decisions or approvals required, and exit criteria.
+4. Record the phase’s initial scope and starting status in [`CURRENT_STEP.md`](./CURRENT_STEP.md); update this tracker’s current snapshot to name the new phase and active planning/execution step.
+
+### 5.2 During the phase
+
+1. Update [`CURRENT_STEP.md`](./CURRENT_STEP.md) as each step progresses.
+2. Record implementation outcomes, verification results, decisions and reasoning, unresolved issues, conclusions, and the exact stopping point / next action.
+3. Synchronize this tracker with meaningful project-wide status changes (snapshot, phase overview, completed-step marks, major decisions)—do **not** duplicate the entire working record here.
+4. Do not rely on chat history alone for decisions or status.
+
+### 5.3 Phase completion and handoff
+
+1. Finalize in [`CURRENT_STEP.md`](./CURRENT_STEP.md): phase history, decisions, conclusions, results, and completion status.
+2. Transfer the relevant phase summary and history into this tracker, preserving the established structure (phase summary section, completion checklist, next-phase handoff) so completed work remains traceable.
+3. Record in this tracker: next phase scope, prerequisites, unresolved decisions, and recommended starting action; update the current snapshot accordingly.
+4. **Only after** that transfer is complete, clear [`CURRENT_STEP.md`](./CURRENT_STEP.md) so it contains no completed-phase working history and is ready to initialize for the next phase.
+5. Do **not** initialize the cleared file for the next phase until that phase actually starts (see §5.1).
+
+### 5.4 Standing engineering rules
+
+1. Read [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md), this tracker, and the previous phase handoff before starting a phase or changing phase scope.
+2. Do not skip the documented execution order without a documented technical reason.
 3. Do not mark a step complete from code creation alone—verify behavior with evidence.
 4. Prefer minimal scope; reuse existing conventions.
 5. Prefer reproducible seeds over manual DB edits.
@@ -194,7 +220,6 @@ Spaced repetition (1/3/7/14/30), due-today determination, revision session flow,
 10. Do not regenerate/redesign Prisma schema without checking schema + specification.
 11. Do not generate question content against an unlocked schema.
 12. Preserve single-user architecture unless the specification changes.
-13. After each verified decision or step, update this tracker and [`CURRENT_STEP.md`](./CURRENT_STEP.md)—do not rely on chat history.
 
 ---
 
@@ -203,7 +228,7 @@ Spaced repetition (1/3/7/14/30), due-today determination, revision session flow,
 | Resource | Path |
 |---|---|
 | Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
-| Current step | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
 | Question-bank contract | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) |
 | Topics seed | [`prisma/seed-data/topics.json`](./prisma/seed-data/topics.json) |

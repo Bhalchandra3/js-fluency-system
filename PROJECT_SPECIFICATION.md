@@ -1,8 +1,9 @@
 # JavaScript Fluency System — Project Specification
 
 > Authoritative product and architecture specification.
-> Progress and step status live in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md).
-> Active work detail lives in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
+> Overall progress, completed-phase history, and handoff live in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md).
+> The complete working record for the active phase lives in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
+> Phase lifecycle and step-execution rules live in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.
 > Archived originals: [`docs/archive/`](./docs/archive/).
 
 ---
@@ -216,7 +217,7 @@ Question-bank JSON field rules are **not** duplicated here. Authoritative contra
 9. Core learning must not depend on in-app AI.
 10. Keep the stack simple; do not add infrastructure before the learning experience needs it.
 
-Step-by-step execution rules (order, verification, status updates) live in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md).
+Phase lifecycle and step-execution rules (order, verification, status updates, handoff) live in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.
 
 ---
 
@@ -296,8 +297,8 @@ When resolving these, update this specification and the tracker; do not rely on 
 
 | Document | Role |
 |---|---|
-| [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Phases, steps, status, next action |
-| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Active step working record |
+| [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Overall progress, completed-phase history, major decisions, conclusions, next-phase handoff; lifecycle rules in §5 |
+| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Complete working record for the entire active phase |
 | [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook |
 | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Question-bank JSON contract |
 | [`docs/archive/`](./docs/archive/) | Pre-consolidation specification and history sources |
