@@ -11,11 +11,12 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | None active — Phase 2 complete; Phase 3 not started |
-| **Active step** | None (`CURRENT_STEP.md` cleared; awaiting Phase 3 start per §5.1) |
-| **Completed through** | Phase 2 Steps 1–12 (topics/questions seeded; production auth + smoke verified) |
-| **Next action** | Start Phase 3 — Revision Scheduling: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the phase before implementation (see §4.8 and §5.1) |
+| **Current phase** | Phase 3 — Revision Scheduling |
+| **Active step** | Step 1 — Architecture and scheduling rules (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Step 0 (Development Order approved; phase started) |
+| **Next action** | Execute Phase 3 Step 1 in [`CURRENT_STEP.md`](./CURRENT_STEP.md) (resolve four explicit unknowns; no implementation of Steps 2+ until Step 1 completes) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
+| **Phase 3 baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) — **approved** |
 
 ---
 
@@ -25,7 +26,7 @@
 |---|---|---|
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
-| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ⬜ Not started |
+| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | 🔵 In progress (Step 1) |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
@@ -185,7 +186,7 @@ Aligned with governing Phase 2 development-order exit criteria:
 
 ### 4.8 Phase 3 handoff
 
-Phase 2 is complete. **Phase 3 is not started.**
+Phase 2 is complete. Phase 3 has been **formally started** (see §4.9).
 
 | Handoff item | Detail |
 |---|---|
@@ -193,7 +194,21 @@ Phase 2 is complete. **Phase 3 is not started.**
 | **Intended scope** | Spaced repetition intervals 1/3/7/14/30; due-today determination; revision session flow; answer submission; confidence capture; next-revision updates; Today’s Revision API + Angular screen; initial dashboard data |
 | **Prerequisites** | Finalized Topic/Question data and authenticated API infrastructure from Phase 2 |
 | **Unresolved at handoff** | None recorded in the Phase 2 closeout working record |
-| **Recommended starting action** | When Phase 3 formally starts: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the entire phase (ordered steps, dependencies, approvals, exit criteria) before implementation (§5.1). Do not begin Phase 3 implementation until that plan exists. |
+| **Approved baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
+| **Active phase record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+
+### 4.9 Phase 3 start (formal)
+
+| Field | Value |
+|---|---|
+| **Status** | Started — Step 0 complete; Step 1 is next |
+| **Approved baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
+| **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (complete Phase 3 plan initialized) |
+| **Major decisions** | G1–G8 approved as recorded in the Development Order and `CURRENT_STEP.md` (Asia/Kolkata calendar days; discrete ladder; G5 correctness/confidence mapping; embed REVISION questions; no `DailyProgress` write-path requirement; default entry Today’s Revision; no `shared-types/`) |
+| **Next action** | Step 1 — resolve four explicit unknowns (HTTP paths, persistence/audit, non-MCQ scoring, correct-answer exposure) before implementing Steps 2+ |
+| **Implementation** | Not started |
+
+Full step plan, acceptance criteria, and working history live only in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
 
 ---
 
@@ -246,6 +261,7 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 |---|---|
 | Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
 | Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| Phase 3 Development Order (approved baseline) | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
 | Question-bank contract | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) |
 | Topics seed | [`prisma/seed-data/topics.json`](./prisma/seed-data/topics.json) |
