@@ -11,6 +11,8 @@
 export type * from './models/Topic.js'
 export type * from './models/Question.js'
 export type * from './models/SessionLog.js'
+export type * from './models/RevisionSession.js'
+export type * from './models/RevisionSessionQuestion.js'
 export type * from './models/Mistake.js'
 export type * from './models/DeepDiveNote.js'
 export type * from './models/DailyProgress.js'

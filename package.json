@@ -8,6 +8,9 @@
     "build": "prisma generate && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:scheduling": "tsx --test api/_lib/scheduling/intervalLadder.test.ts api/_lib/scheduling/g5Aggregation.test.ts api/_lib/scheduling/calendarDay.test.ts",
+    "test:prisma-guards": "tsx --test prisma/openSessionQuestionGuard.test.ts",
+    "test:revision-db": "tsx --test prisma/revisionSession.integration.test.ts",
     "postinstall": "prisma generate"
   },
   "prettier": {

@@ -2,12 +2,12 @@
 
 > Approved implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Approved and active** — Phase 3 has formally started.
-> Step 0 (plan approval) is **complete**. Next: **Step 1 — Architecture and Schema Readiness**.
+> Step 0–2 and Step 2.5 (Neon schema migrate) are **complete**. Next: **Step 3 — Today’s Revision read API**.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 >
-> **Rule:** Complete and verify each step before moving to the next unless a step explicitly allows parallel work. Do not begin Step 2+ implementation until Step 1 completion criteria in [`CURRENT_STEP.md`](./CURRENT_STEP.md) are met.
+> **Rule:** Complete and verify each step before moving to the next unless a step explicitly allows parallel work. Step 3 may proceed — revision-session migration is applied and verified on Neon.
 
 ---
 
@@ -19,7 +19,7 @@ Deliver a reliable daily revision loop that supports deep JavaScript fluency: th
 
 1. Authenticated API identifies due and overdue topics using `Asia/Kolkata` calendar days while storing timestamps in UTC.
 2. Authenticated Today’s Revision read API returns a selected due topic with embedded `REVISION` questions (no bank-wide questions list required).
-3. Authenticated submit API records per-answer correctness and confidence, and finalizes scheduling at most once per completed session.
+3. Authenticated answer API records per-answer correctness and confidence; explicit session completion finalizes scheduling at most once per completed session.
 4. Scheduling applies only Advance / Reinforce / Reset transitions on the discrete ladder (never unsupported intervals).
 5. Angular Today’s Revision is the default authenticated entry and supports the full answer → feedback → confidence → next loop.
 6. `/dashboard` shows an initial due/overdue summary and CTA derived from real session/topic data (no new `DailyProgress` dependency).
@@ -73,12 +73,16 @@ Deliver a reliable daily revision loop that supports deep JavaScript fluency: th
 | Seed has REVISION + PRACTICE questions; topics typically have 2 REVISION items | `prisma/seed-data/questions.json` |
 | No `shared-types/` and no tsconfig path aliases for sharing | Repo structure / `tsconfig.app.json` |
 
-### 2.4 Explicit unknowns (do not invent during planning)
+### 2.4 Step 1 design resolutions (approved)
 
-1. Exact HTTP paths for revision read/submit (recommend `api/revision/…`; finalize in Steps 3–4).
-2. Whether a new session-aggregate table/fields are required to store session outcome, previous/resulting interval, resulting due date, and policy explanation—or whether `SessionLog` (+ careful topic update) is extended. **Resolve in Step 1** against schema constraints (spec §8: do not redesign schema lightly).
-3. Server scoring rules for non-MCQ formats where `correctAnswer` may be reference text (`SessionLog.correct` nullable). MCQ index scoring is supported by seed contract; other formats need an explicit Step 1/4 evaluation policy (self-assess vs server compare vs deferred).
-4. Whether `correctAnswer` is ever returned after evaluation in the response (must not be exposed before evaluation when backend evaluation is required).
+Canonical detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.2–§9.6. **Prisma/migrations not applied.**
+
+1. **HTTP paths:** `GET /api/revision/today`, `POST /api/revision/answers`, `POST /api/revision/complete` (bearer auth).
+2. **Persistence:** `RevisionSession` + `RevisionSessionQuestion` (frozen membership + order) + `SessionLog` extensions + partial unique one-OPEN-per-topic. Migration deferred to an authorized schema step.
+3. **Decision A:** Explicit completion only — answer submission never finalizes; schedule updates only on `POST …/complete`.
+4. **Decision B:** Freeze question identity + ordering; no full content snapshots; server-side OPEN-session edit guard required when question-management/reseed exists.
+5. **Evaluation:** MCQ server index compare; SHORT_ANSWER (and code-like formats) self-assess via `selfAssessedCorrect`.
+6. **Exposure:** Never return `correctAnswer`/`explanation` on initial today payload; return after evaluation when present in DB.
 
 ---
 
@@ -153,7 +157,7 @@ Exact JSON field names are locked in Steps 3–6 with tests for FE/BE mismatch d
 
 ### G4 — Revision scheduling — **Agreed**
 
-Use discrete levels only (see §3.4). Scheduling transitions are driven by G5 session outcome. Finalize scheduling **once** on completed session only.
+Use discrete levels only (see §3.4). Scheduling transitions are driven by G5 session outcome. Finalize scheduling **once** on explicit session completion only (Decision A) — never on answer submit.
 
 ### G5 — Correctness and confidence — **Agreed**
 
@@ -173,21 +177,24 @@ Verified enum labels: `EASY`, `OKAY`, `DIFFICULT`, `DIDNT_UNDERSTAND` (UI: Easy 
 
 #### Session aggregation (deterministic)
 
-When a session contains multiple answers, compute a single session transition with precedence:
+When a per-topic session is finalized, compute one transition with precedence:
 
-1. If any answer is **Incorrect** → **Reset**
-2. Else if any answer is **Correct + DIDNT_UNDERSTAND** → **Reinforce at 1 day**
-3. Else if any answer is **Correct + DIFFICULT** → **Reinforce** (one level back)
-4. Else → **Advance**
+1. If any answer is **Incorrect** → **Reset** to 1 day  
+2. Else if any answer has confidence **`DIDNT_UNDERSTAND`** → **Reinforce at 1 day**  
+3. Else if any answer has confidence **`DIFFICULT`** → **Reinforce** (one ladder step back, min 1)  
+4. Else → **Advance** (one ladder step forward, cap 30)  
+
+Canonical schema/lifecycle detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3.
 
 #### Session finalization rules
 
-- Incomplete session → **no** scheduling finalization.
+- Incomplete session → **no** scheduling finalization.  
+- Last unanswered question answered → session remains `OPEN` until explicit complete.
 - Completed session → apply transition **at most once** (idempotent / reject duplicate finalization).
 - Server-authoritative: client cannot set the resulting interval/due date.
 - Persist enough history to explain the decision: answer history, selected confidence, evaluated correctness, session outcome, previous interval, resulting interval, resulting due date, and policy identifier/version.
 
-> Schema note: today’s `SessionLog` has `correct` + `confidence` but not all explanation fields. Step 1 must decide the minimal persistence design (extend models vs session summary record) without speculative fields beyond this requirement.
+> Schema note: Step 1 locked the persistence design in [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3. Application of migrations remains a later authorized step (not Step 2).
 
 ### G6 — `DailyProgress` — **Agreed**
 
@@ -263,29 +270,41 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 
 ---
 
-### Step 1 — Architecture and scheduling rules (schema readiness)
+### Step 1 — Architecture and scheduling rules (schema readiness) — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Confirm schema/persistence design for G2–G5 history fields; lock evaluation policy for MCQ vs open formats. |
-| **Expected files** | `prisma/schema.prisma` (change only if proven necessary); decision notes in `CURRENT_STEP.md` after start. |
 | **Depends on** | Step 0. |
-| **Work** | Map required audit fields to models; decide session aggregate vs log-only; define non-MCQ correctness handling; confirm no unsupported intervals. |
-| **Verification** | Written decision table; migration plan only if required. |
-| **Completion** | Persistence + evaluation rules locked. |
+| **Work** | ✅ Mapped audit fields; approved `RevisionSession` + `RevisionSessionQuestion` + SessionLog extensions; Decisions A/B; evaluation + exposure locked in `CURRENT_STEP.md` §9. |
+| **Verification** | Written decision tables; migration staging plan recorded; internal consistency check passed. |
+| **Completion** | ✅ Persistence + evaluation + lifecycle rules locked (design). |
 
 ---
 
-### Step 2 — Scheduling helpers
+### Step 2 — Scheduling helpers — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Pure/testable UTC storage + Asia/Kolkata calendar due/overdue + ladder transitions. |
-| **Expected files** | Likely `api/_lib/*` helpers (names TBD). |
-| **Depends on** | Step 1. |
-| **Work** | Implement due/overdue selection, ordering, Advance/Reinforce/Reset/Reinforce-at-1, calendar-day additions. |
-| **Verification** | Unit tests: midnight IST, date transitions, conversions, all ladder edges, unsupported-interval prevention, G5 precedence. |
-| **Completion** | Helpers pass deterministic tests. |
+| **Delivered** | `api/_lib/scheduling/` (`intervalLadder`, `g5Aggregation`, `calendarDay`, `errors`, `index`) + `*.test.ts`. |
+| **Depends on** | Step 1 ✅. |
+| **Verification** | `npm run test:scheduling` — 30/30 pass. |
+| **Completion** | ✅ Helpers pass deterministic tests. |
+| **Boundary** | No Prisma schema, migrations, revision APIs, or Angular screens in this step. |
+
+---
+
+### Step 2.5 — Schema and migration (revision sessions) — ✅ Complete
+
+| | |
+|---|---|
+| **Goal** | Apply approved `RevisionSession` + `RevisionSessionQuestion` + SessionLog extensions + partial unique OPEN-per-topic. |
+| **Delivered (files)** | `prisma/schema.prisma`; migration `20261015164300_add_revision_session`; seed OPEN-session guard (`prisma/openSessionQuestionGuard.ts` + `seed.ts`). |
+| **Depends on** | Steps 1–2 ✅. |
+| **Static validation** | `prisma validate` ✅; `prisma generate` ✅; scheduling tests 30/30; guard unit test 1/1. |
+| **DB apply** | ✅ Neon `prisma migrate deploy` **2026-10-15** (preflight SessionLog=0; pre-migration snapshot + backup branch created). Disposable Postgres regression 6/6. Evidence: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.12. |
+| **Completion** | ✅ Migrated + verified on intended Neon target. |
 
 ---
 
@@ -294,23 +313,23 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 | | |
 |---|---|
 | **Goal** | Authenticated read with embedded REVISION questions and empty-due support. |
-| **Expected files** | New `api/` revision route(s) (path TBD); reuse `requireBearerToken`, `prisma`. |
-| **Depends on** | Step 2. |
-| **Work** | Stable response contract; overdue prioritization; no pre-evaluation answer leakage; graceful few-question topics. |
+| **Expected files** | New `api/` revision route(s); reuse `requireBearerToken`, `prisma`, scheduling helpers. |
+| **Depends on** | Step 2 ✅; Step 2.5 migration applied + verified. |
+| **Work** | Sticky OPEN resume; frozen questions via association; overdue prioritization; no pre-evaluation answer leakage. |
 | **Verification** | Auth matrix; contract tests; empty/due/overdue cases; topics/health regression. |
 | **Completion** | Local verified read API. |
 
 ---
 
-### Step 4 — Answer/confidence submission API
+### Step 4 — Answer/confidence submission + explicit complete API
 
 | | |
 |---|---|
-| **Goal** | Server-authoritative evaluate + persist + finalize schedule once. |
-| **Expected files** | New `api/` write route(s) (path TBD). |
-| **Depends on** | Steps 2–3; Step 1 evaluation policy. |
-| **Work** | Per-answer submit and session completion; atomic persistence; duplicate-finalization protection; apply G5 mapping; return outcome explanation fields for UX (LX5). |
-| **Verification** | Unit/integration tests for every G5 row, aggregation precedence, incomplete session (no schedule change), duplicate finalize, incorrect≠confidence override. |
+| **Goal** | Server-authoritative evaluate + persist answers; explicit complete finalizes schedule once (Decision A). |
+| **Expected files** | New `api/` write route(s) for answers and complete. |
+| **Depends on** | Steps 2–3; Step 1 evaluation + persistence design. |
+| **Work** | Per-answer upsert while OPEN (no schedule write); `POST …/complete` atomic G5 + Topic update + COMPLETED; duplicate-complete idempotency; LX5 outcome fields. |
+| **Verification** | Every G5 row; aggregation only on complete; last answer leaves OPEN; incomplete complete rejected; duplicate complete; incorrect≠confidence override. |
 | **Completion** | Local verified write path with DB evidence. |
 
 ---
@@ -413,7 +432,7 @@ Skipped under G3. Reopen only with demonstrated need.
 - [ ] G1–G8 recorded as approved for implementation (this document + formal Step 0 approval).
 - [ ] UTC storage + Asia/Kolkata calendar due/overdue verified with boundary tests.
 - [ ] Discrete ladder only; G5 mapping and aggregation precedence verified.
-- [ ] Incomplete sessions do not finalize; completed sessions finalize once.
+- [ ] Incomplete sessions do not finalize; last answer does not finalize; completed sessions finalize once via explicit complete.
 - [ ] Today’s Revision read embeds REVISION questions; no bank-wide questions API.
 - [ ] Correct answers not exposed before required evaluation.
 - [ ] Angular default entry is Today’s Revision; `/dashboard` summary works.
@@ -442,7 +461,7 @@ Per [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5:
 
 1. Formal approval of this Development Order (Step 0) — **complete**.
 2. Start Phase 3: initialize `CURRENT_STEP.md` from this order; update tracker snapshot — **complete**.
-3. Execute Steps 1–10 with verification evidence in `CURRENT_STEP.md` — **Step 1 next**.
+3. Execute Steps 1–10 with verification evidence in `CURRENT_STEP.md` — **Steps 1–2 complete; Step 3 next**.
 4. Closeout Step 11: transfer to tracker, then clear `CURRENT_STEP.md`; do not auto-start Phase 4.
 
 ### Phase 4 handoff preview (not started)
@@ -458,9 +477,12 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Document status** | Approved implementation baseline |
 | **Phase 3 started?** | **Yes** |
 | **Step 0** | Complete |
-| **Next step** | Step 1 — Architecture and Schema Readiness |
-| **`CURRENT_STEP.md`** | Populated with the complete Phase 3 plan (active working record) |
-| **Blocking open product gates** | None for G1–G8. Remaining items are the four Step 1 unknowns (§2.4). |
-| **Next action** | Execute Step 1 in [`CURRENT_STEP.md`](./CURRENT_STEP.md); do not implement Steps 2+ until Step 1 completes |
+| **Step 1** | Complete — schema/lifecycle design approved (Decisions A/B) |
+| **Step 2** | Complete — `api/_lib/scheduling/`; `npm run test:scheduling` 30/30 |
+| **Step 2.5** | ✅ Complete — Neon migrate + verify (2026-10-15) |
+| **Next step** | Step 3 — Today’s Revision read API |
+| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11 / §9.12 |
+| **Blocking open product gates** | None for Step 3 start (API complete/idempotency still Step 4) |
+| **Next action** | Implement and verify Step 3 |
 
 **Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`

@@ -12,9 +12,9 @@
 | Field | Value |
 |---|---|
 | **Current phase** | Phase 3 — Revision Scheduling |
-| **Active step** | Step 1 — Architecture and scheduling rules (see [`CURRENT_STEP.md`](./CURRENT_STEP.md)) |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Step 0 (Development Order approved; phase started) |
-| **Next action** | Execute Phase 3 Step 1 in [`CURRENT_STEP.md`](./CURRENT_STEP.md) (resolve four explicit unknowns; no implementation of Steps 2+ until Step 1 completes) |
+| **Active step** | Step 3 — Today’s Revision read API |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–2; Step 2.5 schema migration applied + verified on Neon (2026-10-15) |
+| **Next action** | Implement Step 3 `GET /api/revision/today`. Details: [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) — **approved** |
 
@@ -26,7 +26,7 @@
 |---|---|---|
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
-| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | 🔵 In progress (Step 1) |
+| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | 🔵 In progress (Step 3 next) |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
@@ -201,12 +201,15 @@ Phase 2 is complete. Phase 3 has been **formally started** (see §4.9).
 
 | Field | Value |
 |---|---|
-| **Status** | Started — Step 0 complete; Step 1 is next |
+| **Status** | Started — Steps 0–2 + Step 2.5 (Neon migrate) complete; Step 3 next |
 | **Approved baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
-| **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (complete Phase 3 plan initialized) |
-| **Major decisions** | G1–G8 approved as recorded in the Development Order and `CURRENT_STEP.md` (Asia/Kolkata calendar days; discrete ladder; G5 correctness/confidence mapping; embed REVISION questions; no `DailyProgress` write-path requirement; default entry Today’s Revision; no `shared-types/`) |
-| **Next action** | Step 1 — resolve four explicit unknowns (HTTP paths, persistence/audit, non-MCQ scoring, correct-answer exposure) before implementing Steps 2+ |
-| **Implementation** | Not started |
+| **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| **Major decisions (durable)** | G1–G8; Decisions A/B; Step 2 helpers. **Schema:** `RevisionSession` + `RevisionSessionQuestion` + SessionLog `sessionId`/`selectedAnswer` + partial unique OPEN-per-topic — migration `20261015164300_add_revision_session` **applied to Neon 2026-10-15**. Seed OPEN-session content-update guard. |
+| **Next action** | Step 3 — Today’s Revision read API |
+| **Implementation** | Helpers + schema on Neon; no revision APIs yet |
+| **Step 1** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3 |
+| **Step 2** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.11 |
+| **Step 2.5** | ✅ Complete — Neon deploy + verify — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.12 |
 
 Full step plan, acceptance criteria, and working history live only in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
 

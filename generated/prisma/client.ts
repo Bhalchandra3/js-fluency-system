@@ -57,6 +57,16 @@ export type Question = Prisma.QuestionModel
  */
 export type SessionLog = Prisma.SessionLogModel
 /**
+ * Model RevisionSession
+ * 
+ */
+export type RevisionSession = Prisma.RevisionSessionModel
+/**
+ * Model RevisionSessionQuestion
+ * 
+ */
+export type RevisionSessionQuestion = Prisma.RevisionSessionQuestionModel
+/**
  * Model Mistake
  * 
  */

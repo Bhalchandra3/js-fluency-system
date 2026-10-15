@@ -41,6 +41,18 @@ enum QuestionFormat {
   DEBUGGING
 }
 
+enum RevisionSessionStatus {
+  OPEN
+  COMPLETED
+}
+
+enum RevisionSessionOutcome {
+  ADVANCE
+  REINFORCE
+  REINFORCE_AT_1
+  RESET
+}
+
 // ---------------------------------------------------------------------------
 // Core models
 // ---------------------------------------------------------------------------
@@ -56,10 +68,11 @@ model Topic {
   intervalDays Int        @default(1)                  // current step in 1/3/7/14/30 (spec §6)
   nextRevisionDate DateTime @default(now())
 
-  questions     Question[]
-  logs          SessionLog[]
-  mistakes      Mistake[]
-  deepDiveNote  DeepDiveNote?
+  questions         Question[]
+  logs              SessionLog[]
+  mistakes          Mistake[]
+  deepDiveNote      DeepDiveNote?
+  revisionSessions  RevisionSession[]
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -81,6 +94,7 @@ model Question {
   explanation   String?                                    // shown after answering — spec §10
   codeSnippet   String?                                  // for CODE_WRITING or DEBUGGING questions
   logs          SessionLog[]
+  sessionQuestions RevisionSessionQuestion[]
 
   createdAt     DateTime        @default(now())
 
@@ -89,21 +103,66 @@ model Question {
 
 // One row per answered question — covers both "Revision History" and
 // "Practice History" from spec §19 (distinguished by sessionType).
+// Phase 3 revision answers are bound to a RevisionSession via sessionId.
 model SessionLog {
   id          String          @id @default(cuid())
   topicId     String
   topic       Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
   questionId  String
   question    Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  sessionId   String
+  session     RevisionSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  sessionType SessionType
-  correct     Boolean?                                     // null for open-ended/self-assessed answers
-  confidence  ConfidenceLevel                               // spec §11
+  sessionType    SessionType
+  selectedAnswer String
+  correct        Boolean?                                     // null for open-ended/self-assessed answers
+  confidence     ConfidenceLevel                               // spec §11
 
   answeredAt  DateTime        @default(now())
 
+  @@unique([sessionId, questionId])
   @@index([topicId, answeredAt])
   @@index([answeredAt])
+}
+
+// Phase 3 — one topic-scoped revision attempt (OPEN → COMPLETED).
+// At most one OPEN session per topic is enforced by a partial unique index
+// in the migration SQL (Prisma cannot express partial unique indexes).
+model RevisionSession {
+  id                        String                 @id @default(cuid())
+  topicId                   String
+  topic                     Topic                  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  status                    RevisionSessionStatus  @default(OPEN)
+  startedAt                 DateTime               @default(now())
+  completedAt               DateTime?
+
+  outcome                   RevisionSessionOutcome?
+  previousIntervalDays      Int?
+  resultingIntervalDays     Int?
+  previousNextRevisionDate  DateTime?
+  resultingNextRevisionDate DateTime?
+  policyVersion             String                 @default("phase3-g5-v1")
+
+  questions                 RevisionSessionQuestion[]
+  logs                      SessionLog[]
+
+  @@index([topicId, status])
+  @@index([startedAt])
+}
+
+// Frozen REVISION question membership + order for a session (Decision B).
+model RevisionSessionQuestion {
+  id         String          @id @default(cuid())
+  sessionId  String
+  session    RevisionSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question        @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  sortOrder  Int
+
+  @@unique([sessionId, questionId])
+  @@unique([sessionId, sortOrder])
+  @@index([questionId])
 }
 
 // Spec §15 — Mistake Log

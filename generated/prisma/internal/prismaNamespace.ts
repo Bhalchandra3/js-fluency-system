@@ -400,6 +400,8 @@ export const ModelName = {
   Topic: 'Topic',
   Question: 'Question',
   SessionLog: 'SessionLog',
+  RevisionSession: 'RevisionSession',
+  RevisionSessionQuestion: 'RevisionSessionQuestion',
   Mistake: 'Mistake',
   DeepDiveNote: 'DeepDiveNote',
   DailyProgress: 'DailyProgress'
@@ -418,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "topic" | "question" | "sessionLog" | "mistake" | "deepDiveNote" | "dailyProgress"
+    modelProps: "topic" | "question" | "sessionLog" | "revisionSession" | "revisionSessionQuestion" | "mistake" | "deepDiveNote" | "dailyProgress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -641,6 +643,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SessionLogCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SessionLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    RevisionSession: {
+      payload: Prisma.$RevisionSessionPayload<ExtArgs>
+      fields: Prisma.RevisionSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RevisionSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RevisionSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.RevisionSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RevisionSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        findMany: {
+          args: Prisma.RevisionSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>[]
+        }
+        create: {
+          args: Prisma.RevisionSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        createMany: {
+          args: Prisma.RevisionSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RevisionSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.RevisionSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        update: {
+          args: Prisma.RevisionSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RevisionSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RevisionSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RevisionSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RevisionSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.RevisionSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRevisionSession>
+        }
+        groupBy: {
+          args: Prisma.RevisionSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RevisionSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    RevisionSessionQuestion: {
+      payload: Prisma.$RevisionSessionQuestionPayload<ExtArgs>
+      fields: Prisma.RevisionSessionQuestionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RevisionSessionQuestionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RevisionSessionQuestionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        findFirst: {
+          args: Prisma.RevisionSessionQuestionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RevisionSessionQuestionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        findMany: {
+          args: Prisma.RevisionSessionQuestionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>[]
+        }
+        create: {
+          args: Prisma.RevisionSessionQuestionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        createMany: {
+          args: Prisma.RevisionSessionQuestionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RevisionSessionQuestionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>[]
+        }
+        delete: {
+          args: Prisma.RevisionSessionQuestionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        update: {
+          args: Prisma.RevisionSessionQuestionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RevisionSessionQuestionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RevisionSessionQuestionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RevisionSessionQuestionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RevisionSessionQuestionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionSessionQuestionPayload>
+        }
+        aggregate: {
+          args: Prisma.RevisionSessionQuestionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRevisionSessionQuestion>
+        }
+        groupBy: {
+          args: Prisma.RevisionSessionQuestionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionSessionQuestionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RevisionSessionQuestionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionSessionQuestionCountAggregateOutputType> | number
         }
       }
     }
@@ -941,13 +1091,42 @@ export const SessionLogScalarFieldEnum = {
   id: 'id',
   topicId: 'topicId',
   questionId: 'questionId',
+  sessionId: 'sessionId',
   sessionType: 'sessionType',
+  selectedAnswer: 'selectedAnswer',
   correct: 'correct',
   confidence: 'confidence',
   answeredAt: 'answeredAt'
 } as const
 
 export type SessionLogScalarFieldEnum = (typeof SessionLogScalarFieldEnum)[keyof typeof SessionLogScalarFieldEnum]
+
+
+export const RevisionSessionScalarFieldEnum = {
+  id: 'id',
+  topicId: 'topicId',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  outcome: 'outcome',
+  previousIntervalDays: 'previousIntervalDays',
+  resultingIntervalDays: 'resultingIntervalDays',
+  previousNextRevisionDate: 'previousNextRevisionDate',
+  resultingNextRevisionDate: 'resultingNextRevisionDate',
+  policyVersion: 'policyVersion'
+} as const
+
+export type RevisionSessionScalarFieldEnum = (typeof RevisionSessionScalarFieldEnum)[keyof typeof RevisionSessionScalarFieldEnum]
+
+
+export const RevisionSessionQuestionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  questionId: 'questionId',
+  sortOrder: 'sortOrder'
+} as const
+
+export type RevisionSessionQuestionScalarFieldEnum = (typeof RevisionSessionQuestionScalarFieldEnum)[keyof typeof RevisionSessionQuestionScalarFieldEnum]
 
 
 export const MistakeScalarFieldEnum = {
@@ -1151,6 +1330,34 @@ export type ListEnumConfidenceLevelFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
+ * Reference to a field of type 'RevisionSessionStatus'
+ */
+export type EnumRevisionSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionSessionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RevisionSessionStatus[]'
+ */
+export type ListEnumRevisionSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionSessionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RevisionSessionOutcome'
+ */
+export type EnumRevisionSessionOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionSessionOutcome'>
+    
+
+
+/**
+ * Reference to a field of type 'RevisionSessionOutcome[]'
+ */
+export type ListEnumRevisionSessionOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionSessionOutcome[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1317,6 +1524,8 @@ export type GlobalOmitConfig = {
   topic?: Prisma.TopicOmit
   question?: Prisma.QuestionOmit
   sessionLog?: Prisma.SessionLogOmit
+  revisionSession?: Prisma.RevisionSessionOmit
+  revisionSessionQuestion?: Prisma.RevisionSessionQuestionOmit
   mistake?: Prisma.MistakeOmit
   deepDiveNote?: Prisma.DeepDiveNoteOmit
   dailyProgress?: Prisma.DailyProgressOmit

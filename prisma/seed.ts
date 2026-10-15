@@ -9,6 +9,7 @@ import {
     QuestionFormat,
     SessionType,
 } from '../generated/prisma/client.js';
+import { assertQuestionNotInOpenRevisionSession } from './openSessionQuestionGuard.js';
 
 type TopicSeed = {
     name: string;
@@ -206,6 +207,12 @@ async function main() {
                 skipped += 1;
                 continue;
             }
+
+            await assertQuestionNotInOpenRevisionSession(
+                prisma,
+                existing.id,
+                questionLabel(question, index),
+            );
 
             await prisma.question.update({
                 where: {

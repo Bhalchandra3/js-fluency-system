@@ -54,6 +54,8 @@ export const ModelName = {
   Topic: 'Topic',
   Question: 'Question',
   SessionLog: 'SessionLog',
+  RevisionSession: 'RevisionSession',
+  RevisionSessionQuestion: 'RevisionSessionQuestion',
   Mistake: 'Mistake',
   DeepDiveNote: 'DeepDiveNote',
   DailyProgress: 'DailyProgress'
@@ -111,13 +113,42 @@ export const SessionLogScalarFieldEnum = {
   id: 'id',
   topicId: 'topicId',
   questionId: 'questionId',
+  sessionId: 'sessionId',
   sessionType: 'sessionType',
+  selectedAnswer: 'selectedAnswer',
   correct: 'correct',
   confidence: 'confidence',
   answeredAt: 'answeredAt'
 } as const
 
 export type SessionLogScalarFieldEnum = (typeof SessionLogScalarFieldEnum)[keyof typeof SessionLogScalarFieldEnum]
+
+
+export const RevisionSessionScalarFieldEnum = {
+  id: 'id',
+  topicId: 'topicId',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  outcome: 'outcome',
+  previousIntervalDays: 'previousIntervalDays',
+  resultingIntervalDays: 'resultingIntervalDays',
+  previousNextRevisionDate: 'previousNextRevisionDate',
+  resultingNextRevisionDate: 'resultingNextRevisionDate',
+  policyVersion: 'policyVersion'
+} as const
+
+export type RevisionSessionScalarFieldEnum = (typeof RevisionSessionScalarFieldEnum)[keyof typeof RevisionSessionScalarFieldEnum]
+
+
+export const RevisionSessionQuestionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  questionId: 'questionId',
+  sortOrder: 'sortOrder'
+} as const
+
+export type RevisionSessionQuestionScalarFieldEnum = (typeof RevisionSessionQuestionScalarFieldEnum)[keyof typeof RevisionSessionQuestionScalarFieldEnum]
 
 
 export const MistakeScalarFieldEnum = {

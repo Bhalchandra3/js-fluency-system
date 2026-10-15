@@ -45,3 +45,21 @@ export const QuestionFormat = {
 } as const
 
 export type QuestionFormat = (typeof QuestionFormat)[keyof typeof QuestionFormat]
+
+
+export const RevisionSessionStatus = {
+  OPEN: 'OPEN',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type RevisionSessionStatus = (typeof RevisionSessionStatus)[keyof typeof RevisionSessionStatus]
+
+
+export const RevisionSessionOutcome = {
+  ADVANCE: 'ADVANCE',
+  REINFORCE: 'REINFORCE',
+  REINFORCE_AT_1: 'REINFORCE_AT_1',
+  RESET: 'RESET'
+} as const
+
+export type RevisionSessionOutcome = (typeof RevisionSessionOutcome)[keyof typeof RevisionSessionOutcome]
