@@ -2,12 +2,12 @@
 
 > Approved implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Approved and active** — Phase 3 has formally started.
-> Step 0–2 and Step 2.5 (Neon schema migrate) are **complete**. Next: **Step 3 — Today’s Revision read API**.
+> Step 0–4 are **complete** (Step 5 N/A). Next: **Step 6 — Frontend data access and authentication**.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 >
-> **Rule:** Complete and verify each step before moving to the next unless a step explicitly allows parallel work. Step 3 may proceed — revision-session migration is applied and verified on Neon.
+> **Rule:** Complete and verify each step before moving to the next unless a step explicitly allows parallel work.
 
 ---
 
@@ -308,29 +308,29 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 
 ---
 
-### Step 3 — Today’s Revision read API
+### Step 3 — Today’s Revision read API — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Authenticated read with embedded REVISION questions and empty-due support. |
-| **Expected files** | New `api/` revision route(s); reuse `requireBearerToken`, `prisma`, scheduling helpers. |
+| **Delivered** | `api/revision/today.ts`; `api/_lib/revision/todayService.ts`; `npm run test:revision-today`. |
 | **Depends on** | Step 2 ✅; Step 2.5 migration applied + verified. |
-| **Work** | Sticky OPEN resume; frozen questions via association; overdue prioritization; no pre-evaluation answer leakage. |
-| **Verification** | Auth matrix; contract tests; empty/due/overdue cases; topics/health regression. |
-| **Completion** | Local verified read API. |
+| **Work** | Sticky OPEN resume; frozen questions via association; overdue prioritization; no pre-evaluation answer leakage; skip zero-REVISION topics. |
+| **Verification** | `test:revision-today` 18/18; scheduling 30/30; prisma-guards 1/1; revision-db 6/6 (2026-10-16). |
+| **Completion** | ✅ Local verified read API. |
 
 ---
 
-### Step 4 — Answer/confidence submission + explicit complete API
+### Step 4 — Answer/confidence submission + explicit complete API — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Server-authoritative evaluate + persist answers; explicit complete finalizes schedule once (Decision A). |
-| **Expected files** | New `api/` write route(s) for answers and complete. |
+| **Delivered** | `api/revision/answers.ts`, `api/revision/complete.ts`, revision write services; `npm run test:revision-write`. |
 | **Depends on** | Steps 2–3; Step 1 evaluation + persistence design. |
 | **Work** | Per-answer upsert while OPEN (no schedule write); `POST …/complete` atomic G5 + Topic update + COMPLETED; duplicate-complete idempotency; LX5 outcome fields. |
-| **Verification** | Every G5 row; aggregation only on complete; last answer leaves OPEN; incomplete complete rejected; duplicate complete; incorrect≠confidence override. |
-| **Completion** | Local verified write path with DB evidence. |
+| **Verification** | `test:revision-write` 16/16; today 18/18; scheduling 30/30; guards 1/1; revision-db 6/6 (2026-10-16). |
+| **Completion** | ✅ Local verified write path. |
 
 ---
 
@@ -480,9 +480,11 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 1** | Complete — schema/lifecycle design approved (Decisions A/B) |
 | **Step 2** | Complete — `api/_lib/scheduling/`; `npm run test:scheduling` 30/30 |
 | **Step 2.5** | ✅ Complete — Neon migrate + verify (2026-10-15) |
-| **Next step** | Step 3 — Today’s Revision read API |
-| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11 / §9.12 |
-| **Blocking open product gates** | None for Step 3 start (API complete/idempotency still Step 4) |
-| **Next action** | Implement and verify Step 3 |
+| **Step 3** | ✅ Complete — `GET /api/revision/today` (2026-10-16) |
+| **Step 4** | ✅ Complete — answers + complete APIs (2026-10-16) |
+| **Next step** | Step 6 — Frontend data access and authentication |
+| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.14 |
+| **Blocking open product gates** | None for Step 6 start |
+| **Next action** | Implement and verify Step 6 |
 
 **Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`

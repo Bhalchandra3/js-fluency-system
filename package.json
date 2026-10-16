@@ -11,6 +11,8 @@
     "test:scheduling": "tsx --test api/_lib/scheduling/intervalLadder.test.ts api/_lib/scheduling/g5Aggregation.test.ts api/_lib/scheduling/calendarDay.test.ts",
     "test:prisma-guards": "tsx --test prisma/openSessionQuestionGuard.test.ts",
     "test:revision-db": "tsx --test prisma/revisionSession.integration.test.ts",
+    "test:revision-today": "tsx --test api/revision/today.handler.test.ts api/_lib/revision/todayService.integration.test.ts",
+    "test:revision-write": "tsx --test api/revision/answers.handler.test.ts api/revision/complete.handler.test.ts api/_lib/revision/answerComplete.integration.test.ts",
     "postinstall": "prisma generate"
   },
   "prettier": {
