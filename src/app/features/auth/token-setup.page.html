@@ -1,0 +1,52 @@
+<section class="token-setup" aria-labelledby="token-setup-title">
+  <h1 id="token-setup-title">Access token setup</h1>
+  <p class="token-setup__lead">
+    Paste the bearer token once. It is stored only in this browser’s local storage and sent
+    as an Authorization header to same-origin API requests. It is never written into the app
+    source or environment files.
+  </p>
+
+  @if (hasSavedToken()) {
+    <p class="token-setup__saved" role="status">
+      A token is saved in this browser. Enter a new value below to replace it. The saved token
+      is never shown here.
+    </p>
+  }
+
+  <form class="token-setup__form" (ngSubmit)="saveToken()" novalidate>
+    <label class="token-setup__label" for="bearer-token-input">Access token</label>
+    <input
+      id="bearer-token-input"
+      class="token-setup__input"
+      name="bearerToken"
+      type="password"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      [(ngModel)]="tokenInput"
+      [attr.aria-invalid]="statusKind() === 'error' ? true : null"
+      [attr.aria-describedby]="statusMessage() ? 'token-setup-status' : null"
+    />
+
+    <div class="token-setup__actions">
+      <button type="submit" class="token-setup__primary">Save token</button>
+      @if (hasSavedToken()) {
+        <button type="button" class="token-setup__secondary" (click)="clearSavedToken()">
+          Remove saved token
+        </button>
+      }
+    </div>
+  </form>
+
+  @if (statusMessage()) {
+    <p
+      id="token-setup-status"
+      class="token-setup__status"
+      [class.token-setup__status--error]="statusKind() === 'error'"
+      [class.token-setup__status--success]="statusKind() === 'success'"
+      role="status"
+    >
+      {{ statusMessage() }}
+    </p>
+  }
+</section>

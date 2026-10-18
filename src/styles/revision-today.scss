@@ -1,0 +1,367 @@
+.revision {
+  --ink: #15202b;
+  --muted: #5b6770;
+  --line: #d5dde3;
+  --surface: #f7f9fb;
+  --accent: #0b6e4f;
+  --warn-bg: #fff4e5;
+  --warn-ink: #8a4b00;
+  --due-bg: #e7f3ec;
+  --error: #9b1c1c;
+  --ok-bg: #e8f7ee;
+  --bad-bg: #fdecec;
+  --focus: #1d4ed8;
+
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+  color: var(--ink);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.revision__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.revision__heading-block h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+}
+
+.revision__subtitle,
+.revision__hint,
+.revision__muted,
+.revision__counts {
+  color: var(--muted);
+  margin: 0;
+}
+
+.revision__live {
+  min-height: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.revision__status {
+  margin: 0.35rem 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.revision__status--error {
+  border-color: #f0b4b4;
+  background: var(--bad-bg);
+  color: var(--error);
+}
+
+.revision__status--info {
+  border-color: #b7d7c5;
+  background: var(--ok-bg);
+}
+
+.revision__panel,
+.revision__summary,
+.revision__question,
+.revision__footer,
+.revision__confirm {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.revision__panel--loading {
+  text-align: center;
+}
+
+.revision__panel--complete {
+  border-color: #9ec9b3;
+}
+
+.revision__complete-badge {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--due-bg);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.revision__schedule {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.revision__schedule > div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.5rem;
+}
+
+.revision__schedule dt {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.revision__schedule dd {
+  margin: 0;
+}
+
+.revision__schedule-reason {
+  grid-template-columns: 1fr;
+}
+
+.revision__topic h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.revision__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.9rem;
+}
+
+.revision__pill {
+  display: inline-flex;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.revision__pill--overdue {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-color: #f0c48a;
+}
+
+.revision__pill--due {
+  background: var(--due-bg);
+  color: var(--accent);
+  border-color: #9ec9b3;
+}
+
+.revision__question-nav {
+  margin-top: 1rem;
+}
+
+.revision__question-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+}
+
+.revision__qbtn {
+  min-width: 2.4rem;
+  min-height: 2.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.revision__qbtn--current {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.revision__qbtn--answered {
+  border-color: #6aa88a;
+  background: var(--due-bg);
+}
+
+.revision__progress-line {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.revision__prompt {
+  margin: 0 0 0.85rem;
+  font-size: 1.15rem;
+}
+
+.revision__code {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #101820;
+  color: #e8eef3;
+  font-size: 0.9rem;
+}
+
+.revision__fieldset {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem 0.9rem;
+  margin: 0 0 0.9rem;
+  background: #fff;
+}
+
+.revision__fieldset legend {
+  padding: 0 0.35rem;
+  font-weight: 600;
+}
+
+.revision__options,
+.revision__confidence,
+.revision__self-assess {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.revision__option {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.45rem 0.5rem;
+  border-radius: 6px;
+}
+
+.revision__option input {
+  margin-top: 0.2rem;
+}
+
+.revision__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.revision__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+}
+
+.revision__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.revision__btn,
+.revision__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.revision__btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.revision__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.revision__btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.revision__btn--complete {
+  background: #123047;
+  border-color: #123047;
+  color: #fff;
+}
+
+.revision__link {
+  margin-left: 0.75rem;
+  color: var(--focus);
+}
+
+.revision__feedback {
+  margin-top: 1rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.revision__feedback--correct {
+  background: var(--ok-bg);
+  border-color: #9ec9b3;
+}
+
+.revision__feedback--incorrect {
+  background: var(--bad-bg);
+  border-color: #f0b4b4;
+}
+
+.revision__feedback-result {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+}
+
+.revision__confirm h3 {
+  margin-top: 0;
+}
+
+.revision :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .revision__schedule > div {
+    grid-template-columns: 1fr;
+  }
+
+  .revision__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .revision__btn,
+  .revision__link {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revision__btn,
+  .revision__qbtn {
+    transition: none;
+  }
+}

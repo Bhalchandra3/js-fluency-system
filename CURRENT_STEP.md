@@ -6,15 +6,17 @@
 > Approved implementation baseline: [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md)
 > Lifecycle rules: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) Â§5
 
-**Status:** In progress â€” Steps 0â€“4 complete; Step 6 next (Step 5 N/A)
-**Phase:** 3 â€” Revision Scheduling
-**Active step:** Step 6 â€” Frontend data access and authentication
-**Step 0:** Complete â€” Development Order formally approved as Phase 3 baseline
-**Step 1:** âœ… Complete â€” schema/lifecycle design approved (see Â§9.3)
-**Step 2:** âœ… Complete â€” scheduling helpers + unit tests (`api/_lib/scheduling/`)
-**Schema step:** âœ… Complete â€” disposable verified; Neon `20261015164300_add_revision_session` applied **2026-10-15** (see Â§9.12)
-**Step 3:** âœ… Complete â€” `GET /api/revision/today` implemented + verified (see Â§9.13)
-**Step 4:** âœ… Complete â€” answers + complete APIs verified (see Â§9.14)
+**Status:** In progress — Steps 0–4, 6–7 complete; Step 8 next (Step 5 N/A)
+**Phase:** 3 — Revision Scheduling
+**Active step:** Step 8 — Initial dashboard
+**Step 0:** Complete — Development Order formally approved as Phase 3 baseline
+**Step 1:** ✅ Complete — schema/lifecycle design approved (see §9.3)
+**Step 2:** ✅ Complete — scheduling helpers + unit tests (`api/_lib/scheduling/`)
+**Schema step:** ✅ Complete — disposable verified; Neon `20261015164300_add_revision_session` applied **2026-10-15** (see §9.12)
+**Step 3:** ✅ Complete — `GET /api/revision/today` implemented + verified (see §9.13)
+**Step 4:** ✅ Complete — answers + complete APIs verified (see §9.14)
+**Step 6:** ✅ Complete — FE data access + auth verified (see §9.15)
+**Step 7:** ✅ Complete — Today's Revision screen verified (see §9.16)
 
 ---
 
@@ -206,23 +208,25 @@ Backend-authoritative scheduling/validation; consistent API errors; atomic relat
 
 Skipped unless a demonstrated need reopens it.
 
-### Step 6 â€” Frontend data access and authentication â€” â¬œ
+### Step 6 — Frontend data access and authentication — ✅
 
 | | |
 |---|---|
 | **Goal** | FE-local types + bearer integration; no `shared-types/` |
-| **Depends on** | Steps 3â€“4 |
-| **Verification** | Auth success/fail; contract mismatch tests |
-| **Completion** | FE can call Phase 3 APIs safely |
+| **Depends on** | Steps 3–4 |
+| **Delivered** | Token setup `/setup`, `AuthTokenStore`, `authInterceptor`, `RevisionApiService`, `normalizeApiError`, contract fixtures |
+| **Verification** | `npx ng test --watch=false --browsers=ChromeHeadless` **31/31**; `npm run build` pass (2026-10-16) |
+| **Completion** | ✅ FE can call Phase 3 APIs safely (localStorage XSS limitation documented) |
 
-### Step 7 â€” Todayâ€™s Revision Angular screen â€” â¬œ
+### Step 7 — Today's Revision Angular screen — ✅
 
 | | |
 |---|---|
 | **Goal** | Default authenticated entry; LX session flow |
 | **Depends on** | Step 6 |
-| **Verification** | E2E/local walkthrough; refresh/nav; confidence â‰  correctness |
-| **Completion** | Spec Â§5.1 loop works locally |
+| **Delivered** | `RevisionTodayPage` at `''`; MCQ/SHORT_ANSWER + confidence; explicit complete; empty/loading/error/completed states |
+| **Verification** | `npx ng test --watch=false --browsers=ChromeHeadless` **47/47**; `npm run build` pass (2026-10-16) |
+| **Completion** | ✅ Spec §5.1 loop works locally via UI + APIs |
 
 ### Step 8 â€” Initial dashboard â€” â¬œ
 
@@ -288,11 +292,12 @@ Skipped unless a demonstrated need reopens it.
 | 3 | âœ… Complete | Â§9.13 â€” `GET /api/revision/today`; `test:revision-today` 18/18 |
 | 4 | âœ… Complete | Â§9.14 â€” answers + complete; `test:revision-write` 16/16 |
 | 5 | N/A | G3 |
-| 6 | â¬œ Next | FE data access + auth |
-| 7â€“11 | â¬œ | Not started |
+| 6 | ✅ Complete | §9.15 — FE data access + auth |
+| 7 | ✅ Complete | §9.16 — Today's Revision UI; `ng test` 47/47 |
+| 8–11 | ○ | Not started |
 
-**Exact stopping point:** Revision write APIs verified locally; Angular integration not started.
-**Next action:** Begin Step 6 â€” frontend data access and authentication.
+**Exact stopping point:** Today's Revision screen verified locally; dashboard not started.
+**Next action:** Begin Step 8 — Initial dashboard.
 
 ---
 
@@ -579,7 +584,54 @@ Aligned with G1â€“G8, LX1â€“LX9, and engineering criteria. No `DailyPr
 | Tests | `npm run test:revision-write` **16/16** (2026-10-16) |
 | Neon migrate / seed | Not rerun |
 
-### 9.4 API routes and contracts â€” **Approved for design** (Decision A)
+### 9.15 Step 6 — Frontend data access and authentication (implemented)
+
+**Status:** ✅ Complete (2026-10-16). No Today's Revision UI (Step 7). No backend/schema changes.
+
+| Item | Result |
+|---|---|
+| Token setup | Route `/setup` — `TokenSetupPage` (password input, save/replace/clear; token not re-displayed) |
+| Token store | `AuthTokenStore` — key `js-fluency.bearerToken`; trim; blank → unauthenticated; storage errors swallowed |
+| Interceptor | `authInterceptor` — Bearer on same-origin `/api/` only; authenticated 401 clears token + navigates to `/setup` (no loop) |
+| API client | `RevisionApiService` — `getToday`, `submitAnswer`, `completeSession` via relative `/api/revision/*` |
+| Types | FE-local `revision.types.ts`; `buildSubmitAnswerBody` omits `selfAssessedCorrect` for MCQ |
+| Errors | `normalizeApiError` / `ApiClientError` for 400/401/404/409/405/500/network |
+| Fixtures | `fixtures/revision-contracts.ts` — today fixture asserts no `correctAnswer`/`explanation` |
+| Config | `provideHttpClient(withInterceptors([authInterceptor]))` in `app.config.ts` |
+| Tests | `npx ng test --watch=false --browsers=ChromeHeadless` **31/31** |
+| Build | `npm run build` pass |
+
+**Security note:** Token is user-supplied at runtime into `localStorage` (XSS-accessible on same origin). Not embedded in source, environment files, fixtures, or build-time config. Backend `BEARER_TOKEN` remains authoritative.
+
+**Limitations / deferred:**
+- Today's Revision / dashboard UI → Step 7 / Step 8.
+- Prefer `npx vercel dev` for same-origin `/api` locally (`ng serve` alone has no API proxy).
+- Functional route guard for authenticated entry deferred to Step 7 when the default route becomes Today's Revision.
+
+**Stopping point after Step 6:** FE can authenticate and call revision APIs; session UI not started.
+
+### 9.16 Step 7 — Today's Revision Angular screen (implemented)
+
+**Status:** ✅ Complete (2026-10-16). No dashboard (Step 8). No backend/schema changes.
+
+| Item | Result |
+|---|---|
+| Route | `''` → `RevisionTodayPage` with `requireTokenGuard`; `/setup` preserved |
+| Shell | Minimal app header nav (Today's Revision + Access token) |
+| States | loading / empty (with due counts) / session / completed / error + retry |
+| Questions | Frozen order; MCQ radios (index strings); SHORT_ANSWER notes + self-assess; confidence required |
+| Feedback | `correctAnswer` / `explanation` only after answer API response |
+| Complete | Explicit CTA + confirm; never auto-complete; shows backend scheduling summary |
+| Errors | `ApiClientError` / Step 6 normalization; 409 complete refreshes today |
+| Tests | `ng test` **47/47** (includes Step 6 regression) |
+| Build | `npm run build` pass |
+
+**Limitations / deferred:**
+- Dashboard summary CTA → Step 8.
+- No live E2E against Vercel in this step (unit + build only).
+- Answered-state on reload of OPEN session still requires re-answer feedback from new submissions (GET today does not embed prior evaluation payload) — progress counts come from backend.
+
+### 9.4 API routes and contracts — **Approved for design** (Decision A)
 
 Follow Vercel file routes + topics error style. All revision routes: `requireBearerToken`.
 
@@ -748,8 +800,10 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 | Schema files + migration SQL + seed guard | âœ… See Â§9.12 |
 | Migration applied to Neon | âœ… 2026-10-15 â€” see Â§9.12 |
 | `GET /api/revision/today` | âœ… Step 3 â€” see Â§9.13 |
-| Answers + complete APIs | âœ… Step 4 â€” see Â§9.14 |
-| Angular FE integration | âŒ Not started (Step 6 next) |
+| Answers + complete APIs | ✅ Step 4 — see §9.14 |
+| Angular FE data access + auth | ✅ Step 6 — see §9.15 |
+| Today's Revision UI | ✅ Step 7 — see §9.16 (`ng test` 47/47) |
+| Dashboard | ❌ Not started (Step 8 next) |
 
 ---
 
@@ -757,9 +811,9 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 
 | Issue | Owner | Notes |
 |---|---|---|
-| Step 6 FE data access + auth | Implementation | Steps 3â€“4 APIs ready |
+| Step 8 Initial dashboard | Implementation | Step 7 Today’s Revision ready |
 | OPEN-session question-edit API guard | Future question-management | Seed guard implemented; no edit API yet |
-| No Angular HttpClient/guards yet | Steps 6â€“7 | Planned |
+| Prior-answer feedback on OPEN resume | Product/UX | GET today omits evaluation fields; feedback shown after submit in-session |
 | PRACTICE-only formats not in REVISION sessions | Future content | Policies defined |
 | Pre-migration Neon recovery artifacts | Ops | Keep snapshot `snap-broad-bonus-b5ty0sa1` and backup branch `backup-pre-phase3-20261015-170724` until confident; Free PITR window is 6h |
 

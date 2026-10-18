@@ -2,7 +2,7 @@
 
 > Approved implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Approved and active** — Phase 3 has formally started.
-> Step 0–4 are **complete** (Step 5 N/A). Next: **Step 6 — Frontend data access and authentication**.
+> Step 0–4 and Steps 6–7 are **complete** (Step 5 N/A). Next: **Step 8 — Initial dashboard**.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
@@ -340,29 +340,29 @@ Skipped under G3. Reopen only with demonstrated need.
 
 ---
 
-### Step 6 — Frontend data access and authentication integration
+### Step 6 — Frontend data access and authentication integration — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Typed API client + bearer token handling without `shared-types/`. |
-| **Expected files** | New `src/app/` core/api (names TBD); minimal token setup UX. |
+| **Delivered** | `/setup` token page; `AuthTokenStore`; `authInterceptor`; `RevisionApiService`; FE-local types; `normalizeApiError`; contract fixtures. |
 | **Depends on** | Steps 3–4. |
 | **Work** | FE-local DTO types; mismatch-detection tests against fixture contracts; no secrets in source. |
-| **Verification** | Authorized calls succeed; missing/invalid token handled; contract tests fail on breaking shape changes. |
-| **Completion** | FE can call Phase 3 APIs safely. |
+| **Verification** | `ng test` 31/31; `npm run build` pass (2026-10-16). |
+| **Completion** | ✅ FE can call Phase 3 APIs safely (see `CURRENT_STEP.md` §9.15). |
 
 ---
 
-### Step 7 — Today’s Revision Angular screen
+### Step 7 — Today’s Revision Angular screen — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Default authenticated entry implementing LX1–LX8 for the session flow. |
-| **Expected files** | Feature components + routes (`app.routes.ts` currently empty). |
+| **Delivered** | `RevisionTodayPage` at `''` + `requireTokenGuard`; MCQ/SHORT_ANSWER + confidence; explicit complete; empty/loading/error/completed states. |
 | **Depends on** | Step 6. |
 | **Work** | Due/overdue entry, question workflow, separate confidence UI, feedback, outcome explanation, empty-day state, loading/error states. |
-| **Verification** | E2E/local walkthrough; refresh/navigation persistence checks; confidence≠correctness UX check. |
-| **Completion** | Spec §5.1 loop works locally. |
+| **Verification** | `ng test` 47/47; `npm run build` pass (2026-10-16). |
+| **Completion** | ✅ Spec §5.1 loop works locally (see `CURRENT_STEP.md` §9.16). |
 
 ---
 
@@ -482,9 +482,11 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 2.5** | ✅ Complete — Neon migrate + verify (2026-10-15) |
 | **Step 3** | ✅ Complete — `GET /api/revision/today` (2026-10-16) |
 | **Step 4** | ✅ Complete — answers + complete APIs (2026-10-16) |
-| **Next step** | Step 6 — Frontend data access and authentication |
-| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.14 |
-| **Blocking open product gates** | None for Step 6 start |
-| **Next action** | Implement and verify Step 6 |
+| **Step 6** | ✅ Complete — FE data access + auth (2026-10-16) |
+| **Step 7** | ✅ Complete — Today's Revision UI (`ng test` 47/47, 2026-10-16) |
+| **Next step** | Step 8 — Initial dashboard |
+| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.16 |
+| **Blocking open product gates** | None for Step 8 start |
+| **Next action** | Implement and verify Step 8 |
 
 **Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`

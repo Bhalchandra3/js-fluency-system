@@ -1,0 +1,58 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: #eef2f5;
+  color: #15202b;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.app-shell__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid #d5dde3;
+  background: #ffffff;
+}
+
+.app-shell__brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-shell__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+.app-shell__nav a {
+  color: #334155;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.app-shell__nav a.is-active {
+  color: #0b6e4f;
+  border-bottom-color: #0b6e4f;
+}
+
+.app-shell__nav a:focus-visible,
+.app-shell__brand:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+.app-shell__main {
+  padding: 0.25rem 0 2rem;
+}

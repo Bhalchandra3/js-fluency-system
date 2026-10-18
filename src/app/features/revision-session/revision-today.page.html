@@ -1,0 +1,379 @@
+<section class="revision" aria-labelledby="revision-title">
+  <header class="revision__header">
+    <div class="revision__heading-block">
+      <h1 id="revision-title">Today’s Revision</h1>
+      <p class="revision__subtitle">
+        Work through today’s frozen session, then complete it explicitly to update your schedule.
+      </p>
+    </div>
+    <p class="revision__counts" aria-live="polite">
+      Due topics: <strong>{{ dueCount() }}</strong>
+      · Overdue: <strong>{{ overdueCount() }}</strong>
+    </p>
+  </header>
+
+  <div class="revision__live" aria-live="polite" aria-atomic="true">
+    @if (statusMessage()) {
+      <p class="revision__status revision__status--info">{{ statusMessage() }}</p>
+    }
+    @if (actionError()) {
+      <p class="revision__status revision__status--error" role="alert">{{ actionError() }}</p>
+    }
+  </div>
+
+  @if (viewState() === 'loading') {
+    <div class="revision__panel revision__panel--loading" role="status" aria-busy="true">
+      <p>Loading today’s revision…</p>
+    </div>
+  }
+
+  @if (viewState() === 'error') {
+    <div class="revision__panel" role="alert">
+      <h2>Could not load today’s revision</h2>
+      <p>{{ pageError() }}</p>
+      <button type="button" class="revision__btn revision__btn--primary" (click)="loadToday()">
+        Retry
+      </button>
+      <a routerLink="/setup" class="revision__link">Check access token</a>
+    </div>
+  }
+
+  @if (viewState() === 'empty') {
+    <div class="revision__panel">
+      <h2>No revision session today</h2>
+      @if (dueCount() === 0) {
+        <p>
+          Nothing is due right now. Come back later, or check the dashboard once it is available in
+          a later step.
+        </p>
+      } @else {
+        <p>
+          There {{ dueCount() === 1 ? 'is' : 'are' }}
+          <strong>{{ dueCount() }}</strong> due topic{{ dueCount() === 1 ? '' : 's' }}
+          @if (overdueCount() > 0) {
+            (<strong>{{ overdueCount() }}</strong> overdue)
+          }
+          , but no eligible revision session could be opened (for example, a due topic may have no
+          REVISION questions).
+        </p>
+      }
+      <button type="button" class="revision__btn revision__btn--primary" (click)="loadToday()">
+        Refresh
+      </button>
+    </div>
+  }
+
+  @if (viewState() === 'completed' && scheduling(); as schedule) {
+    <div class="revision__panel revision__panel--complete">
+      <h2>Session completed</h2>
+      <p class="revision__complete-badge" aria-label="Session status">Status: Completed</p>
+      <dl class="revision__schedule">
+        <div>
+          <dt>Outcome</dt>
+          <dd>{{ outcomeLabel(schedule.outcome) }}</dd>
+        </div>
+        <div>
+          <dt>Previous interval</dt>
+          <dd>{{ schedule.previousIntervalDays }} day(s)</dd>
+        </div>
+        <div>
+          <dt>Next interval</dt>
+          <dd>{{ schedule.resultingIntervalDays }} day(s)</dd>
+        </div>
+        <div>
+          <dt>Next revision</dt>
+          <dd>
+            {{ formatKolkataDate(schedule.resultingNextRevisionDate) }}
+            <span class="revision__muted">(Asia/Kolkata calendar day)</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Policy</dt>
+          <dd>{{ schedule.policyVersion }}</dd>
+        </div>
+        <div class="revision__schedule-reason">
+          <dt>Reason</dt>
+          <dd>{{ schedule.reason }}</dd>
+        </div>
+      </dl>
+      <button type="button" class="revision__btn revision__btn--secondary" (click)="loadToday()">
+        Check for another session
+      </button>
+    </div>
+  }
+
+  @if (viewState() === 'session' && session(); as activeSession) {
+    <section class="revision__summary" aria-labelledby="topic-heading">
+      <div class="revision__topic">
+        <h2 id="topic-heading">{{ activeSession.topic.name }}</h2>
+        <ul class="revision__meta">
+          <li>
+            Status:
+            <strong class="revision__pill">Open</strong>
+          </li>
+          <li>
+            @if (activeSession.topic.isOverdue) {
+              <span class="revision__pill revision__pill--overdue" title="Past due">
+                Overdue
+              </span>
+            } @else {
+              <span class="revision__pill revision__pill--due">Due today</span>
+            }
+          </li>
+          <li>Interval: {{ activeSession.topic.intervalDays }} day(s)</li>
+          <li>
+            Next revision:
+            {{ formatKolkataDate(activeSession.topic.nextRevisionDate) }}
+          </li>
+          <li>
+            Progress:
+            <strong>
+              {{ activeSession.progress.answered }} / {{ activeSession.progress.total }}
+            </strong>
+            answered
+          </li>
+        </ul>
+      </div>
+
+      <nav class="revision__question-nav" aria-label="Questions in this session">
+        <ol class="revision__question-list">
+          @for (question of activeSession.questions; track question.id; let i = $index) {
+            <li>
+              <button
+                type="button"
+                class="revision__qbtn"
+                [class.revision__qbtn--current]="i === currentIndex()"
+                [class.revision__qbtn--answered]="isAnswered(question.id)"
+                [attr.aria-current]="i === currentIndex() ? 'true' : null"
+                [attr.aria-label]="questionStatusLabel(question, i)"
+                (click)="selectQuestion(i)"
+                [disabled]="submitting() || completing()"
+              >
+                {{ i + 1 }}
+                @if (isAnswered(question.id)) {
+                  <span class="revision__qbtn-mark" aria-hidden="true">✓</span>
+                }
+              </button>
+            </li>
+          }
+        </ol>
+      </nav>
+    </section>
+
+    @if (currentQuestion(); as question) {
+      <article class="revision__question" aria-labelledby="question-prompt">
+        <p class="revision__progress-line">
+          Question {{ currentIndex() + 1 }} of {{ questionCount() }}
+        </p>
+        <h3 id="question-prompt" class="revision__prompt">{{ question.prompt }}</h3>
+
+        @if (question.codeSnippet) {
+          <pre class="revision__code" tabindex="0"><code>{{ question.codeSnippet }}</code></pre>
+        }
+
+        @if (question.format === 'MULTIPLE_CHOICE') {
+          @if (mcqOptions(); as options) {
+            <fieldset class="revision__fieldset" [disabled]="submitting() || completing()">
+              <legend>Choose one option</legend>
+              <div class="revision__options" role="radiogroup" aria-labelledby="question-prompt">
+                @for (option of options; track $index) {
+                  <label class="revision__option">
+                    <input
+                      type="radio"
+                      name="mcq-{{ question.id }}"
+                      [value]="$index"
+                      [checked]="currentDraft().selectedAnswer === '' + $index"
+                      (change)="setSelectedAnswer('' + $index)"
+                    />
+                    <span>{{ option }}</span>
+                  </label>
+                }
+              </div>
+            </fieldset>
+          } @else {
+            <p class="revision__status revision__status--error" role="alert">
+              This multiple-choice question has invalid options and cannot be answered.
+            </p>
+          }
+        } @else if (question.format === 'SHORT_ANSWER') {
+          <div class="revision__short">
+            <label class="revision__label" for="short-answer-{{ question.id }}">
+              Your notes / attempted answer
+            </label>
+            <textarea
+              id="short-answer-{{ question.id }}"
+              class="revision__textarea"
+              rows="4"
+              [ngModel]="currentDraft().selectedAnswer"
+              (ngModelChange)="setSelectedAnswer($event)"
+              [disabled]="submitting() || completing()"
+              autocomplete="off"
+            ></textarea>
+            <p class="revision__hint">
+              The server does not auto-grade free text. After you think it through, mark whether
+              your attempt was correct, then choose a confidence level.
+            </p>
+            <fieldset class="revision__fieldset" [disabled]="submitting() || completing()">
+              <legend>Self-assessment</legend>
+              <div class="revision__self-assess" role="radiogroup" aria-label="Self-assessment">
+                <label class="revision__option">
+                  <input
+                    type="radio"
+                    name="self-{{ question.id }}"
+                    [checked]="currentDraft().selfAssessedCorrect === true"
+                    (change)="setSelfAssessedCorrect(true)"
+                  />
+                  <span>I got it right</span>
+                </label>
+                <label class="revision__option">
+                  <input
+                    type="radio"
+                    name="self-{{ question.id }}"
+                    [checked]="currentDraft().selfAssessedCorrect === false"
+                    (change)="setSelfAssessedCorrect(false)"
+                  />
+                  <span>I got it wrong</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        } @else {
+          <p class="revision__status revision__status--error" role="alert">
+            Unsupported question format: {{ question.format }}.
+          </p>
+        }
+
+        <fieldset class="revision__fieldset" [disabled]="submitting() || completing()">
+          <legend>Confidence (separate from correctness)</legend>
+          <div
+            class="revision__confidence"
+            role="radiogroup"
+            aria-label="Confidence level"
+          >
+            @for (option of confidenceOptions; track option.value) {
+              <label class="revision__option">
+                <input
+                  type="radio"
+                  name="confidence-{{ question.id }}"
+                  [checked]="currentDraft().confidence === option.value"
+                  (change)="setConfidence(option.value)"
+                />
+                <span>{{ option.label }}</span>
+              </label>
+            }
+          </div>
+        </fieldset>
+
+        <div class="revision__actions">
+          <button
+            type="button"
+            class="revision__btn revision__btn--secondary"
+            (click)="goPrevious()"
+            [disabled]="currentIndex() === 0 || submitting() || completing()"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="revision__btn revision__btn--secondary"
+            (click)="goNext()"
+            [disabled]="
+              currentIndex() >= questionCount() - 1 || submitting() || completing()
+            "
+          >
+            Next
+          </button>
+          <button
+            type="button"
+            class="revision__btn revision__btn--primary"
+            (click)="submitCurrentAnswer()"
+            [disabled]="!canSubmitCurrent()"
+          >
+            @if (submitting()) {
+              Saving…
+            } @else if (isAnswered(question.id)) {
+              Update answer
+            } @else {
+              Submit answer
+            }
+          </button>
+        </div>
+
+        @if (currentFeedback(); as feedback) {
+          <div
+            class="revision__feedback"
+            [class.revision__feedback--correct]="feedback.correct"
+            [class.revision__feedback--incorrect]="!feedback.correct"
+            role="status"
+            aria-live="polite"
+          >
+            <p class="revision__feedback-result">
+              @if (feedback.correct) {
+                Result: Correct
+              } @else {
+                Result: Incorrect
+              }
+            </p>
+            @if (feedback.correctAnswer !== undefined) {
+              <p>
+                Correct answer:
+                <strong>{{ feedback.correctAnswer }}</strong>
+              </p>
+            }
+            @if (feedback.explanation) {
+              <p class="revision__explanation">{{ feedback.explanation }}</p>
+            }
+          </div>
+        }
+      </article>
+    }
+
+    <footer class="revision__footer">
+      @if (!confirmCompleteOpen()) {
+        <button
+          type="button"
+          class="revision__btn revision__btn--complete"
+          (click)="openCompleteConfirm()"
+          [disabled]="!canComplete()"
+        >
+          Complete session
+        </button>
+        @if (!activeSession.canComplete) {
+          <p class="revision__hint">
+            Answer every question in this session before completing. Completing is never automatic.
+          </p>
+        }
+      } @else {
+        <div class="revision__confirm" role="group" aria-labelledby="complete-confirm-title">
+          <h3 id="complete-confirm-title">Complete this session?</h3>
+          <p>
+            This updates the topic schedule using your answers. You can still review questions, but
+            the session will leave the open state.
+          </p>
+          <div class="revision__actions">
+            <button
+              type="button"
+              class="revision__btn revision__btn--complete"
+              (click)="confirmCompleteSession()"
+              [disabled]="completing()"
+            >
+              @if (completing()) {
+                Completing…
+              } @else {
+                Yes, complete session
+              }
+            </button>
+            <button
+              type="button"
+              class="revision__btn revision__btn--secondary"
+              (click)="cancelCompleteConfirm()"
+              [disabled]="completing()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      }
+    </footer>
+  }
+</section>
