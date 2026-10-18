@@ -43,8 +43,9 @@
       <h2>No revision session today</h2>
       @if (dueCount() === 0) {
         <p>
-          Nothing is due right now. Come back later, or check the dashboard once it is available in
-          a later step.
+          Nothing is due right now. Come back later, or open the
+          <a routerLink="/dashboard">dashboard</a>
+          for a due/overdue summary.
         </p>
       } @else {
         <p>

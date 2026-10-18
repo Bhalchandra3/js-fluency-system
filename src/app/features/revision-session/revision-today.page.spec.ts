@@ -77,6 +77,7 @@ describe('RevisionTodayPage', () => {
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
     expect(text).toContain('No revision session today');
     expect(text).toContain('Due topics');
+    expect(text).toContain('dashboard');
   });
 
   it('renders topic information and frozen question order', () => {

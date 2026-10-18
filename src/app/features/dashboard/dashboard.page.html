@@ -1,0 +1,119 @@
+<section class="dashboard" aria-labelledby="dashboard-title">
+  <header class="dashboard__header">
+    <div class="dashboard__heading-block">
+      <h1 id="dashboard-title">Dashboard</h1>
+      <p class="dashboard__subtitle">
+        A quick look at what is due, then start Today’s Revision when you are ready.
+      </p>
+    </div>
+  </header>
+
+  @if (viewState() === 'loading') {
+    <div class="dashboard__panel dashboard__panel--loading" role="status" aria-busy="true">
+      <p>Loading dashboard…</p>
+    </div>
+  }
+
+  @if (viewState() === 'error') {
+    <div class="dashboard__panel" role="alert">
+      <h2>Could not load dashboard</h2>
+      <p>{{ pageError() }}</p>
+      <button type="button" class="dashboard__btn dashboard__btn--primary" (click)="loadDashboard()">
+        Retry
+      </button>
+      <a routerLink="/setup" class="dashboard__link">Check access token</a>
+    </div>
+  }
+
+  @if (viewState() === 'ready') {
+    <section class="dashboard__summary" aria-labelledby="due-summary-heading">
+      <h2 id="due-summary-heading" class="dashboard__section-title">Revision summary</h2>
+      <ul class="dashboard__counts" aria-live="polite">
+        <li>
+          <span class="dashboard__count-label">Due topics</span>
+          <strong class="dashboard__count-value">{{ dueCount() }}</strong>
+          <span class="dashboard__count-note">Includes overdue and due today</span>
+        </li>
+        <li>
+          <span class="dashboard__count-label">Overdue topics</span>
+          <strong class="dashboard__count-value dashboard__count-value--overdue">
+            {{ overdueCount() }}
+          </strong>
+          <span class="dashboard__count-note">Past the Asia/Kolkata due day</span>
+        </li>
+      </ul>
+    </section>
+
+    @if (session(); as activeSession) {
+      <section class="dashboard__focus" aria-labelledby="focus-heading">
+        <h2 id="focus-heading" class="dashboard__section-title">Current revision session</h2>
+        <p class="dashboard__focus-topic">{{ activeSession.topic.name }}</p>
+        <ul class="dashboard__meta">
+          <li>
+            @if (activeSession.topic.isOverdue) {
+              <span class="dashboard__pill dashboard__pill--overdue" title="Past due">
+                Overdue
+              </span>
+            } @else {
+              <span class="dashboard__pill dashboard__pill--due">Due today</span>
+            }
+          </li>
+          <li>Interval: {{ activeSession.topic.intervalDays }} day(s)</li>
+          <li>
+            Next revision:
+            {{ formatKolkataDate(activeSession.topic.nextRevisionDate) }}
+          </li>
+          <li>
+            Progress:
+            <strong>
+              {{ activeSession.progress.answered }} / {{ activeSession.progress.total }}
+            </strong>
+            answered
+          </li>
+          @if (activeSession.canComplete) {
+            <li>
+              <span class="dashboard__pill dashboard__pill--ready">Ready to complete</span>
+            </li>
+          }
+        </ul>
+        <p class="dashboard__hint">
+          Open Today’s Revision to continue this open session. Full due-topic lists and deep-dive
+          summaries are not part of this Phase 3 dashboard.
+        </p>
+        <a routerLink="/" class="dashboard__btn dashboard__btn--primary">
+          Continue Today’s Revision
+        </a>
+      </section>
+    } @else {
+      <section class="dashboard__empty" aria-labelledby="empty-heading">
+        <h2 id="empty-heading" class="dashboard__section-title">No open revision session</h2>
+        @if (dueCount() === 0) {
+          <p>
+            Nothing is due right now. Check back later, or open Today’s Revision to confirm the
+            latest schedule.
+          </p>
+        } @else {
+          <p>
+            There {{ dueCount() === 1 ? 'is' : 'are' }}
+            <strong>{{ dueCount() }}</strong> due topic{{ dueCount() === 1 ? '' : 's' }}
+            @if (overdueCount() > 0) {
+              (<strong>{{ overdueCount() }}</strong> overdue)
+            }
+            , but no eligible revision session is open (for example, a due topic may have no
+            REVISION questions).
+          </p>
+        }
+        <a routerLink="/" class="dashboard__btn dashboard__btn--primary">
+          Go to Today’s Revision
+        </a>
+      </section>
+    }
+
+    @if (session()) {
+      <p class="dashboard__cta-secondary">
+        <a routerLink="/" class="dashboard__link">Today’s Revision</a>
+        is also available from the primary navigation.
+      </p>
+    }
+  }
+</section>

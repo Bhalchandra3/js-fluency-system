@@ -6,9 +6,9 @@
 > Approved implementation baseline: [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md)
 > Lifecycle rules: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) Â§5
 
-**Status:** In progress — Steps 0–4, 6–7 complete; Step 8 next (Step 5 N/A)
+**Status:** In progress — Steps 0–4, 6–8 complete; Step 9 next (Step 5 N/A)
 **Phase:** 3 — Revision Scheduling
-**Active step:** Step 8 — Initial dashboard
+**Active step:** Step 9 — Local end-to-end verification
 **Step 0:** Complete — Development Order formally approved as Phase 3 baseline
 **Step 1:** ✅ Complete — schema/lifecycle design approved (see §9.3)
 **Step 2:** ✅ Complete — scheduling helpers + unit tests (`api/_lib/scheduling/`)
@@ -17,6 +17,7 @@
 **Step 4:** ✅ Complete — answers + complete APIs verified (see §9.14)
 **Step 6:** ✅ Complete — FE data access + auth verified (see §9.15)
 **Step 7:** ✅ Complete — Today's Revision screen verified (see §9.16)
+**Step 8:** ✅ Complete — Initial dashboard verified (see §9.17)
 
 ---
 
@@ -228,14 +229,15 @@ Skipped unless a demonstrated need reopens it.
 | **Verification** | `npx ng test --watch=false --browsers=ChromeHeadless` **47/47**; `npm run build` pass (2026-10-16) |
 | **Completion** | ✅ Spec §5.1 loop works locally via UI + APIs |
 
-### Step 8 â€” Initial dashboard â€” â¬œ
+### Step 8 — Initial dashboard — ✅
 
 | | |
 |---|---|
 | **Goal** | `/dashboard` summary + CTA (derived data) |
 | **Depends on** | Steps 3 and 7 |
-| **Verification** | Real due/overdue data; CTA navigation; empty-day helpful |
-| **Completion** | Initial dashboard MVP accepted |
+| **Delivered** | `DashboardPage` at `/dashboard` with `requireTokenGuard`; due/overdue counts + current-session summary from `GET /api/revision/today`; CTA to Today’s Revision; loading/empty/error states |
+| **Verification** | `npx ng test --watch=false --browsers=ChromeHeadless` **57/57**; `npm run build` pass; `git diff --check` clean (2026-10-18) |
+| **Completion** | ✅ Initial dashboard MVP accepted (see §9.17) |
 
 ### Step 9 â€” Local end-to-end verification â€” â¬œ
 
@@ -294,10 +296,11 @@ Skipped unless a demonstrated need reopens it.
 | 5 | N/A | G3 |
 | 6 | ✅ Complete | §9.15 — FE data access + auth |
 | 7 | ✅ Complete | §9.16 — Today's Revision UI; `ng test` 47/47 |
-| 8–11 | ○ | Not started |
+| 8 | ✅ Complete | §9.17 — `/dashboard` summary + CTA; `ng test` 57/57 |
+| 9–11 | ○ | Not started |
 
-**Exact stopping point:** Today's Revision screen verified locally; dashboard not started.
-**Next action:** Begin Step 8 — Initial dashboard.
+**Exact stopping point:** Initial dashboard verified locally (unit + build); Step 9 E2E not started.
+**Next action:** Begin Step 9 — Local end-to-end verification.
 
 ---
 
@@ -627,9 +630,43 @@ Aligned with G1â€“G8, LX1â€“LX9, and engineering criteria. No `DailyPr
 | Build | `npm run build` pass |
 
 **Limitations / deferred:**
-- Dashboard summary CTA → Step 8.
+- Dashboard summary CTA → Step 8 (completed — see §9.17).
 - No live E2E against Vercel in this step (unit + build only).
 - Answered-state on reload of OPEN session still requires re-answer feedback from new submissions (GET today does not embed prior evaluation payload) — progress counts come from backend.
+
+### 9.17 Step 8 — Initial dashboard (implemented)
+
+**Status:** ✅ Complete (2026-10-18). No backend/schema changes. Step 9 E2E not started.
+
+| Item | Result |
+|---|---|
+| Route | `/dashboard` → `DashboardPage` with `requireTokenGuard`; default `''` remains Today’s Revision (G7); `/setup` preserved |
+| Shell | Primary nav adds Dashboard alongside Today’s Revision + Access token |
+| Data source | Single `RevisionApiService.getToday()` call — `dueCount`, `overdueCount`, optional `session` (topic + progress) |
+| States | loading / ready (with session or empty) / error + retry; unauthorized via existing interceptor → `/setup` |
+| CTA | Prominent link to `/` (Today’s Revision); empty-day helpful copy (LX6) |
+| Deferred metrics | Full due-topic name list (API returns selected session only); deep-dive summary (Phase 4); streaks/history/statistics (unsupported) |
+| Tests | `ng test` **57/57** (dashboard + Step 6–7 regression) |
+| Build | `npm run build` pass; `git diff --check` clean |
+
+**Data-availability decisions:**
+
+| Potential information | Existing API support | Decision |
+|---|---|---|
+| Due-topic count | `dueCount` on `GET /api/revision/today` | Used |
+| Overdue-topic count | `overdueCount` | Used |
+| Current revision session | `session` object | Summary only (topic, overdue flag, progress) |
+| Current-session progress | `session.progress` | Used |
+| Full due-topic list | Not in today payload | Deferred — not invented |
+| Historical completion statistics | No API | Not shown |
+| Revision streak | No API | Not shown |
+| Deep Dive summary | Phase 4 | Out of scope |
+
+**Files created:** `src/app/features/dashboard/dashboard.page.{ts,html,scss,spec.ts}`, `src/styles/dashboard.scss`
+
+**Files modified:** `app.routes.ts`, `app.html`, `app.spec.ts`, `styles.scss`, Today’s Revision empty-state link + style, Phase 3 docs.
+
+**Stopping point after Step 8:** Dashboard MVP renders real due/overdue + session summary with CTA; local E2E (Step 9) not run.
 
 ### 9.4 API routes and contracts — **Approved for design** (Decision A)
 
@@ -803,7 +840,7 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 | Answers + complete APIs | ✅ Step 4 — see §9.14 |
 | Angular FE data access + auth | ✅ Step 6 — see §9.15 |
 | Today's Revision UI | ✅ Step 7 — see §9.16 (`ng test` 47/47) |
-| Dashboard | ❌ Not started (Step 8 next) |
+| Dashboard | ✅ Step 8 — see §9.17 (`ng test` 57/57) |
 
 ---
 
@@ -811,7 +848,8 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 
 | Issue | Owner | Notes |
 |---|---|---|
-| Step 8 Initial dashboard | Implementation | Step 7 Today’s Revision ready |
+| Step 9 Local end-to-end verification | Implementation | Step 8 dashboard ready |
+| Full due-topic list on dashboard | Future API/product | Today API returns counts + selected session only |
 | OPEN-session question-edit API guard | Future question-management | Seed guard implemented; no edit API yet |
 | Prior-answer feedback on OPEN resume | Product/UX | GET today omits evaluation fields; feedback shown after submit in-session |
 | PRACTICE-only formats not in REVISION sessions | Future content | Policies defined |

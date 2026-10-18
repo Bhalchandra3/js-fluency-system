@@ -2,7 +2,7 @@
 
 > Approved implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Approved and active** — Phase 3 has formally started.
-> Step 0–4 and Steps 6–7 are **complete** (Step 5 N/A). Next: **Step 8 — Initial dashboard**.
+> Step 0–4 and Steps 6–8 are **complete** (Step 5 N/A). Next: **Step 9 — Local end-to-end verification**.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
@@ -371,11 +371,11 @@ Skipped under G3. Reopen only with demonstrated need.
 | | |
 |---|---|
 | **Goal** | `/dashboard` summary + CTA using derived data (G6/G7). |
-| **Expected files** | Dashboard feature/route. |
+| **Delivered** | `DashboardPage` at `/dashboard` + `requireTokenGuard`; due/overdue counts + current-session summary from `GET /api/revision/today`; CTA to Today’s Revision; loading/empty/error states. Full due-topic name list deferred (not in today payload); Deep Dive deferred to Phase 4. |
 | **Depends on** | Steps 3 and 7. |
-| **Work** | Due/overdue counts/list; CTA to Today’s Revision; empty-day helpfulness; no Mistake/Deep Dive widgets. |
-| **Verification** | Real data rendering; navigation to session. |
-| **Completion** | Initial dashboard MVP accepted. |
+| **Work** | Due/overdue counts; current-session summary; CTA to Today’s Revision; empty-day helpfulness; no Mistake/Deep Dive widgets. |
+| **Verification** | `ng test` 57/57; `npm run build` pass; `git diff --check` clean (2026-10-18). |
+| **Completion** | ✅ Initial dashboard MVP accepted (see `CURRENT_STEP.md` §9.17). |
 
 ---
 
@@ -484,9 +484,10 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 4** | ✅ Complete — answers + complete APIs (2026-10-16) |
 | **Step 6** | ✅ Complete — FE data access + auth (2026-10-16) |
 | **Step 7** | ✅ Complete — Today's Revision UI (`ng test` 47/47, 2026-10-16) |
-| **Next step** | Step 8 — Initial dashboard |
-| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.16 |
-| **Blocking open product gates** | None for Step 8 start |
-| **Next action** | Implement and verify Step 8 |
+| **Step 8** | ✅ Complete — Initial dashboard (`ng test` 57/57, 2026-10-18) |
+| **Next step** | Step 9 — Local end-to-end verification |
+| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.17 |
+| **Blocking open product gates** | None for Step 9 start |
+| **Next action** | Implement and verify Step 9 |
 
 **Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`
