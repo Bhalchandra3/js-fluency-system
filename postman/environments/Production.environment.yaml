@@ -1,0 +1,22 @@
+name: Production
+values:
+  - key: baseUrl
+    value: 'https://js-fluency-system.vercel.app'
+    enabled: true
+    type: default
+    description: 'Verified production host from PROJECT_TRACKER.md. Do not run answer/complete smoke against production from this local setup task.'
+  - key: bearerToken
+    value: ''
+    enabled: true
+    type: secret
+    description: 'Production BEARER_TOKEN — supply only in Postman Desktop Current value; never commit.'
+  - key: sessionId
+    value: ''
+    enabled: true
+    type: default
+    description: 'Leave empty unless intentionally testing production revision flows.'
+  - key: questionId
+    value: ''
+    enabled: true
+    type: default
+    description: 'Leave empty unless intentionally testing production revision flows.'

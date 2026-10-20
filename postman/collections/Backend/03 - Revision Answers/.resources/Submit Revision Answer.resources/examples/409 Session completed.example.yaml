@@ -1,0 +1,28 @@
+$kind: http-example
+name: 409 Session completed
+order: 3000
+request:
+  url: '{{baseUrl}}/api/revision/answers'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "sessionId": "session-fixture-1",
+        "questionId": "question-mcq-1",
+        "selectedAnswer": "0",
+        "confidence": "OKAY"
+      }
+response:
+  statusCode: 409
+  statusText: Conflict
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "error",
+        "message": "Session is already completed"
+      }

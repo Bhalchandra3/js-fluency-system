@@ -1,0 +1,51 @@
+$kind: http-example
+name: 200 OK with session
+order: 1000
+request:
+  url: '{{baseUrl}}/api/revision/today'
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "ok",
+        "dueCount": 2,
+        "overdueCount": 1,
+        "session": {
+          "id": "session-fixture-1",
+          "status": "OPEN",
+          "topic": {
+            "id": "topic-fixture-1",
+            "name": "Closures",
+            "slug": "closures",
+            "intervalDays": 3,
+            "nextRevisionDate": "2026-10-15T18:30:00.000Z",
+            "isOverdue": true
+          },
+          "questions": [
+            {
+              "id": "question-mcq-1",
+              "format": "MULTIPLE_CHOICE",
+              "prompt": "What does a closure capture?",
+              "options": ["Nothing", "Lexical environment", "Only globals"]
+            },
+            {
+              "id": "question-short-1",
+              "format": "SHORT_ANSWER",
+              "prompt": "Explain lexical scope in one sentence.",
+              "codeSnippet": "function outer() { const x = 1; }"
+            }
+          ],
+          "progress": {
+            "answered": 0,
+            "total": 2
+          },
+          "canComplete": false
+        }
+      }

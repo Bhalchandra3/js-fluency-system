@@ -1,0 +1,6 @@
+$kind: collection
+name: 04 - Revision Completion
+order: 5000
+description: |-
+  POST /api/revision/complete - finalize an OPEN session once; applies G5 scheduling
+  and Asia/Kolkata calendar-day next revision. Repeated complete is idempotent.

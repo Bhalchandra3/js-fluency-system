@@ -1,0 +1,5 @@
+$kind: collection
+name: 01 - Topics
+order: 2000
+description: |-
+  GET /api/topics - authenticated topic list (full Topic rows, name ascending).

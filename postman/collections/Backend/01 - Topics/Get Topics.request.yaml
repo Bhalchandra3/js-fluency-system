@@ -1,0 +1,54 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/topics'
+description: |-
+  Purpose: List all topics ordered by name ascending.
+
+  Method / path: GET /api/topics
+  Authentication: Required (collection bearer auth).
+
+  Success 200:
+  {
+    "status": "ok",
+    "topics": [
+      {
+        "id": "cuid",
+        "name": "string",
+        "slug": "string",
+        "area": "string",
+        "category": "string",
+        "status": "GREEN|YELLOW|RED",
+        "intervalDays": number,
+        "nextRevisionDate": "ISO-8601",
+        "createdAt": "ISO-8601",
+        "updatedAt": "ISO-8601"
+      }
+    ]
+  }
+
+  Useful errors: 401 Unauthorized; 405 Method not allowed; 500 server error.
+  Error envelope: { "status": "error", "message": "<string>" }
+
+  Source: api/topics/index.ts + prisma Topic model.
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Response is JSON with a status field', function () {
+        pm.expect(json).to.be.an('object');
+        pm.expect(json).to.have.property('status');
+      });
+
+      if (pm.response.code === 200) {
+        pm.test('Topics success envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.topics).to.be.an('array');
+        });
+      } else if (pm.response.code === 401) {
+        pm.test('Unauthorized error envelope', function () {
+          pm.expect(json).to.eql({ status: 'error', message: 'Unauthorized' });
+        });
+      }

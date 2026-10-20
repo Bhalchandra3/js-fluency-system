@@ -1,0 +1,22 @@
+name: Local Development
+values:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+    enabled: true
+    type: default
+    description: 'Local Vercel dev server (npx vercel dev). See README.md / LOCAL_README.md.'
+  - key: bearerToken
+    value: ''
+    enabled: true
+    type: secret
+    description: 'Local BEARER_TOKEN from your private .env. Set in Postman Desktop; never commit a real token.'
+  - key: sessionId
+    value: ''
+    enabled: true
+    type: default
+    description: 'OPEN revision session id. Populated by Today''s Revision tests when a session is returned.'
+  - key: questionId
+    value: ''
+    enabled: true
+    type: default
+    description: 'Question id from the current session. Populated by Today''s Revision tests when questions exist.'

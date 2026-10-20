@@ -1,0 +1,6 @@
+$kind: collection
+name: 03 - Revision Answers
+order: 4000
+description: |-
+  POST /api/revision/answers - evaluate and upsert one answer while the session is OPEN.
+  Submitting an answer does not update the topic revision schedule.

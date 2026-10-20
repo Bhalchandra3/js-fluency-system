@@ -1,0 +1,21 @@
+$kind: http-request
+order: 2000
+method: GET
+url: '{{baseUrl}}/api/revision/today'
+auth:
+  type: noauth
+description: |-
+  Negative check for GET /api/revision/today without Authorization.
+
+  Expect 401 `{ "status": "error", "message": "Unauthorized" }` when the server
+  has BEARER_TOKEN configured. Does not mutate learning data.
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Unauthenticated request is rejected', function () {
+        pm.expect(pm.response.code).to.eql(401);
+        pm.expect(json).to.eql({ status: 'error', message: 'Unauthorized' });
+      });

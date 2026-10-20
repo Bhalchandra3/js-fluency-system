@@ -1,0 +1,36 @@
+$kind: http-example
+name: 200 OK MCQ
+order: 1000
+request:
+  url: '{{baseUrl}}/api/revision/answers'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "sessionId": "session-fixture-1",
+        "questionId": "question-mcq-1",
+        "selectedAnswer": "1",
+        "confidence": "OKAY"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "ok",
+        "correct": true,
+        "correctAnswer": "1",
+        "explanation": "A closure captures its lexical environment.",
+        "progress": {
+          "answered": 1,
+          "total": 2
+        },
+        "sessionStatus": "OPEN",
+        "canComplete": false
+      }

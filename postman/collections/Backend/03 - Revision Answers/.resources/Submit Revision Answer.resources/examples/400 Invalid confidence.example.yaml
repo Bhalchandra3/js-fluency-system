@@ -1,0 +1,28 @@
+$kind: http-example
+name: 400 Invalid confidence
+order: 2000
+request:
+  url: '{{baseUrl}}/api/revision/answers'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "sessionId": "session-fixture-1",
+        "questionId": "question-mcq-1",
+        "selectedAnswer": "0",
+        "confidence": "NOT_A_LEVEL"
+      }
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "error",
+        "message": "confidence must be one of EASY, OKAY, DIFFICULT, DIDNT_UNDERSTAND"
+      }

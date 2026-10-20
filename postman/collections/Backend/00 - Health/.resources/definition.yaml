@@ -1,0 +1,5 @@
+$kind: collection
+name: 00 - Health
+order: 1000
+description: |-
+  GET /api/health - public connectivity and DB readiness check. No bearer token.

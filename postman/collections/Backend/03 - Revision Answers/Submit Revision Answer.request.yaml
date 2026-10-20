@@ -1,0 +1,98 @@
+$kind: http-request
+order: 1000
+method: POST
+url: '{{baseUrl}}/api/revision/answers'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "sessionId": "{{sessionId}}",
+      "questionId": "{{questionId}}",
+      "selectedAnswer": "0",
+      "confidence": "OKAY"
+    }
+description: |-
+  Purpose: Submit or upsert one answer for an OPEN revision session.
+
+  Method / path: POST /api/revision/answers
+
+  Authentication: Required (collection bearer auth).
+
+  Request body (wire contract from answerService / revision.types):
+  - sessionId (string, required, non-empty)
+  - questionId (string, required, non-empty)
+  - selectedAnswer (string, required, non-empty)
+  - confidence (string, required): EASY | OKAY | DIFFICULT | DIDNT_UNDERSTAND
+  - selfAssessedCorrect (boolean, required for SHORT_ANSWER only; forbidden for MULTIPLE_CHOICE)
+
+  Evaluation (supported formats only):
+  - MULTIPLE_CHOICE: selectedAnswer must be an option index string ("0".."n-1");
+    correct = (selectedAnswer === stored correctAnswer). Do not send selfAssessedCorrect.
+  - SHORT_ANSWER: send learner text in selectedAnswer and selfAssessedCorrect boolean;
+    correct = selfAssessedCorrect (no string-equality scoring).
+
+  Example SHORT_ANSWER body (replace variables / text as needed):
+  {
+    "sessionId": "{{sessionId}}",
+    "questionId": "{{questionId}}",
+    "selectedAnswer": "A closure captures its lexical environment.",
+    "confidence": "OKAY",
+    "selfAssessedCorrect": true
+  }
+
+  Success 200:
+  {
+    "status": "ok",
+    "correct": boolean,
+    "correctAnswer"?: string,
+    "explanation"?: string,
+    "progress": { "answered": number, "total": number },
+    "sessionStatus": "OPEN",
+    "canComplete": boolean
+  }
+
+  Important: answer submit does NOT update Topic.intervalDays / nextRevisionDate.
+  sessionStatus remains OPEN even after the last unanswered question.
+
+  Useful errors:
+  - 400 validation (missing fields, bad confidence, MCQ index, selfAssessedCorrect rules)
+  - 401 Unauthorized
+  - 404 Session not found / Question not found
+  - 409 Session is already completed / Question is not in this session / topic mismatch
+  - 405 Method not allowed
+  - 500 unexpected
+
+  Duplicate submit while OPEN upserts the SessionLog (last answer wins).
+examples: './.resources/Submit Revision Answer.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Response is JSON with a status field', function () {
+        pm.expect(json).to.be.an('object');
+        pm.expect(json).to.have.property('status');
+      });
+
+      if (pm.response.code === 200) {
+        pm.test('Success envelope matches SubmitAnswerResponse', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.correct).to.be.a('boolean');
+          pm.expect(json.sessionStatus).to.eql('OPEN');
+          pm.expect(json.progress).to.have.keys('answered', 'total');
+          pm.expect(json).to.have.property('canComplete');
+        });
+
+        pm.test('Answer submit does not include scheduling', function () {
+          pm.expect(json).to.not.have.property('scheduling');
+        });
+      } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404 || pm.response.code === 409) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
+        });
+      }

@@ -1,0 +1,89 @@
+$kind: http-request
+order: 1000
+method: POST
+url: '{{baseUrl}}/api/revision/complete'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "sessionId": "{{sessionId}}"
+    }
+description: |-
+  Purpose: Explicitly finalize an OPEN revision session and apply scheduling.
+
+  Method / path: POST /api/revision/complete
+
+  Authentication: Required (collection bearer auth).
+
+  Request body:
+  - sessionId (string, required, non-empty)
+
+  Validation / behavior (completeService):
+  - Session must exist.
+  - If already COMPLETED: returns stored scheduling audit (idempotent; no second Topic write).
+  - If OPEN: every frozen question must have a SessionLog; otherwise 409
+    "Session has unanswered questions".
+  - Empty frozen set => 409 "Session has no frozen questions".
+
+  Scheduling (verified):
+  - G5 aggregation over stored correct + confidence (policyVersion phase3-g5-v1).
+  - Outcomes: ADVANCE | REINFORCE | REINFORCE_AT_1 | RESET.
+  - Next revision instant = Asia/Kolkata midnight on (completion Kolkata date + resultingIntervalDays).
+  - Topic.intervalDays and Topic.nextRevisionDate update only on first successful complete.
+
+  Success 200:
+  {
+    "status": "ok",
+    "sessionStatus": "COMPLETED",
+    "scheduling": {
+      "outcome": "ADVANCE|REINFORCE|REINFORCE_AT_1|RESET",
+      "previousIntervalDays": number,
+      "resultingIntervalDays": number,
+      "resultingNextRevisionDate": "ISO-8601",
+      "policyVersion": "phase3-g5-v1",
+      "reason": string
+    }
+  }
+
+  Useful errors: 400 missing sessionId; 401 Unauthorized; 404 Session not found;
+  409 unanswered / wrong status; 405; 500.
+
+  WARNING: This mutates local Topic schedule data. Use only against local development.
+examples: './.resources/Complete Revision Session.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Response is JSON with a status field', function () {
+        pm.expect(json).to.be.an('object');
+        pm.expect(json).to.have.property('status');
+      });
+
+      if (pm.response.code === 200) {
+        pm.test('Success envelope matches CompleteSessionResponse', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.sessionStatus).to.eql('COMPLETED');
+          pm.expect(json.scheduling).to.be.an('object');
+          pm.expect(json.scheduling).to.include.keys(
+            'outcome',
+            'previousIntervalDays',
+            'resultingIntervalDays',
+            'resultingNextRevisionDate',
+            'policyVersion',
+            'reason'
+          );
+          pm.expect(['ADVANCE', 'REINFORCE', 'REINFORCE_AT_1', 'RESET']).to.include(
+            json.scheduling.outcome
+          );
+        });
+      } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404 || pm.response.code === 409) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
+        });
+      }

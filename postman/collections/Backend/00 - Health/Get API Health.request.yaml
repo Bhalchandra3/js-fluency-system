@@ -1,0 +1,53 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/health'
+auth:
+  type: noauth
+description: |-
+  Purpose: Verify the API process and Prisma/DB connectivity.
+
+  Method / path: GET /api/health
+  Authentication: None (public).
+
+  Success 200:
+  {
+    "status": "ok",
+    "dbConnected": true,
+    "topicCount": <number>,
+    "timestamp": "<ISO-8601>"
+  }
+
+  Failure 500:
+  {
+    "status": "error",
+    "dbConnected": false,
+    "message": "<string>"
+  }
+
+  Source: api/health.ts
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Health returns JSON status', function () {
+        pm.expect(json).to.be.an('object');
+        pm.expect(json).to.have.property('status');
+      });
+
+      if (pm.response.code === 200) {
+        pm.test('Healthy payload shape', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.dbConnected).to.eql(true);
+          pm.expect(json.topicCount).to.be.a('number');
+          pm.expect(json.timestamp).to.be.a('string');
+        });
+      } else if (pm.response.code === 500) {
+        pm.test('Unhealthy payload shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.dbConnected).to.eql(false);
+          pm.expect(json.message).to.be.a('string');
+        });
+      }

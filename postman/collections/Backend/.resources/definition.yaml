@@ -1,0 +1,25 @@
+$kind: collection
+name: JavaScript Fluency System API - Local
+description: |-
+  Local Git-native collection for Phase 3 manual QA (Postman Desktop Local View
+  or import from postman/exports/). Distinct from the cloud collection named
+  "JavaScript Fluency System API" — do not overwrite that cloud collection.
+
+  Auth: protected endpoints use Authorization Bearer {{bearerToken}} matching
+  server BEARER_TOKEN (api/_lib/auth.ts). Health is public. The "no auth"
+  request under Today's Revision disables auth for the 401 check.
+
+  Local workflow:
+  1. npx vercel dev (http://localhost:3000)
+  2. Select Local Development environment; set bearerToken privately
+  3. Get API Health → Get Topics → Today's Revision (no auth) → Today's Revision
+     → Submit Revision Answer → Complete Revision Session
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{bearerToken}}'
+variables:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+    description: 'Fallback if no environment is selected. Prefer Local Development.'

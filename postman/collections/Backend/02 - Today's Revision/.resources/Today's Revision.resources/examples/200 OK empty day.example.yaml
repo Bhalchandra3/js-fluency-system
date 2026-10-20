@@ -1,0 +1,21 @@
+$kind: http-example
+name: 200 OK empty day
+order: 2000
+request:
+  url: '{{baseUrl}}/api/revision/today'
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "ok",
+        "dueCount": 0,
+        "overdueCount": 0,
+        "session": null
+      }

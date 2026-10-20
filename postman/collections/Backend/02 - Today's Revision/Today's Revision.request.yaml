@@ -1,0 +1,86 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/revision/today'
+description: |-
+  Purpose: Load today's revision summary and the highest-priority OPEN session.
+
+  Method / path: GET /api/revision/today
+
+  Authentication: Required. Collection bearer auth (`Authorization: Bearer {{bearerToken}}`).
+  Missing or invalid token returns 401 `{ "status": "error", "message": "Unauthorized" }`.
+  If the server has no BEARER_TOKEN configured, returns 500
+  `{ "status": "error", "message": "Server authentication is not configured" }`.
+
+  Headers: Authorization (via collection auth). No request body. No query/path params.
+
+  Success 200 shape:
+  - status: "ok"
+  - dueCount: number of topics due today (Asia/Kolkata calendar day), including overdue
+  - overdueCount: subset of due topics whose due date is before today (Kolkata)
+  - session: null when nothing can be served, otherwise an OPEN session DTO:
+    - id, status ("OPEN")
+    - topic: { id, name, slug, intervalDays, nextRevisionDate (ISO), isOverdue }
+    - questions[]: { id, format, prompt, options?, codeSnippet? }
+    - progress: { answered, total }
+    - canComplete: true only when every frozen question has a SessionLog
+
+  Behavioral notes (from todayService):
+  - Sticky OPEN resume: an existing OPEN session for a due topic is returned before creating a new one.
+  - Question set is frozen via RevisionSessionQuestion at create time.
+  - correctAnswer and explanation must NOT appear on this response (pre-answer exposure policy).
+
+  Useful errors: 401 Unauthorized; 405 Method not allowed; 500 server/DB errors.
+  Error envelope: `{ "status": "error", "message": "<string>" }`.
+
+  Side effects: may create an OPEN RevisionSession (+ associations) when due topics exist
+  and no usable OPEN session is available. Safe for local QA only.
+examples: "./.resources/Today's Revision.resources/examples"
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+
+      pm.test('Response is JSON with a status field', function () {
+        pm.expect(json).to.be.an('object');
+        pm.expect(json).to.have.property('status');
+      });
+
+      if (pm.response.code === 200) {
+        pm.test('Success envelope matches TodayRevisionResponse', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json).to.have.property('dueCount');
+          pm.expect(json).to.have.property('overdueCount');
+          pm.expect(json).to.have.property('session');
+          pm.expect(json.dueCount).to.be.a('number');
+          pm.expect(json.overdueCount).to.be.a('number');
+        });
+
+        pm.test('Pre-answer fields are not leaked', function () {
+          const serialized = JSON.stringify(json);
+          pm.expect(serialized).to.not.include('"correctAnswer"');
+          pm.expect(serialized).to.not.include('"explanation"');
+        });
+
+        if (json.session) {
+          pm.test('OPEN session shape is present', function () {
+            pm.expect(json.session.id).to.be.a('string').and.not.empty;
+            pm.expect(json.session.status).to.eql('OPEN');
+            pm.expect(json.session.topic).to.be.an('object');
+            pm.expect(json.session.questions).to.be.an('array');
+            pm.expect(json.session.progress).to.have.keys('answered', 'total');
+            pm.expect(json.session).to.have.property('canComplete');
+          });
+
+          pm.environment.set('sessionId', json.session.id);
+          if (json.session.questions && json.session.questions.length > 0) {
+            pm.environment.set('questionId', json.session.questions[0].id);
+          }
+        }
+      } else if (pm.response.code === 401) {
+        pm.test('Unauthorized error envelope', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.eql('Unauthorized');
+        });
+      }

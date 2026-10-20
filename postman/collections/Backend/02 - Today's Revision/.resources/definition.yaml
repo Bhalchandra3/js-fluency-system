@@ -1,0 +1,7 @@
+$kind: collection
+id: 26929767-73f8d149-1e7f-4800-9eb7-ed21936eb99e
+name: 02 - Today's Revision
+order: 3000
+description: |-
+  GET /api/revision/today - due/overdue summary and sticky OPEN session (if any).
+  Does not expose correctAnswer or explanation before answer submission.
