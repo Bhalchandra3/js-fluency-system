@@ -165,6 +165,21 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Postman Desktop (local API QA)
+
+Git-managed collection source: `postman/collections/Backend/` (display name **JavaScript Fluency System API - Local**).
+
+1. Start the app with `npx vercel dev` (`http://localhost:3000`).
+2. In Postman Desktop, use the imported collection **JavaScript Fluency System API - Local** with environment **Local Development**.
+3. Set `bearerToken` as a Desktop **Current value** only (matches local `BEARER_TOKEN`). Do not commit tokens.
+4. To regenerate Desktop import JSON (gitignored under `postman/exports/`):
+
+```bash
+python postman/scripts/export_v21_for_desktop.py
+```
+
+Phase 3 progress and remaining Step 9 evidence requirements: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.18.
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

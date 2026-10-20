@@ -12,10 +12,11 @@
 | Field | Value |
 |---|---|
 | **Current phase** | Phase 3 — Revision Scheduling |
-| **Active step** | Step 9 — Local end-to-end verification |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–4 + 6–8 (Initial dashboard verified 2026-10-18) |
-| **Next action** | Begin Step 9 local end-to-end verification. Details: [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| **Active step** | Step 11 — Documentation closeout and handoff |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–4 + 6–8; Step 10 production smoke reported complete (2026-10-20). Step 9 Postman setup done (`012d95e`); formal local E2E evidence still open for closeout reconciliation |
+| **Next action** | Step 11 documentation closeout — reconcile Step 9 evidence gaps, review exit criteria, transfer Phase 3 history + Phase 4 handoff. Details: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.18–§9.19 |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
+| **Phase 3 complete?** | **No** — Step 11 open; do not start Phase 4 |
 | **Phase 3 baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) — **approved** |
 
 ---
@@ -26,7 +27,7 @@
 |---|---|---|
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
-| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | 🔵 In progress (Step 9 next) |
+| **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | 🔵 In progress (Step 11 closeout; Step 10 done) |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
@@ -201,12 +202,12 @@ Phase 2 is complete. Phase 3 has been **formally started** (see §4.9).
 
 | Field | Value |
 |---|---|
-| **Status** | Started — Steps 0–4 + 6–8 complete; Step 9 next (Step 5 N/A) |
+| **Status** | Started — Steps 0–4 + 6–8 + 10 complete; Step 9 evidence reconciliation open; Step 11 active (Step 5 N/A). Phase 3 **not** closed. |
 | **Approved baseline** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
-| **Major decisions (durable)** | G1–G8; Decisions A/B; sticky OPEN; skip zero-REVISION; explicit complete + G5 once. **Schema** Neon 2026-10-15. **Steps 3–4** APIs on `master`. **Steps 6–8** FE auth + Today's Revision + dashboard verified 2026-10-18. |
-| **Next action** | Step 9 — Local end-to-end verification |
-| **Implementation** | Backend APIs committed; Steps 6–8 FE local (uncommitted until authorized) |
+| **Major decisions (durable)** | G1–G8; Decisions A/B; sticky OPEN; skip zero-REVISION; explicit complete + G5 once. **Schema** Neon 2026-10-15. **Steps 3–4** APIs on `master`. **Steps 6–8** FE auth + Today's Revision + dashboard verified 2026-10-18. **Postman** Git-managed local collection on `master` (`012d95e`, 2026-10-20); Desktop import `JavaScript Fluency System API - Local`; exports under `postman/exports/` gitignored. **Step 10** production smoke reported complete 2026-10-20 (granular matrix not filed). |
+| **Next action** | Step 11 documentation closeout — reconcile Step 9 evidence, exit criteria, transfer to tracker, Phase 4 handoff |
+| **Implementation** | Backend APIs + Steps 6–8 FE + Postman Git assets on `master` |
 | **Step 1** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3 |
 | **Step 2** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.11 |
 | **Step 2.5** | ✅ Complete — Neon deploy + verify — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.12 |
@@ -215,6 +216,9 @@ Phase 2 is complete. Phase 3 has been **formally started** (see §4.9).
 | **Step 6** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.15 |
 | **Step 7** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.16 |
 | **Step 8** | ✅ Complete — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.17 |
+| **Step 9** | 🔵 Evidence gaps — Postman local Desktop + Git assets (`012d95e`); formal local E2E matrix still open for closeout — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.18 |
+| **Step 10** | ✅ Complete — production smoke reported complete (2026-10-20); granular per-request evidence not filed — [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.19 |
+| **Step 11** | 🔵 Active — documentation closeout and handoff |
 
 Full step plan, acceptance criteria, and working history live only in [`CURRENT_STEP.md`](./CURRENT_STEP.md).
 
@@ -271,6 +275,8 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 | Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
 | Phase 3 Development Order (approved baseline) | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
+| Postman Git-native collection | [`postman/collections/Backend/`](./postman/collections/Backend/) |
+| Postman Desktop export script | [`postman/scripts/export_v21_for_desktop.py`](./postman/scripts/export_v21_for_desktop.py) |
 | Question-bank contract | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) |
 | Topics seed | [`prisma/seed-data/topics.json`](./prisma/seed-data/topics.json) |
 | Questions seed | [`prisma/seed-data/questions.json`](./prisma/seed-data/questions.json) |

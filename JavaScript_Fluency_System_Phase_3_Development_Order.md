@@ -2,7 +2,7 @@
 
 > Approved implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Approved and active** — Phase 3 has formally started.
-> Step 0–4 and Steps 6–8 are **complete** (Step 5 N/A). Next: **Step 9 — Local end-to-end verification**.
+> Step 0–4 and Steps 6–8 + **Step 10** are **complete** (Step 5 N/A). **Step 9** still has open local evidence gaps for closeout. **Step 11** (documentation closeout) is next. Phase 3 is **not** closed.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
@@ -386,8 +386,9 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Goal** | Full Phase 3 quality bar locally. |
 | **Depends on** | Steps 2–8. |
 | **Work** | Run unit/integration/E2E suites; manual smoke of core loop; health/topics regression. |
-| **Verification** | Evidence in `CURRENT_STEP.md` after phase start; LX + engineering checklists signed off. |
-| **Completion** | No open local blockers. |
+| **Progress** | 🔵 Evidence gaps — Git-managed Postman collection + Desktop import (`012d95e`, 2026-10-20); local APIs reported working. Formal E2E matrix / suite sign-off still open for Step 11 reconciliation (`CURRENT_STEP.md` §9.18). |
+| **Verification** | Evidence in `CURRENT_STEP.md`; LX + engineering checklists signed off. |
+| **Completion** | Not fully closed in the working record. |
 
 ---
 
@@ -396,10 +397,10 @@ Skipped under G3. Reopen only with demonstrated need.
 | | |
 |---|---|
 | **Goal** | Core revision workflow on Vercel + Neon. |
-| **Depends on** | Step 9. |
-| **Work** | Deploy; auth matrix; due/session/submit/outcome; health/topics; structured logs without secrets. |
-| **Verification** | Production checklist with statuses/key fields only. |
-| **Completion** | Production smoke passes. |
+| **Depends on** | Verified production deployment. |
+| **Work** | Confirm deploy + env vars; read-only health/topics/today + auth contract first; defer answer/complete until production data effects reviewed; structured logs without secrets. |
+| **Verification** | ✅ Owner reported production smoke complete (2026-10-20). Granular status codes / deployment IDs not filed in repo (`CURRENT_STEP.md` §9.19). |
+| **Completion** | ✅ Complete (reported). |
 
 ---
 
@@ -408,10 +409,10 @@ Skipped under G3. Reopen only with demonstrated need.
 | | |
 |---|---|
 | **Goal** | Tracker §5.3 lifecycle completion. |
-| **Depends on** | Steps 0–10. |
-| **Work** | Finalize `CURRENT_STEP.md`; transfer Phase 3 history + Phase 4 handoff into `PROJECT_TRACKER.md`; clear `CURRENT_STEP.md` only after transfer; do not start Phase 4 here. |
+| **Depends on** | Steps 0–10 (Step 10 done; reconcile Step 9 evidence before phase ✅). |
+| **Work** | Finalize `CURRENT_STEP.md`; reconcile Step 9 evidence or document waivers; review exit criteria; confirm repo/deploy state; transfer Phase 3 history + Phase 4 handoff into `PROJECT_TRACKER.md`; clear `CURRENT_STEP.md` only after transfer; do not start Phase 4 here. |
 | **Verification** | Tracker shows Phase 3 complete; Phase 4 not started; decisions/limitations preserved. |
-| **Completion** | Phase 3 closed. |
+| **Completion** | Phase 3 closed (not yet). |
 
 ---
 
@@ -485,9 +486,12 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 6** | ✅ Complete — FE data access + auth (2026-10-16) |
 | **Step 7** | ✅ Complete — Today's Revision UI (`ng test` 47/47, 2026-10-16) |
 | **Step 8** | ✅ Complete — Initial dashboard (`ng test` 57/57, 2026-10-18) |
-| **Next step** | Step 9 — Local end-to-end verification |
-| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.17 |
-| **Blocking open product gates** | None for Step 9 start |
-| **Next action** | Implement and verify Step 9 |
+| **Step 9** | 🔵 Evidence gaps — Postman local setup (`012d95e`); formal E2E matrix open for closeout |
+| **Step 10** | ✅ Complete — production smoke reported complete (2026-10-20); granular matrix not filed |
+| **Step 11** | 🔵 Active — documentation closeout and handoff |
+| **Next step** | Step 11 — Documentation closeout |
+| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.19 |
+| **Blocking open product gates** | Step 9 evidence reconciliation before Phase 3 ✅ |
+| **Next action** | Execute Step 11 closeout; do not start Phase 4 |
 
 **Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`

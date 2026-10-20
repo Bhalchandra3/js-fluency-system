@@ -6,9 +6,9 @@
 > Approved implementation baseline: [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md)
 > Lifecycle rules: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) Â§5
 
-**Status:** In progress — Steps 0–4, 6–8 complete; Step 9 next (Step 5 N/A)
+**Status:** In progress — Steps 0–4, 6–8 + 10 complete; Step 9 evidence reconciliation still open; Step 11 next (Step 5 N/A)
 **Phase:** 3 — Revision Scheduling
-**Active step:** Step 9 — Local end-to-end verification
+**Active step:** Step 11 — Documentation closeout and handoff
 **Step 0:** Complete — Development Order formally approved as Phase 3 baseline
 **Step 1:** ✅ Complete — schema/lifecycle design approved (see §9.3)
 **Step 2:** ✅ Complete — scheduling helpers + unit tests (`api/_lib/scheduling/`)
@@ -18,6 +18,9 @@
 **Step 6:** ✅ Complete — FE data access + auth verified (see §9.15)
 **Step 7:** ✅ Complete — Today's Revision screen verified (see §9.16)
 **Step 8:** ✅ Complete — Initial dashboard verified (see §9.17)
+**Step 9:** 🔵 Evidence gaps remain — Postman local setup done; formal local E2E matrix / suite sign-off still open (see §9.18); reconcile during Step 11
+**Step 10:** ✅ Complete — production smoke reported complete (see §9.19; granular per-request evidence not filed)
+**Step 11:** 🔵 Active — documentation closeout and handoff
 
 ---
 
@@ -239,31 +242,34 @@ Skipped unless a demonstrated need reopens it.
 | **Verification** | `npx ng test --watch=false --browsers=ChromeHeadless` **57/57**; `npm run build` pass; `git diff --check` clean (2026-10-18) |
 | **Completion** | ✅ Initial dashboard MVP accepted (see §9.17) |
 
-### Step 9 â€” Local end-to-end verification â€” â¬œ
+### Step 9 — Local end-to-end verification — 🔵 Evidence gaps remain
 
 | | |
 |---|---|
 | **Goal** | Full local quality bar |
-| **Depends on** | Steps 2â€“8 |
-| **Verification** | Suites + manual smoke; LX + engineering checklists; health/topics regression |
-| **Completion** | No open local blockers |
+| **Depends on** | Steps 2–8 |
+| **Progress so far** | Git-managed Postman collection + Desktop import path; local APIs reported working (see §9.18). Formal documented E2E matrix / suite sign-off not filed in this record. |
+| **Still open for closeout** | Documented local smoke matrix; suite command results; LX + engineering checklist sign-off (reconcile in Step 11 before marking Phase 3 complete) |
+| **Completion** | Not fully closed in the working record — do not invent a ✅ |
 
-### Step 10 â€” Production smoke testing â€” â¬œ
+### Step 10 — Production smoke testing — ✅ Complete
 
 | | |
 |---|---|
 | **Goal** | Core workflow on Vercel + Neon |
-| **Depends on** | Step 9 |
-| **Verification** | Auth + due/session/submit/outcome; no secret logging |
-| **Completion** | Production smoke passes |
+| **Depends on** | Verified production deployment (owner-confirmed) |
+| **Verification** | Owner reported production smoke testing complete (2026-10-20). Granular HTTP status codes, deployment IDs, and per-request outcomes were **not** filed into this repository record. |
+| **Scope note** | Treat as reported-complete smoke; if answer/complete were exercised in production, that is not documented here with mutation outcomes. |
+| **Completion** | ✅ Accepted as complete per owner confirmation (see §9.19) |
 
-### Step 11 â€” Documentation closeout and handoff â€” â¬œ
+### Step 11 — Documentation closeout and handoff — 🔵 Active
 
 | | |
 |---|---|
-| **Goal** | Transfer to tracker Â§5.3; clear this file only after verified transfer |
-| **Depends on** | Steps 0â€“10 |
-| **Completion** | Phase 3 complete in tracker; Phase 4 not started |
+| **Goal** | Transfer to tracker §5.3; clear this file only after verified transfer |
+| **Depends on** | Steps 0–10 (Step 10 done; Step 9 evidence reconciliation required before phase ✅) |
+| **Remaining work** | Reconcile tracker ↔ current-step; file or waive remaining Step 9 evidence; review phase exit criteria; confirm repo/deploy state; transfer Phase 3 history + Phase 4 handoff; clear this file only after transfer |
+| **Completion** | Phase 3 complete in tracker; Phase 4 not started (not yet) |
 
 ---
 
@@ -297,10 +303,12 @@ Skipped unless a demonstrated need reopens it.
 | 6 | ✅ Complete | §9.15 — FE data access + auth |
 | 7 | ✅ Complete | §9.16 — Today's Revision UI; `ng test` 47/47 |
 | 8 | ✅ Complete | §9.17 — `/dashboard` summary + CTA; `ng test` 57/57 |
-| 9–11 | ○ | Not started |
+| 9 | 🔵 Evidence gaps | §9.18 — Postman Desktop + Git assets (`012d95e`); local APIs reported working; formal E2E matrix / suite sign-off still open for closeout |
+| 10 | ✅ Complete | §9.19 — production smoke reported complete by owner (2026-10-20); granular per-request evidence not filed |
+| 11 | 🔵 Active | Documentation closeout and handoff (next) |
 
-**Exact stopping point:** Initial dashboard verified locally (unit + build); Step 9 E2E not started.
-**Next action:** Begin Step 9 — Local end-to-end verification.
+**Exact stopping point:** Step 10 production smoke accepted as complete per owner confirmation (§9.19). Step 9 still lacks a filed local E2E evidence matrix in this record. Phase 3 is **not** closed.
+**Next action:** Execute Step 11 — documentation closeout: reconcile Step 9 evidence gaps, review exit criteria, transfer history to `PROJECT_TRACKER.md`, then clear this file only after verified transfer.
 
 ---
 
@@ -668,6 +676,45 @@ Aligned with G1â€“G8, LX1â€“LX9, and engineering criteria. No `DailyPr
 
 **Stopping point after Step 8:** Dashboard MVP renders real due/overdue + session summary with CTA; local E2E (Step 9) not run.
 
+### 9.18 Step 9 progress — Postman local QA setup (2026-10-20)
+
+**Status:** 🔵 In progress — tooling and Desktop import complete; Step 9 **not** closed.
+
+| Item | Result |
+|---|---|
+| Git commit | `012d95e` — `test: add Git-managed Postman API collection for Phase 3` (pushed on `master`) |
+| Desktop collection | `JavaScript Fluency System API - Local` imported and visible in Postman Desktop |
+| Local environment | `Local Development` — `baseUrl` = `http://localhost:3000`; `bearerToken` / `sessionId` / `questionId` supplied privately in Desktop (not committed) |
+| Git-managed assets | `.postman/resources.yaml`; `postman/collections/Backend/` (Health, Topics, Today's Revision, Answers, Completion); `postman/environments/` (Local Development + Production); `postman/globals/`; `postman/scripts/export_v21_for_desktop.py`; `.gitignore` excludes `/postman/exports/` |
+| Local API report | User reports local Postman APIs working as intended — **not** a substitute for a documented per-request status matrix or full Step 9 suite evidence |
+| Production smoke | Later reported complete — see §9.19 |
+| Documentation closeout | **Active** (Step 11) |
+
+**Step 9 remaining (reconcile during Step 11 before Phase 3 ✅):**
+
+1. Record a documented local verification matrix (or equivalent evidence) covering health, topics auth matrix, today's revision (auth + no-auth), and the revision answer → complete loop when suitable local due data exists — or explicitly waive with rationale.
+2. Confirm unit/integration suites still pass as part of the local quality bar (record command results in this file).
+3. Sign off LX + engineering checklists proportionately; note empty-day (`session: null` / `dueCount: 0`) if no topic is due — do not seed solely to force completion evidence.
+4. Close open local blockers; only then mark Step 9 ✅ in the closeout record.
+
+**Stopping point after §9.18 (historical):** Local Postman Desktop path ready; Step 9 evidence review still open at that time.
+
+### 9.19 Step 10 — Production smoke testing (reported complete, 2026-10-20)
+
+**Status:** ✅ Complete per owner confirmation. Phase 3 is **not** closed.
+
+| Item | Result |
+|---|---|
+| Owner confirmation | Production smoke testing reported done |
+| Production host (known from project config) | `https://js-fluency-system.vercel.app` (tracker / Production Postman environment placeholder) |
+| Granular evidence in repo | **Not filed** — no per-request status codes, deployment IDs, timestamps, or mutation outcomes recorded in this working record |
+| Secrets | None recorded (correct) |
+| Answer / complete in production | Not documented here; do not assume mutation smoke occurred |
+
+**Limitation:** This close is based on owner-reported completion, not a pasted production checklist. Step 11 should note that gap if a fuller matrix is later desired.
+
+**Stopping point after §9.19:** Step 10 accepted; next is Step 11 documentation closeout (including Step 9 evidence reconciliation).
+
 ### 9.4 API routes and contracts — **Approved for design** (Decision A)
 
 Follow Vercel file routes + topics error style. All revision routes: `requireBearerToken`.
@@ -841,6 +888,10 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 | Angular FE data access + auth | ✅ Step 6 — see §9.15 |
 | Today's Revision UI | ✅ Step 7 — see §9.16 (`ng test` 47/47) |
 | Dashboard | ✅ Step 8 — see §9.17 (`ng test` 57/57) |
+| Postman Git assets + Desktop local collection | ✅ Step 9 progress — see §9.18 (`012d95e`) |
+| Step 9 documented E2E / suite evidence | ○ Open — reconcile in Step 11 (§9.18) |
+| Production smoke (Step 10) | ✅ Reported complete — see §9.19 (granular matrix not filed) |
+| Documentation closeout (Step 11) | 🔵 Active |
 
 ---
 
@@ -848,7 +899,9 @@ No contradictions with approved G1â€“G8, LX1â€“LX9, or engineering sta
 
 | Issue | Owner | Notes |
 |---|---|---|
-| Step 9 Local end-to-end verification | Implementation | Step 8 dashboard ready |
+| Step 9 local evidence matrix / suite sign-off | Documentation / QA | Still open in working record; must reconcile or waive during Step 11 before Phase 3 ✅ |
+| Step 10 granular production checklist | Documentation | Owner reported complete; optional to file statuses/key fields later — no secrets |
+| Step 11 Documentation closeout | Documentation | Active — transfer history, exit criteria, Phase 4 handoff; do not clear this file until transfer verified |
 | Full due-topic list on dashboard | Future API/product | Today API returns counts + selected session only |
 | OPEN-session question-edit API guard | Future question-management | Seed guard implemented; no edit API yet |
 | Prior-answer feedback on OPEN resume | Product/UX | GET today omits evaluation fields; feedback shown after submit in-session |
