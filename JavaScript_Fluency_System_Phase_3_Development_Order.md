@@ -1,10 +1,9 @@
 # JavaScript Fluency System — Phase 3 Development Order
 
-> Approved implementation baseline for **Phase 3 — Revision Scheduling**.
-> Status: **Approved and active** — Phase 3 has formally started.
-> Step 0–4 and Steps 6–8 + **Step 10** are **complete** (Step 5 N/A). **Step 9** still has open local evidence gaps for closeout. **Step 11** (documentation closeout) is next. Phase 3 is **not** closed.
-> Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)  
-> Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
+> Completed implementation baseline for **Phase 3 — Revision Scheduling**.
+> Status: **Complete** — Steps 0–11 done (Step 5 N/A). Tracker handoff verified in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.
+> Working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md) cleared after handoff (Phase 4 not started).
+> Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 >
 > **Rule:** Complete and verify each step before moving to the next unless a step explicitly allows parallel work.
@@ -75,7 +74,7 @@ Deliver a reliable daily revision loop that supports deep JavaScript fluency: th
 
 ### 2.4 Step 1 design resolutions (approved)
 
-Canonical detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.2–§9.6. **Prisma/migrations not applied.**
+Canonical design detail was recorded in the Phase 3 working record (now cleared); durable summary: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.2. Schema/migrations were applied in Step 2.5 (2026-10-15).
 
 1. **HTTP paths:** `GET /api/revision/today`, `POST /api/revision/answers`, `POST /api/revision/complete` (bearer auth).
 2. **Persistence:** `RevisionSession` + `RevisionSessionQuestion` (frozen membership + order) + `SessionLog` extensions + partial unique one-OPEN-per-topic. Migration deferred to an authorized schema step.
@@ -184,7 +183,7 @@ When a per-topic session is finalized, compute one transition with precedence:
 3. Else if any answer has confidence **`DIFFICULT`** → **Reinforce** (one ladder step back, min 1)  
 4. Else → **Advance** (one ladder step forward, cap 30)  
 
-Canonical schema/lifecycle detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3.
+Canonical schema/lifecycle detail: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.2 (Decisions A/B + G4/G5).
 
 #### Session finalization rules
 
@@ -194,7 +193,7 @@ Canonical schema/lifecycle detail: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3.
 - Server-authoritative: client cannot set the resulting interval/due date.
 - Persist enough history to explain the decision: answer history, selected confidence, evaluated correctness, session outcome, previous interval, resulting interval, resulting due date, and policy identifier/version.
 
-> Schema note: Step 1 locked the persistence design in [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.3. Application of migrations remains a later authorized step (not Step 2).
+> Schema note: Step 1 locked the persistence design; migrations were applied in Step 2.5 (see [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.3).
 
 ### G6 — `DailyProgress` — **Agreed**
 
@@ -250,7 +249,7 @@ Apply within the existing stack across Steps 2–10:
 | Migrations | If schema changes are required: Prisma migrate, reviewable, reversible mindset; no manual prod edits |
 | Production | Smoke the core revision workflow after deploy |
 | Logging | Structured diagnostics; never log bearer tokens or secrets |
-| Docs | Record API contracts, decisions, and known limitations in `CURRENT_STEP.md` / tracker on closeout |
+| Docs | Record API contracts, decisions, and known limitations in the phase working record / tracker on closeout |
 
 ---
 
@@ -264,7 +263,7 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 |---|---|
 | **Goal** | Formal approval of G1–G8 and this sequence. |
 | **Depends on** | This document; tracker §4.8; spec §§5, 7, 11, 12. |
-| **Deliverables** | Written approval recorded in tracker §4.9 and [`CURRENT_STEP.md`](./CURRENT_STEP.md). |
+| **Deliverables** | Written approval recorded; durable history in tracker §5. |
 | **Verification** | No open conflicts with G4/G5 mapping. |
 | **Completion** | ✅ Approved; Phase 3 formally started; Step 1 is next. |
 
@@ -276,7 +275,7 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 |---|---|
 | **Goal** | Confirm schema/persistence design for G2–G5 history fields; lock evaluation policy for MCQ vs open formats. |
 | **Depends on** | Step 0. |
-| **Work** | ✅ Mapped audit fields; approved `RevisionSession` + `RevisionSessionQuestion` + SessionLog extensions; Decisions A/B; evaluation + exposure locked in `CURRENT_STEP.md` §9. |
+| **Work** | ✅ Mapped audit fields; approved `RevisionSession` + `RevisionSessionQuestion` + SessionLog extensions; Decisions A/B; evaluation + exposure locked (summary: tracker §5.2). |
 | **Verification** | Written decision tables; migration staging plan recorded; internal consistency check passed. |
 | **Completion** | ✅ Persistence + evaluation + lifecycle rules locked (design). |
 
@@ -303,7 +302,7 @@ Sequence retained (dependency-justified). Step 5 remains **N/A** under G3.
 | **Delivered (files)** | `prisma/schema.prisma`; migration `20261015164300_add_revision_session`; seed OPEN-session guard (`prisma/openSessionQuestionGuard.ts` + `seed.ts`). |
 | **Depends on** | Steps 1–2 ✅. |
 | **Static validation** | `prisma validate` ✅; `prisma generate` ✅; scheduling tests 30/30; guard unit test 1/1. |
-| **DB apply** | ✅ Neon `prisma migrate deploy` **2026-10-15** (preflight SessionLog=0; pre-migration snapshot + backup branch created). Disposable Postgres regression 6/6. Evidence: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.12. |
+| **DB apply** | ✅ Neon `prisma migrate deploy` **2026-10-15** (preflight SessionLog=0; pre-migration snapshot + backup branch created). Disposable Postgres regression 6/6. Evidence: tracker §5.3–§5.4. |
 | **Completion** | ✅ Migrated + verified on intended Neon target. |
 
 ---
@@ -349,7 +348,7 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Depends on** | Steps 3–4. |
 | **Work** | FE-local DTO types; mismatch-detection tests against fixture contracts; no secrets in source. |
 | **Verification** | `ng test` 31/31; `npm run build` pass (2026-10-16). |
-| **Completion** | ✅ FE can call Phase 3 APIs safely (see `CURRENT_STEP.md` §9.15). |
+| **Completion** | ✅ FE can call Phase 3 APIs safely (see tracker §5.3). |
 
 ---
 
@@ -362,7 +361,7 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Depends on** | Step 6. |
 | **Work** | Due/overdue entry, question workflow, separate confidence UI, feedback, outcome explanation, empty-day state, loading/error states. |
 | **Verification** | `ng test` 47/47; `npm run build` pass (2026-10-16). |
-| **Completion** | ✅ Spec §5.1 loop works locally (see `CURRENT_STEP.md` §9.16). |
+| **Completion** | ✅ Spec §5.1 loop works locally (see tracker §5.3). |
 
 ---
 
@@ -375,7 +374,7 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Depends on** | Steps 3 and 7. |
 | **Work** | Due/overdue counts; current-session summary; CTA to Today’s Revision; empty-day helpfulness; no Mistake/Deep Dive widgets. |
 | **Verification** | `ng test` 57/57; `npm run build` pass; `git diff --check` clean (2026-10-18). |
-| **Completion** | ✅ Initial dashboard MVP accepted (see `CURRENT_STEP.md` §9.17). |
+| **Completion** | ✅ Initial dashboard MVP accepted (see tracker §5.3). |
 
 ---
 
@@ -386,9 +385,8 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Goal** | Full Phase 3 quality bar locally. |
 | **Depends on** | Steps 2–8. |
 | **Work** | Run unit/integration/E2E suites; manual smoke of core loop; health/topics regression. |
-| **Progress** | 🔵 Evidence gaps — Git-managed Postman collection + Desktop import (`012d95e`, 2026-10-20); local APIs reported working. Formal E2E matrix / suite sign-off still open for Step 11 reconciliation (`CURRENT_STEP.md` §9.18). |
-| **Verification** | Evidence in `CURRENT_STEP.md`; LX + engineering checklists signed off. |
-| **Completion** | Not fully closed in the working record. |
+| **Verification** | ✅ Owner-confirmed manual local API testing; Postman Desktop configured; Git-managed collection pushed (`012d95e`); local Postman APIs reported working; suite/build support `bfeb58f`. No formal per-request matrix filed (tracker §5.4). |
+| **Completion** | ✅ Complete (manual verification + owner confirmation). |
 
 ---
 
@@ -399,7 +397,7 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Goal** | Core revision workflow on Vercel + Neon. |
 | **Depends on** | Verified production deployment. |
 | **Work** | Confirm deploy + env vars; read-only health/topics/today + auth contract first; defer answer/complete until production data effects reviewed; structured logs without secrets. |
-| **Verification** | ✅ Owner reported production smoke complete (2026-10-20). Granular status codes / deployment IDs not filed in repo (`CURRENT_STEP.md` §9.19). |
+| **Verification** | ✅ Owner reported production smoke complete (2026-10-20). Granular status codes / deployment IDs not filed in repo (tracker §5.4). |
 | **Completion** | ✅ Complete (reported). |
 
 ---
@@ -408,11 +406,11 @@ Skipped under G3. Reopen only with demonstrated need.
 
 | | |
 |---|---|
-| **Goal** | Tracker §5.3 lifecycle completion. |
-| **Depends on** | Steps 0–10 (Step 10 done; reconcile Step 9 evidence before phase ✅). |
-| **Work** | Finalize `CURRENT_STEP.md`; reconcile Step 9 evidence or document waivers; review exit criteria; confirm repo/deploy state; transfer Phase 3 history + Phase 4 handoff into `PROJECT_TRACKER.md`; clear `CURRENT_STEP.md` only after transfer; do not start Phase 4 here. |
-| **Verification** | Tracker shows Phase 3 complete; Phase 4 not started; decisions/limitations preserved. |
-| **Completion** | Phase 3 closed (not yet). |
+| **Goal** | Tracker §6.3 lifecycle completion. |
+| **Depends on** | Steps 0–10 complete. |
+| **Work** | Finalize working record; review exit criteria; transfer Phase 3 history + Phase 4 handoff into `PROJECT_TRACKER.md` §5; clear `CURRENT_STEP.md` only after verified transfer; do not start Phase 4 here. |
+| **Verification** | Tracker shows Phase 3 complete; Phase 4 not started; decisions/limitations preserved; `CURRENT_STEP.md` cleared. |
+| **Completion** | ✅ Complete — Phase 3 closed; Phase 4 not started. |
 
 ---
 
@@ -430,17 +428,17 @@ Skipped under G3. Reopen only with demonstrated need.
 
 ## 9. Phase exit criteria
 
-- [ ] G1–G8 recorded as approved for implementation (this document + formal Step 0 approval).
-- [ ] UTC storage + Asia/Kolkata calendar due/overdue verified with boundary tests.
-- [ ] Discrete ladder only; G5 mapping and aggregation precedence verified.
-- [ ] Incomplete sessions do not finalize; last answer does not finalize; completed sessions finalize once via explicit complete.
-- [ ] Today’s Revision read embeds REVISION questions; no bank-wide questions API.
-- [ ] Correct answers not exposed before required evaluation.
-- [ ] Angular default entry is Today’s Revision; `/dashboard` summary works.
-- [ ] LX1–LX9 satisfied proportionately; missing explanations not invented.
-- [ ] Enterprise standards in §6 evidenced (tests, smoke, safe logging).
-- [ ] `/api/health` and `GET /api/topics` still pass in production.
-- [ ] Tracker handoff complete; `CURRENT_STEP.md` cleared after transfer.
+- [x] G1–G8 recorded as approved for implementation (this document + formal Step 0 approval).
+- [x] UTC storage + Asia/Kolkata calendar due/overdue verified with boundary tests.
+- [x] Discrete ladder only; G5 mapping and aggregation precedence verified.
+- [x] Incomplete sessions do not finalize; last answer does not finalize; completed sessions finalize once via explicit complete.
+- [x] Today’s Revision read embeds REVISION questions; no bank-wide questions API.
+- [x] Correct answers not exposed before required evaluation.
+- [x] Angular default entry is Today’s Revision; `/dashboard` summary works.
+- [x] LX1–LX9 satisfied proportionately; missing explanations not invented.
+- [x] Enterprise standards in §6 evidenced (tests, smoke, safe logging).
+- [x] `/api/health` and `GET /api/topics` still pass in production (accepted via Step 10 owner-reported smoke; granular statuses not filed).
+- [x] Tracker handoff complete; `CURRENT_STEP.md` cleared after transfer.
 
 ---
 
@@ -458,16 +456,16 @@ Skipped under G3. Reopen only with demonstrated need.
 
 ## 11. Phase lifecycle
 
-Per [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5:
+Per [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §6:
 
 1. Formal approval of this Development Order (Step 0) — **complete**.
 2. Start Phase 3: initialize `CURRENT_STEP.md` from this order; update tracker snapshot — **complete**.
-3. Execute Steps 1–10 with verification evidence in `CURRENT_STEP.md` — **Steps 1–2 complete; Step 3 next**.
-4. Closeout Step 11: transfer to tracker, then clear `CURRENT_STEP.md`; do not auto-start Phase 4.
+3. Execute Steps 1–10 with verification evidence in the working record — **Steps 0–4 and 6–10 complete (Step 5 N/A)**.
+4. Closeout Step 11 — **complete**: history + Phase 4 handoff in tracker §5; `CURRENT_STEP.md` cleared; Phase 4 not auto-started.
 
-### Phase 4 handoff preview (not started)
+### Phase 4 handoff (not started)
 
-Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phase 3 session history and schedule fields.
+Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phase 3 session history and schedule fields. Canonical handoff: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.7.
 
 ---
 
@@ -475,8 +473,8 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 
 | Field | Value |
 |---|---|
-| **Document status** | Approved implementation baseline |
-| **Phase 3 started?** | **Yes** |
+| **Document status** | Completed implementation baseline |
+| **Phase 3 complete?** | **Yes** |
 | **Step 0** | Complete |
 | **Step 1** | Complete — schema/lifecycle design approved (Decisions A/B) |
 | **Step 2** | Complete — `api/_lib/scheduling/`; `npm run test:scheduling` 30/30 |
@@ -486,12 +484,12 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 6** | ✅ Complete — FE data access + auth (2026-10-16) |
 | **Step 7** | ✅ Complete — Today's Revision UI (`ng test` 47/47, 2026-10-16) |
 | **Step 8** | ✅ Complete — Initial dashboard (`ng test` 57/57, 2026-10-18) |
-| **Step 9** | 🔵 Evidence gaps — Postman local setup (`012d95e`); formal E2E matrix open for closeout |
+| **Step 9** | ✅ Complete — manual local API + Postman Desktop/Git (`012d95e`); suite/build `bfeb58f` |
 | **Step 10** | ✅ Complete — production smoke reported complete (2026-10-20); granular matrix not filed |
-| **Step 11** | 🔵 Active — documentation closeout and handoff |
-| **Next step** | Step 11 — Documentation closeout |
-| **`CURRENT_STEP.md`** | Phase 3 plan + §9.3 / §9.11–§9.19 |
-| **Blocking open product gates** | Step 9 evidence reconciliation before Phase 3 ✅ |
-| **Next action** | Execute Step 11 closeout; do not start Phase 4 |
+| **Step 11** | ✅ Complete — tracker §5 handoff; `CURRENT_STEP.md` cleared |
+| **Next step** | None in Phase 3 — start Phase 4 per tracker §5.7 / §6.1 when ready |
+| **`CURRENT_STEP.md`** | Cleared (no active phase) |
+| **Blocking open product gates** | None for Phase 3 |
+| **Next action** | Start Phase 4 only when formally begun; do not invent Phase 4 implementation here |
 
-**Canonical approved baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`
+**Canonical completed baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`

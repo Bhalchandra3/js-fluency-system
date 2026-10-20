@@ -8,8 +8,8 @@ Personal JavaScript revision and practice app (Angular + Vercel serverless API +
 |---|---|
 | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) | Product requirements and architecture reference |
 | [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Overall project progress, completed-phase history, and handoff record |
-| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Complete working record for the entire active phase |
-| [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) | Approved Phase 3 baseline (Step 10 done; Step 11 closeout next) |
+| [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Complete working record for the entire active phase (empty when no phase is active) |
+| [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) | Completed Phase 3 baseline (Steps 0–11; see tracker §5) |
 | [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook (includes Postman Desktop notes) |
 | [`postman/collections/Backend/`](./postman/collections/Backend/) | Git-native Postman collection for local API QA |
 | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Locked question-bank JSON contract |

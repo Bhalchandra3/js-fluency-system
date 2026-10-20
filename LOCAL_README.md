@@ -178,7 +178,7 @@ Git-managed collection source: `postman/collections/Backend/` (display name **Ja
 python postman/scripts/export_v21_for_desktop.py
 ```
 
-Phase 3 progress and remaining Step 9 evidence requirements: [`CURRENT_STEP.md`](./CURRENT_STEP.md) §9.18.
+Phase 3 Postman/local API QA notes: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.4. Phase 3 is complete; no active phase step until Phase 4 starts.
 
 ## Additional Resources
 
