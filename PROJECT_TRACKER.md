@@ -4,6 +4,7 @@
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 > Active phase working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared when no phase is active — see §6.3)
 > Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
+> Phase 4 plan (canonical): [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md)
 
 ---
 
@@ -11,14 +12,15 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | None active — Phase 3 complete; Phase 4 not started |
-| **Active step** | None (`CURRENT_STEP.md` cleared; awaiting Phase 4 start per §6.1) |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A) |
-| **Next action** | Start Phase 4 — Progress + Mistakes: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the phase before implementation (see §5.7 and §6.1) |
+| **Current phase** | **Phase 4 — Progress + Mistakes** (Step 1 architecture lock complete; feature APIs/UI not started) |
+| **Active step** | Step 2 — Status policy helpers (`CURRENT_STEP.md`) |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–1 |
+| **Next action** | Execute Step 2 — pure `phase4-status-v1` helpers + unit tests in [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) §8; follow locked contracts in §2.5 |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
-| **Phase 4 complete?** | **No** — not started |
+| **Phase 4 complete?** | **No** — architecture locked; implementation starts at Step 2 |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
+| **Phase 4 plan (active)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 
 ---
 
@@ -29,7 +31,7 @@
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
-| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ⬜ Not started |
+| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | 🟡 In progress (Steps 0–1 complete; Step 2 next) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
@@ -307,19 +309,23 @@ Aligned with Development Order §9 exit criteria:
 
 ### 5.7 Phase 4 handoff
 
-Phase 3 is complete. **Phase 4 is not started.**
+Phase 3 is complete. **Phase 4 formally started in planning mode (2026-10-22).** Feature implementation has **not** started.
 
 | Handoff item | Detail |
 |---|---|
 | **Next phase** | Phase 4 — Progress + Mistakes |
 | **Intended scope** | Confidence tracking productization, status algorithm v1 (Green / Yellow / Red), Mistake Log, Deep Dive Queue, richer progress — consuming Phase 3 session history and schedule fields |
-| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§5.4, 5.7–5.8, §11 phase intent, §12.1 (exact confidence → status algorithm unresolved) |
-| **Tracker framing** | This document §2 Phase 4 row |
-| **Prerequisites** | Phase 3 revision APIs + `RevisionSession` / `SessionLog` history + Topic schedule fields; authenticated Angular shell (Today’s Revision + dashboard) |
+| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§5.4, 5.7–5.8, §11 phase intent, §12.1 / §12.7 (Phase 4 policy approved at Step 0; see Development Order) |
+| **Canonical plan** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
+| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+| **Tracker framing** | This document §2 Phase 4 row; planning status §8 |
+| **Prerequisites** | Phase 3 revision APIs + `RevisionSession` / `SessionLog` history + Topic schedule fields; authenticated Angular shell (Today’s Revision + dashboard) — **verified present** |
 | **Carry-forward decisions** | Do not silently change G1–G8 or Decisions A/B; Phase 3 scheduling remains backend-authoritative and finalize-once |
-| **Unresolved / open for Phase 4 planning** | Exact confidence → Green/Yellow/Red algorithm (spec §12.1); Mistake → future question automation details (spec §12.7); full due-topic list API if dashboard needs it |
-| **Recommended starting action** | When Phase 4 formally starts: initialize [`CURRENT_STEP.md`](./CURRENT_STEP.md) and plan the entire phase (ordered steps, dependencies, approvals, exit criteria) before implementation (§6.1). Do not begin Phase 4 implementation until that plan exists. |
-| **Do not** | Re-open Phase 3 delivery; invent HTTP evidence that was not filed; clear or rewrite the Phase 3 Development Order baseline without cause |
+| **Approved Phase 4 decisions (Step 0, 2026-10-23)** | Status policy `phase4-status-v1`; Mistake Log auto+manual with **no** auto Question insert; Deep Dive ensure on Red — see Phase 4 Development Order §§4–5 |
+| **Architecture lock (Step 1, 2026-10-23)** | Development Order §2.5 — status persistence, Mistake schema, complete-path order, APIs, FE routes, testing, step acceptance; see also this tracker §8.3 |
+| **Still open inside Phase 4** | Implementation Steps 2–14; no blocking owner architecture decisions |
+| **Recommended next action** | Execute Step 2 — status policy helpers + unit tests |
+| **Do not** | Re-open Phase 3 delivery; invent HTTP evidence that was not filed; clear or rewrite the Phase 3 Development Order baseline without cause; skip §2.5 contracts when implementing |
 
 ---
 
@@ -373,6 +379,7 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 | Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
 | Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (empty when no phase active) |
 | Phase 3 Development Order (completed baseline) | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
+| Phase 4 Development Order (canonical plan) | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
 | Postman Git-native collection | [`postman/collections/Backend/`](./postman/collections/Backend/) |
 | Postman Desktop export script | [`postman/scripts/export_v21_for_desktop.py`](./postman/scripts/export_v21_for_desktop.py) |
@@ -380,3 +387,78 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 | Topics seed | [`prisma/seed-data/topics.json`](./prisma/seed-data/topics.json) |
 | Questions seed | [`prisma/seed-data/questions.json`](./prisma/seed-data/questions.json) |
 | Archived sources | [`docs/archive/`](./docs/archive/) |
+
+---
+
+## 8. Phase 4 — Progress + Mistakes (architecture locked; implementation next)
+
+### 8.1 Objective
+
+Deliver status algorithm v1 (Green / Yellow / Red), Mistake Log, Deep Dive Queue, and richer progress/dashboard signals on top of the completed Phase 3 revision loop—without changing G5 scheduling or Decisions A/B.
+
+Canonical plan:
+[`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md)
+
+### 8.2 Planning / lock status
+
+| Field | Value |
+|---|---|
+| **Formally started** | Yes — planning mode (2026-10-22) |
+| **Step 0 approval** | ✅ Approved 2026-10-23 (scope, status policy, Mistake/Deep Dive scope, delivery workflow) |
+| **Step 1 architecture lock** | ✅ Complete 2026-10-23 (docs only; Development Order §2.5) |
+| **Feature implementation** | **Not started** (Step 2 may begin pure helpers) |
+| **Active step** | Step 2 — Status policy helpers |
+| **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
+
+### 8.3 Approved / locked decisions (not yet implemented in code)
+
+| Decision | Summary |
+|---|---|
+| **Status `phase4-status-v1` (Step 0)** | On first successful complete only: `ADVANCE`→Green, `REINFORCE`→Yellow, `REINFORCE_AT_1`/`RESET`→Red; never-completed topics keep default/prior status |
+| **Mistake MVP (Step 0)** | Auto-create on complete for incorrect or correct+`DIDNT_UNDERSTAND`; manual edit/resolve; `turnedIntoQuestion` manual only; **no** auto Question insert |
+| **Deep Dive (Step 0)** | Ensure `DeepDiveNote` when status becomes Red; owner notes; no auto-delete when leaving Red |
+| **G6 (Step 0)** | Prefer derived dashboard data; no required `DailyProgress` write-path unless proven necessary |
+| **Status persistence (Step 1)** | Reuse `Topic.status`; no new status columns; complete response `topicStatus` DTO carries policy version/reason |
+| **Mistake schema (Step 1)** | Additive nullable `questionId` / `sessionId` / unique `sourceSessionLogId` / `resolvedAt`; SetNull FKs; migrate in Step 3 |
+| **Complete transaction (Step 1)** | Same finalize txn: schedule → status → Deep Dive create-if-missing → auto-mistakes; duplicate complete is read-only |
+| **APIs (Step 1)** | Mistake CRUD/resolve; Deep Dive list/patch/delete-by-topicId; thin `GET /api/progress`; extend complete JSON |
+| **Dashboard (Step 1)** | `GET /api/progress` + existing today for CTA; due-topic name list deferred |
+| **FE (Step 1)** | FE-local types/services; routes `/mistakes`, `/deep-dive`; enrich `/dashboard`; keep Today’s Revision default entry |
+
+### 8.4 Execution order
+
+| # | Step | Status |
+|---|---|---|
+| 0 | Approve Development Order | ✅ Complete — approved 2026-10-23 |
+| 1 | Architecture lock | ✅ Complete — 2026-10-23 (Development Order §2.5) |
+| 2 | Status policy helpers | 🟡 Next — not started |
+| 3 | Schema migration (Mistake provenance) | ⬜ Not started |
+| 4 | Complete-path integration | ⬜ Not started |
+| 5 | Mistake Log APIs | ⬜ Not started |
+| 6 | Deep Dive APIs | ⬜ Not started |
+| 7 | Progress / dashboard summary API (`GET /api/progress`) | ⬜ Not started |
+| 8 | Frontend data access | ⬜ Not started |
+| 9 | Mistake Log UI | ⬜ Not started |
+| 10 | Deep Dive UI | ⬜ Not started |
+| 11 | Dashboard enrichment | ⬜ Not started |
+| 12 | Local E2E verification | ⬜ Not started |
+| 13 | Production smoke | ⬜ Not started |
+| 14 | Documentation closeout | ⬜ Not started |
+
+### 8.5 Approved AI-assisted development workflow (Step 0, 2026-10-23)
+
+Canonical detail: Phase 4 Development Order §9.1. Durable summary:
+
+- **Model roles:** Cursor (paid model) is primary for repository investigation, architecture, implementation, complex debugging, integration, and final verification. OpenCode free models handle bounded, low-risk work (documentation drafts, file explanations, test checklists, edge-case suggestions, independent reviews).
+- **Evidence over claims:** AI output is not verification; actual repository contents, command output, tests, API responses, and deployment results are the evidence. Use a second model only for useful independent review or uncertain output.
+- **Token-efficient delivery:** avoid re-sending the whole repository; use focused tasks with relevant files and expected outcomes; implement small verifiable units; targeted tests during development and broader tests at integration checkpoints; keep the developer involved in understanding, diff review, approvals, and verification.
+- **Branching/deployment:** `master` remains production; use short-lived feature branches; review diffs and run checks before merge; reuse existing GitHub checks and Vercel Preview deployments; keep preview/production databases isolated; test migrations on a disposable/dev database first; smoke-test meaningful production changes; no permanent `develop`/`staging`/`release` branches.
+- **Learning objective:** for meaningful work, understand the relevant files/data flow, review implementation decisions, verify behavior, and do a small learning exercise where practical. This does not authorize new learning-system features in Phase 4.
+
+### 8.6 Notes
+
+- Phase 3 history in §5 is unchanged and remains the completed baseline.
+- Empty local directories `api/mistakes/`, `api/deep-dive/`, `api/progress/` (0 files) are placeholders only; Step 1 locked them as the homes for Steps 5–7 handlers.
+- Question-bank validation/seeding remains a Phase 2 completed concern, not a Phase 4 implementation prerequisite.
+- The workflow above governs delivery only; `PROJECT_SPECIFICATION.md` is not part of the Phase 4 documentation commit (owner deferred spec changes; pre-existing working-tree edits remain). Spec §12.1 / §12.7 still contain stale “pending Step 0 approval” wording — Phase 4 Development Order + this tracker §8 are authoritative for Phase 4.
+- **Step 1 → Step 2 handoff:** implement pure status helpers per Development Order Step 2 / §2.5.8; do not modify `completeService` until Steps 2–3 are ready for Step 4.
