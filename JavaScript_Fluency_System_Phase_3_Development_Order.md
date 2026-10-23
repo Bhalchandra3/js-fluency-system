@@ -2,7 +2,8 @@
 
 > Completed implementation baseline for **Phase 3 — Revision Scheduling**.
 > Status: **Complete** — Steps 0–11 done (Step 5 N/A). Tracker handoff verified in [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.
-> Working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md) cleared after handoff (Phase 4 not started).
+> Working record after Phase 3 closeout was cleared; Phase 4 now uses [`CURRENT_STEP.md`](./CURRENT_STEP.md) for its active planning/execution record.
+> Phase 4 plan: [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md)
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 >
@@ -409,8 +410,8 @@ Skipped under G3. Reopen only with demonstrated need.
 | **Goal** | Tracker §6.3 lifecycle completion. |
 | **Depends on** | Steps 0–10 complete. |
 | **Work** | Finalize working record; review exit criteria; transfer Phase 3 history + Phase 4 handoff into `PROJECT_TRACKER.md` §5; clear `CURRENT_STEP.md` only after verified transfer; do not start Phase 4 here. |
-| **Verification** | Tracker shows Phase 3 complete; Phase 4 not started; decisions/limitations preserved; `CURRENT_STEP.md` cleared. |
-| **Completion** | ✅ Complete — Phase 3 closed; Phase 4 not started. |
+| **Verification** | Tracker shows Phase 3 complete; Phase 4 was not started at Phase 3 closeout; decisions/limitations preserved; `CURRENT_STEP.md` cleared. |
+| **Completion** | ✅ Complete — Phase 3 closed; Phase 4 was not started at Phase 3 closeout. |
 
 ---
 
@@ -463,9 +464,9 @@ Per [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §6:
 3. Execute Steps 1–10 with verification evidence in the working record — **Steps 0–4 and 6–10 complete (Step 5 N/A)**.
 4. Closeout Step 11 — **complete**: history + Phase 4 handoff in tracker §5; `CURRENT_STEP.md` cleared; Phase 4 not auto-started.
 
-### Phase 4 handoff (not started)
+### Phase 4 handoff
 
-Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phase 3 session history and schedule fields. Canonical handoff: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.7.
+Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phase 3 session history and schedule fields. Historical closeout handoff: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.7. Phase 4 planning started with canonical plan [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) (tracker §8).
 
 ---
 
@@ -487,9 +488,9 @@ Status algorithm, Mistake Log, Deep Dive Queue, richer progress—consuming Phas
 | **Step 9** | ✅ Complete — manual local API + Postman Desktop/Git (`012d95e`); suite/build `bfeb58f` |
 | **Step 10** | ✅ Complete — production smoke reported complete (2026-10-20); granular matrix not filed |
 | **Step 11** | ✅ Complete — tracker §5 handoff; `CURRENT_STEP.md` cleared |
-| **Next step** | None in Phase 3 — start Phase 4 per tracker §5.7 / §6.1 when ready |
-| **`CURRENT_STEP.md`** | Cleared (no active phase) |
+| **Next step** | None in Phase 3 — Phase 4 planning uses its own Development Order / `CURRENT_STEP.md` |
+| **`CURRENT_STEP.md`** | Cleared at Phase 3 closeout; later re-initialized for Phase 4 planning (not a Phase 3 reopen) |
 | **Blocking open product gates** | None for Phase 3 |
-| **Next action** | Start Phase 4 only when formally begun; do not invent Phase 4 implementation here |
+| **Next action** | Do not invent Phase 4 implementation in this baseline; see Phase 4 Development Order |
 
 **Canonical completed baseline:** `JavaScript_Fluency_System_Phase_3_Development_Order.md`
