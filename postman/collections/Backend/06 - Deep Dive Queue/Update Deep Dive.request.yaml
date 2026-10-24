@@ -1,0 +1,43 @@
+$kind: http-request
+order: 2000
+method: PATCH
+url: '{{baseUrl}}/api/deep-dive/{{topicId}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "reason": "Owner deep-dive focus",
+      "notes": "MDN links and practice notes"
+    }
+description: |-
+  Purpose: Update owner-editable Deep Dive fields for a topic.
+
+  Method / path: PATCH /api/deep-dive/:topicId
+  Authentication: Required (collection bearer auth).
+
+  Request body (at least one field required):
+  - reason? (non-empty string)
+  - notes? (string or null — null clears notes)
+
+  Forbidden: id, topicId, createdAt, updatedAt, and unknown fields.
+  Omitted fields are preserved. Does not change Topic.status or schedule.
+
+  Success 200: { "status": "ok", "note": { … } }
+  Useful errors: 400 validation; 404 Deep Dive note not found; 401.
+
+  Source: api/deep-dive/[topicId].ts + deepDiveService.updateDeepDiveNote
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200) {
+        pm.test('Patch envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.note).to.be.an('object');
+          pm.expect(json.note.topic).to.include.keys('id', 'name', 'slug', 'status');
+        });
+      }

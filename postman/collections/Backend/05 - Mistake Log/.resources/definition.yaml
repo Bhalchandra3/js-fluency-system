@@ -1,0 +1,7 @@
+$kind: collection
+name: 05 - Mistake Log
+order: 6000
+description: |-
+  Phase 4 Mistake Log APIs (Development Order §2.5.5).
+  List / detail / manual create / owner update+resolve. No hard delete.
+  Provenance fields (sourceSessionLogId, sessionId) are system-managed and rejected on write.

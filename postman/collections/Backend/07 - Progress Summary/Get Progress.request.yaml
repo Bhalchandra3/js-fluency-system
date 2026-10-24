@@ -1,0 +1,49 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/progress'
+description: |-
+  Purpose: Dashboard summary metrics derived from persisted Topic / Mistake / DeepDiveNote.
+
+  Method / path: GET /api/progress
+  Authentication: Required (collection bearer auth).
+  Side effects: none (read-only; does not write DailyProgress or mutate schedule/status).
+
+  Success 200:
+  {
+    "status": "ok",
+    "statusCounts": { "green": number, "yellow": number, "red": number },
+    "deepDiveCount": number,
+    "unresolvedMistakeCount": number,
+    "dueCount": number,
+    "overdueCount": number
+  }
+
+  Metric notes:
+  - statusCounts — Topic.status group counts
+  - deepDiveCount — DeepDiveNote row count
+  - unresolvedMistakeCount — Mistake rows with resolvedAt null
+  - dueCount — topics due today or earlier (Kolkata; includes overdue); same semantics as GET /api/revision/today
+  - overdueCount — subset of due topics past the Kolkata due day
+
+  Useful errors: 401 Unauthorized; 405 Method not allowed.
+  Source: api/progress/index.ts + api/_lib/progress/progressService.ts
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      pm.test('Response has status', function () {
+        pm.expect(json).to.have.property('status');
+      });
+      if (pm.response.code === 200) {
+        pm.test('Progress envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.statusCounts).to.include.keys('green', 'yellow', 'red');
+          pm.expect(json.deepDiveCount).to.be.a('number');
+          pm.expect(json.unresolvedMistakeCount).to.be.a('number');
+          pm.expect(json.dueCount).to.be.a('number');
+          pm.expect(json.overdueCount).to.be.a('number');
+          pm.expect(json.dueCount).to.be.at.least(json.overdueCount);
+        });
+      }

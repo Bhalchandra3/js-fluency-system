@@ -1,0 +1,47 @@
+$kind: http-request
+order: 4000
+method: PATCH
+url: '{{baseUrl}}/api/mistakes/{{mistakeId}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "mistakeText": "Updated misunderstanding",
+      "correctUnderstanding": "Updated correction",
+      "turnedIntoQuestion": false,
+      "resolved": true
+    }
+description: |-
+  Purpose: Update owner fields and/or resolve/unresolve a mistake.
+
+  Method / path: PATCH /api/mistakes/:id
+  Authentication: Required (collection bearer auth).
+
+  Request body (at least one field required):
+  - mistakeText? (non-empty string)
+  - correctUnderstanding? (non-empty string)
+  - turnedIntoQuestion? (boolean)
+  - resolved? (boolean) — true sets resolvedAt (idempotent if already set); false clears it
+
+  Forbidden (400 if present): sourceSessionLogId, sessionId, questionId, topicId, id, resolvedAt, createdAt.
+  No hard-delete endpoint in Phase 4.
+
+  Success 200: { "status": "ok", "mistake": { …detail… } }
+
+  Useful errors: 400 validation / empty body / provenance forge; 404; 401.
+
+  Source: api/mistakes/[id].ts + mistakeService.updateMistake
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200) {
+        pm.test('Patch envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.mistake).to.be.an('object');
+        });
+      }

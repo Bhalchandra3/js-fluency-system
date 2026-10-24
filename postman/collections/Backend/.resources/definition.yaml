@@ -13,7 +13,8 @@ description: |-
   1. npx vercel dev (http://localhost:3000)
   2. Select Local Development environment; set bearerToken privately
   3. Get API Health → Get Topics → Today's Revision (no auth) → Today's Revision
-     → Submit Revision Answer → Complete Revision Session
+     → Submit Revision Answer → Complete Revision Session → Mistake Log → Deep Dive
+     → Progress Summary
 auth:
   type: bearer
   credentials:

@@ -1,11 +1,12 @@
 // api/_lib/revision/completeService.ts
-// POST /api/revision/complete — atomic G5 finalize + Topic schedule update.
+// POST /api/revision/complete — atomic G5 finalize + Topic schedule/status + Phase 4 side effects.
 
 import {
     ConfidenceLevel,
     Prisma,
     PrismaClient,
     RevisionSessionOutcome,
+    TopicStatus,
 } from '../../../generated/prisma/client.js';
 import {
     aggregateG5SessionOutcome,
@@ -14,6 +15,13 @@ import {
 } from '../scheduling/g5Aggregation.js';
 import { computeNextRevisionAt } from '../scheduling/calendarDay.js';
 import { RevisionApiError } from './errors.js';
+import {
+    buildTopicStatusDto,
+    createAutomaticMistakes,
+    ensureDeepDiveNote,
+    type QualifyingLogRow,
+    type TopicStatusDto,
+} from './completeSideEffects.js';
 
 type DbClient = PrismaClient | Prisma.TransactionClient;
 
@@ -34,6 +42,8 @@ export type CompleteSessionResponse = {
     status: 'ok';
     sessionStatus: 'COMPLETED';
     scheduling: CompleteSchedulingDto;
+    topicStatus: TopicStatusDto;
+    mistakesCreated: number;
 };
 
 type LockedSessionRow = {
@@ -53,6 +63,7 @@ type LockedTopicRow = {
     id: string;
     intervalDays: number;
     nextRevisionDate: Date;
+    status: TopicStatus;
 };
 
 function requireNonEmptyString(value: unknown, field: string): string {
@@ -93,10 +104,25 @@ async function buildReasonFromLogs(
     return aggregated.reason;
 }
 
-async function schedulingFromCompletedAudit(
+async function loadTopicStatus(client: DbClient, topicId: string): Promise<TopicStatus> {
+    const topic = await client.topic.findUnique({
+        where: { id: topicId },
+        select: { status: true },
+    });
+    if (!topic) {
+        throw new RevisionApiError(500, 'Session topic not found');
+    }
+    return topic.status;
+}
+
+/**
+ * Duplicate / loser complete: remap topicStatus from stored outcome + current Topic.status.
+ * No status / Deep Dive / Mistake writes.
+ */
+async function responseFromCompletedAudit(
     client: DbClient,
     session: LockedSessionRow,
-): Promise<CompleteSchedulingDto> {
+): Promise<CompleteSessionResponse> {
     if (
         session.outcome === null ||
         session.previousIntervalDays === null ||
@@ -114,20 +140,36 @@ async function schedulingFromCompletedAudit(
         session.id,
         session.previousIntervalDays,
     );
+    const currentStatus = await loadTopicStatus(client, session.topicId);
+    // Remap from stored outcome + current Topic.status; no writes.
+    const remapped = buildTopicStatusDto(session.outcome, currentStatus, false);
 
     return {
-        outcome: mapOutcome(session.outcome),
-        previousIntervalDays: session.previousIntervalDays,
-        resultingIntervalDays: session.resultingIntervalDays,
-        resultingNextRevisionDate: session.resultingNextRevisionDate.toISOString(),
-        policyVersion: session.policyVersion || G5_POLICY_VERSION,
-        reason,
+        status: 'ok',
+        sessionStatus: 'COMPLETED',
+        scheduling: {
+            outcome: mapOutcome(session.outcome),
+            previousIntervalDays: session.previousIntervalDays,
+            resultingIntervalDays: session.resultingIntervalDays,
+            resultingNextRevisionDate: session.resultingNextRevisionDate.toISOString(),
+            policyVersion: session.policyVersion || G5_POLICY_VERSION,
+            reason,
+        },
+        topicStatus: {
+            previous: currentStatus,
+            current: remapped.current,
+            policyVersion: remapped.policyVersion,
+            reason: remapped.reason,
+            deepDiveEnsured: false,
+        },
+        mistakesCreated: 0,
     };
 }
 
 /**
  * Finalize an OPEN revision session exactly once.
  * Lock order: RevisionSession → Topic (avoids deadlock with answer path locking session only).
+ * Phase 4 side effects run only when updateMany OPEN → COMPLETED returns count === 1.
  */
 export async function completeRevisionSession(
     prisma: PrismaClient,
@@ -161,12 +203,7 @@ export async function completeRevisionSession(
         const session = lockedSessions[0]!;
 
         if (session.status === 'COMPLETED') {
-            const scheduling = await schedulingFromCompletedAudit(tx, session);
-            return {
-                status: 'ok',
-                sessionStatus: 'COMPLETED',
-                scheduling,
-            };
+            return responseFromCompletedAudit(tx, session);
         }
 
         if (session.status !== 'OPEN') {
@@ -186,9 +223,11 @@ export async function completeRevisionSession(
         const logs = await tx.sessionLog.findMany({
             where: { sessionId },
             select: {
+                id: true,
                 questionId: true,
                 correct: true,
                 confidence: true,
+                question: { select: { explanation: true } },
             },
         });
 
@@ -198,21 +237,28 @@ export async function completeRevisionSession(
             throw new RevisionApiError(409, 'Session has unanswered questions');
         }
 
-        const answers = logs.map((log) => {
+        const qualifyingLogs: QualifyingLogRow[] = [];
+        const answers: Array<{ correct: boolean; confidence: ConfidenceLevel }> = [];
+        for (const log of logs) {
             if (typeof log.correct !== 'boolean') {
                 throw new RevisionApiError(
                     500,
                     'Stored answer log is missing boolean correct value',
                 );
             }
-            return {
+            const confidence = log.confidence as ConfidenceLevel;
+            answers.push({ correct: log.correct, confidence });
+            qualifyingLogs.push({
+                id: log.id,
+                questionId: log.questionId,
                 correct: log.correct,
-                confidence: log.confidence as ConfidenceLevel,
-            };
-        });
+                confidence,
+                explanation: log.question.explanation,
+            });
+        }
 
         const lockedTopics = await tx.$queryRaw<LockedTopicRow[]>`
-            SELECT id, "intervalDays", "nextRevisionDate"
+            SELECT id, "intervalDays", "nextRevisionDate", status
             FROM "Topic"
             WHERE id = ${session.topicId}
             FOR UPDATE
@@ -236,11 +282,18 @@ export async function completeRevisionSession(
             aggregated.resultingIntervalDays,
         );
 
+        const statusMapped = buildTopicStatusDto(
+            aggregated.outcome as RevisionSessionOutcome,
+            topic.status,
+            false,
+        );
+
         await tx.topic.update({
             where: { id: topic.id },
             data: {
                 intervalDays: aggregated.resultingIntervalDays,
                 nextRevisionDate: resultingNextRevisionDate,
+                status: statusMapped.current,
             },
         });
 
@@ -259,7 +312,7 @@ export async function completeRevisionSession(
         });
 
         if (updated.count !== 1) {
-            // Another completer won; reload stored audit.
+            // Another completer won; reload stored audit — no Phase 4 side effects.
             const again = await tx.$queryRaw<LockedSessionRow[]>`
                 SELECT
                     id,
@@ -280,13 +333,23 @@ export async function completeRevisionSession(
             if (!winner || winner.status !== 'COMPLETED') {
                 throw new RevisionApiError(500, 'Failed to complete revision session');
             }
-            const scheduling = await schedulingFromCompletedAudit(tx, winner);
-            return {
-                status: 'ok',
-                sessionStatus: 'COMPLETED',
-                scheduling,
-            };
+            return responseFromCompletedAudit(tx, winner);
         }
+
+        let deepDiveEnsured = false;
+        if (statusMapped.current === TopicStatus.RED) {
+            deepDiveEnsured = await ensureDeepDiveNote(
+                tx,
+                topic.id,
+                aggregated.outcome as RevisionSessionOutcome,
+            );
+        }
+
+        const mistakesCreated = await createAutomaticMistakes(tx, {
+            topicId: topic.id,
+            sessionId,
+            logs: qualifyingLogs,
+        });
 
         return {
             status: 'ok',
@@ -299,6 +362,14 @@ export async function completeRevisionSession(
                 policyVersion: aggregated.policyVersion,
                 reason: aggregated.reason,
             },
+            topicStatus: {
+                previous: statusMapped.previous,
+                current: statusMapped.current,
+                policyVersion: statusMapped.policyVersion,
+                reason: statusMapped.reason,
+                deepDiveEnsured,
+            },
+            mistakesCreated,
         };
     });
 }

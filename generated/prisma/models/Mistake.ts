@@ -27,27 +27,39 @@ export type AggregateMistake = {
 export type MistakeMinAggregateOutputType = {
   id: string | null
   topicId: string | null
+  questionId: string | null
+  sessionId: string | null
+  sourceSessionLogId: string | null
   mistakeText: string | null
   correctUnderstanding: string | null
   turnedIntoQuestion: boolean | null
+  resolvedAt: Date | null
   createdAt: Date | null
 }
 
 export type MistakeMaxAggregateOutputType = {
   id: string | null
   topicId: string | null
+  questionId: string | null
+  sessionId: string | null
+  sourceSessionLogId: string | null
   mistakeText: string | null
   correctUnderstanding: string | null
   turnedIntoQuestion: boolean | null
+  resolvedAt: Date | null
   createdAt: Date | null
 }
 
 export type MistakeCountAggregateOutputType = {
   id: number
   topicId: number
+  questionId: number
+  sessionId: number
+  sourceSessionLogId: number
   mistakeText: number
   correctUnderstanding: number
   turnedIntoQuestion: number
+  resolvedAt: number
   createdAt: number
   _all: number
 }
@@ -56,27 +68,39 @@ export type MistakeCountAggregateOutputType = {
 export type MistakeMinAggregateInputType = {
   id?: true
   topicId?: true
+  questionId?: true
+  sessionId?: true
+  sourceSessionLogId?: true
   mistakeText?: true
   correctUnderstanding?: true
   turnedIntoQuestion?: true
+  resolvedAt?: true
   createdAt?: true
 }
 
 export type MistakeMaxAggregateInputType = {
   id?: true
   topicId?: true
+  questionId?: true
+  sessionId?: true
+  sourceSessionLogId?: true
   mistakeText?: true
   correctUnderstanding?: true
   turnedIntoQuestion?: true
+  resolvedAt?: true
   createdAt?: true
 }
 
 export type MistakeCountAggregateInputType = {
   id?: true
   topicId?: true
+  questionId?: true
+  sessionId?: true
+  sourceSessionLogId?: true
   mistakeText?: true
   correctUnderstanding?: true
   turnedIntoQuestion?: true
+  resolvedAt?: true
   createdAt?: true
   _all?: true
 }
@@ -156,9 +180,13 @@ export type MistakeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type MistakeGroupByOutputType = {
   id: string
   topicId: string
+  questionId: string | null
+  sessionId: string | null
+  sourceSessionLogId: string | null
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion: boolean
+  resolvedAt: Date | null
   createdAt: Date
   _count: MistakeCountAggregateOutputType | null
   _min: MistakeMinAggregateOutputType | null
@@ -186,42 +214,67 @@ export type MistakeWhereInput = {
   NOT?: Prisma.MistakeWhereInput | Prisma.MistakeWhereInput[]
   id?: Prisma.StringFilter<"Mistake"> | string
   topicId?: Prisma.StringFilter<"Mistake"> | string
+  questionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
+  sessionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
+  sourceSessionLogId?: Prisma.StringNullableFilter<"Mistake"> | string | null
   mistakeText?: Prisma.StringFilter<"Mistake"> | string
   correctUnderstanding?: Prisma.StringFilter<"Mistake"> | string
   turnedIntoQuestion?: Prisma.BoolFilter<"Mistake"> | boolean
+  resolvedAt?: Prisma.DateTimeNullableFilter<"Mistake"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Mistake"> | Date | string
   topic?: Prisma.XOR<Prisma.TopicScalarRelationFilter, Prisma.TopicWhereInput>
+  question?: Prisma.XOR<Prisma.QuestionNullableScalarRelationFilter, Prisma.QuestionWhereInput> | null
+  session?: Prisma.XOR<Prisma.RevisionSessionNullableScalarRelationFilter, Prisma.RevisionSessionWhereInput> | null
+  sourceSessionLog?: Prisma.XOR<Prisma.SessionLogNullableScalarRelationFilter, Prisma.SessionLogWhereInput> | null
 }
 
 export type MistakeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  questionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSessionLogId?: Prisma.SortOrderInput | Prisma.SortOrder
   mistakeText?: Prisma.SortOrder
   correctUnderstanding?: Prisma.SortOrder
   turnedIntoQuestion?: Prisma.SortOrder
+  resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   topic?: Prisma.TopicOrderByWithRelationInput
+  question?: Prisma.QuestionOrderByWithRelationInput
+  session?: Prisma.RevisionSessionOrderByWithRelationInput
+  sourceSessionLog?: Prisma.SessionLogOrderByWithRelationInput
 }
 
 export type MistakeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  sourceSessionLogId?: string
   AND?: Prisma.MistakeWhereInput | Prisma.MistakeWhereInput[]
   OR?: Prisma.MistakeWhereInput[]
   NOT?: Prisma.MistakeWhereInput | Prisma.MistakeWhereInput[]
   topicId?: Prisma.StringFilter<"Mistake"> | string
+  questionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
+  sessionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
   mistakeText?: Prisma.StringFilter<"Mistake"> | string
   correctUnderstanding?: Prisma.StringFilter<"Mistake"> | string
   turnedIntoQuestion?: Prisma.BoolFilter<"Mistake"> | boolean
+  resolvedAt?: Prisma.DateTimeNullableFilter<"Mistake"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Mistake"> | Date | string
   topic?: Prisma.XOR<Prisma.TopicScalarRelationFilter, Prisma.TopicWhereInput>
-}, "id">
+  question?: Prisma.XOR<Prisma.QuestionNullableScalarRelationFilter, Prisma.QuestionWhereInput> | null
+  session?: Prisma.XOR<Prisma.RevisionSessionNullableScalarRelationFilter, Prisma.RevisionSessionWhereInput> | null
+  sourceSessionLog?: Prisma.XOR<Prisma.SessionLogNullableScalarRelationFilter, Prisma.SessionLogWhereInput> | null
+}, "id" | "sourceSessionLogId">
 
 export type MistakeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  questionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSessionLogId?: Prisma.SortOrderInput | Prisma.SortOrder
   mistakeText?: Prisma.SortOrder
   correctUnderstanding?: Prisma.SortOrder
   turnedIntoQuestion?: Prisma.SortOrder
+  resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MistakeCountOrderByAggregateInput
   _max?: Prisma.MistakeMaxOrderByAggregateInput
@@ -234,9 +287,13 @@ export type MistakeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MistakeScalarWhereWithAggregatesInput | Prisma.MistakeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Mistake"> | string
   topicId?: Prisma.StringWithAggregatesFilter<"Mistake"> | string
+  questionId?: Prisma.StringNullableWithAggregatesFilter<"Mistake"> | string | null
+  sessionId?: Prisma.StringNullableWithAggregatesFilter<"Mistake"> | string | null
+  sourceSessionLogId?: Prisma.StringNullableWithAggregatesFilter<"Mistake"> | string | null
   mistakeText?: Prisma.StringWithAggregatesFilter<"Mistake"> | string
   correctUnderstanding?: Prisma.StringWithAggregatesFilter<"Mistake"> | string
   turnedIntoQuestion?: Prisma.BoolWithAggregatesFilter<"Mistake"> | boolean
+  resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Mistake"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Mistake"> | Date | string
 }
 
@@ -245,16 +302,24 @@ export type MistakeCreateInput = {
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
   topic: Prisma.TopicCreateNestedOneWithoutMistakesInput
+  question?: Prisma.QuestionCreateNestedOneWithoutMistakesInput
+  session?: Prisma.RevisionSessionCreateNestedOneWithoutMistakesInput
+  sourceSessionLog?: Prisma.SessionLogCreateNestedOneWithoutMistakeFromSourceInput
 }
 
 export type MistakeUncheckedCreateInput = {
   id?: string
   topicId: string
+  questionId?: string | null
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -263,25 +328,37 @@ export type MistakeUpdateInput = {
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.TopicUpdateOneRequiredWithoutMistakesNestedInput
+  question?: Prisma.QuestionUpdateOneWithoutMistakesNestedInput
+  session?: Prisma.RevisionSessionUpdateOneWithoutMistakesNestedInput
+  sourceSessionLog?: Prisma.SessionLogUpdateOneWithoutMistakeFromSourceNestedInput
 }
 
 export type MistakeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MistakeCreateManyInput = {
   id?: string
   topicId: string
+  questionId?: string | null
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -290,15 +367,20 @@ export type MistakeUpdateManyMutationInput = {
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MistakeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -312,30 +394,47 @@ export type MistakeOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type MistakeNullableScalarRelationFilter = {
+  is?: Prisma.MistakeWhereInput | null
+  isNot?: Prisma.MistakeWhereInput | null
+}
+
 export type MistakeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  questionId?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
+  sourceSessionLogId?: Prisma.SortOrder
   mistakeText?: Prisma.SortOrder
   correctUnderstanding?: Prisma.SortOrder
   turnedIntoQuestion?: Prisma.SortOrder
+  resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MistakeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  questionId?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
+  sourceSessionLogId?: Prisma.SortOrder
   mistakeText?: Prisma.SortOrder
   correctUnderstanding?: Prisma.SortOrder
   turnedIntoQuestion?: Prisma.SortOrder
+  resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MistakeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  questionId?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
+  sourceSessionLogId?: Prisma.SortOrder
   mistakeText?: Prisma.SortOrder
   correctUnderstanding?: Prisma.SortOrder
   turnedIntoQuestion?: Prisma.SortOrder
+  resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -381,6 +480,122 @@ export type MistakeUncheckedUpdateManyWithoutTopicNestedInput = {
   deleteMany?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
 }
 
+export type MistakeCreateNestedManyWithoutQuestionInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput> | Prisma.MistakeCreateWithoutQuestionInput[] | Prisma.MistakeUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutQuestionInput | Prisma.MistakeCreateOrConnectWithoutQuestionInput[]
+  createMany?: Prisma.MistakeCreateManyQuestionInputEnvelope
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+}
+
+export type MistakeUncheckedCreateNestedManyWithoutQuestionInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput> | Prisma.MistakeCreateWithoutQuestionInput[] | Prisma.MistakeUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutQuestionInput | Prisma.MistakeCreateOrConnectWithoutQuestionInput[]
+  createMany?: Prisma.MistakeCreateManyQuestionInputEnvelope
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+}
+
+export type MistakeUpdateManyWithoutQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput> | Prisma.MistakeCreateWithoutQuestionInput[] | Prisma.MistakeUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutQuestionInput | Prisma.MistakeCreateOrConnectWithoutQuestionInput[]
+  upsert?: Prisma.MistakeUpsertWithWhereUniqueWithoutQuestionInput | Prisma.MistakeUpsertWithWhereUniqueWithoutQuestionInput[]
+  createMany?: Prisma.MistakeCreateManyQuestionInputEnvelope
+  set?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  disconnect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  delete?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  update?: Prisma.MistakeUpdateWithWhereUniqueWithoutQuestionInput | Prisma.MistakeUpdateWithWhereUniqueWithoutQuestionInput[]
+  updateMany?: Prisma.MistakeUpdateManyWithWhereWithoutQuestionInput | Prisma.MistakeUpdateManyWithWhereWithoutQuestionInput[]
+  deleteMany?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
+}
+
+export type MistakeUncheckedUpdateManyWithoutQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput> | Prisma.MistakeCreateWithoutQuestionInput[] | Prisma.MistakeUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutQuestionInput | Prisma.MistakeCreateOrConnectWithoutQuestionInput[]
+  upsert?: Prisma.MistakeUpsertWithWhereUniqueWithoutQuestionInput | Prisma.MistakeUpsertWithWhereUniqueWithoutQuestionInput[]
+  createMany?: Prisma.MistakeCreateManyQuestionInputEnvelope
+  set?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  disconnect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  delete?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  update?: Prisma.MistakeUpdateWithWhereUniqueWithoutQuestionInput | Prisma.MistakeUpdateWithWhereUniqueWithoutQuestionInput[]
+  updateMany?: Prisma.MistakeUpdateManyWithWhereWithoutQuestionInput | Prisma.MistakeUpdateManyWithWhereWithoutQuestionInput[]
+  deleteMany?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
+}
+
+export type MistakeCreateNestedOneWithoutSourceSessionLogInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSourceSessionLogInput
+  connect?: Prisma.MistakeWhereUniqueInput
+}
+
+export type MistakeUncheckedCreateNestedOneWithoutSourceSessionLogInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSourceSessionLogInput
+  connect?: Prisma.MistakeWhereUniqueInput
+}
+
+export type MistakeUpdateOneWithoutSourceSessionLogNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSourceSessionLogInput
+  upsert?: Prisma.MistakeUpsertWithoutSourceSessionLogInput
+  disconnect?: Prisma.MistakeWhereInput | boolean
+  delete?: Prisma.MistakeWhereInput | boolean
+  connect?: Prisma.MistakeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MistakeUpdateToOneWithWhereWithoutSourceSessionLogInput, Prisma.MistakeUpdateWithoutSourceSessionLogInput>, Prisma.MistakeUncheckedUpdateWithoutSourceSessionLogInput>
+}
+
+export type MistakeUncheckedUpdateOneWithoutSourceSessionLogNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSourceSessionLogInput
+  upsert?: Prisma.MistakeUpsertWithoutSourceSessionLogInput
+  disconnect?: Prisma.MistakeWhereInput | boolean
+  delete?: Prisma.MistakeWhereInput | boolean
+  connect?: Prisma.MistakeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MistakeUpdateToOneWithWhereWithoutSourceSessionLogInput, Prisma.MistakeUpdateWithoutSourceSessionLogInput>, Prisma.MistakeUncheckedUpdateWithoutSourceSessionLogInput>
+}
+
+export type MistakeCreateNestedManyWithoutSessionInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput> | Prisma.MistakeCreateWithoutSessionInput[] | Prisma.MistakeUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSessionInput | Prisma.MistakeCreateOrConnectWithoutSessionInput[]
+  createMany?: Prisma.MistakeCreateManySessionInputEnvelope
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+}
+
+export type MistakeUncheckedCreateNestedManyWithoutSessionInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput> | Prisma.MistakeCreateWithoutSessionInput[] | Prisma.MistakeUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSessionInput | Prisma.MistakeCreateOrConnectWithoutSessionInput[]
+  createMany?: Prisma.MistakeCreateManySessionInputEnvelope
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+}
+
+export type MistakeUpdateManyWithoutSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput> | Prisma.MistakeCreateWithoutSessionInput[] | Prisma.MistakeUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSessionInput | Prisma.MistakeCreateOrConnectWithoutSessionInput[]
+  upsert?: Prisma.MistakeUpsertWithWhereUniqueWithoutSessionInput | Prisma.MistakeUpsertWithWhereUniqueWithoutSessionInput[]
+  createMany?: Prisma.MistakeCreateManySessionInputEnvelope
+  set?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  disconnect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  delete?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  update?: Prisma.MistakeUpdateWithWhereUniqueWithoutSessionInput | Prisma.MistakeUpdateWithWhereUniqueWithoutSessionInput[]
+  updateMany?: Prisma.MistakeUpdateManyWithWhereWithoutSessionInput | Prisma.MistakeUpdateManyWithWhereWithoutSessionInput[]
+  deleteMany?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
+}
+
+export type MistakeUncheckedUpdateManyWithoutSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput> | Prisma.MistakeCreateWithoutSessionInput[] | Prisma.MistakeUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MistakeCreateOrConnectWithoutSessionInput | Prisma.MistakeCreateOrConnectWithoutSessionInput[]
+  upsert?: Prisma.MistakeUpsertWithWhereUniqueWithoutSessionInput | Prisma.MistakeUpsertWithWhereUniqueWithoutSessionInput[]
+  createMany?: Prisma.MistakeCreateManySessionInputEnvelope
+  set?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  disconnect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  delete?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  connect?: Prisma.MistakeWhereUniqueInput | Prisma.MistakeWhereUniqueInput[]
+  update?: Prisma.MistakeUpdateWithWhereUniqueWithoutSessionInput | Prisma.MistakeUpdateWithWhereUniqueWithoutSessionInput[]
+  updateMany?: Prisma.MistakeUpdateManyWithWhereWithoutSessionInput | Prisma.MistakeUpdateManyWithWhereWithoutSessionInput[]
+  deleteMany?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -390,14 +605,22 @@ export type MistakeCreateWithoutTopicInput = {
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
+  question?: Prisma.QuestionCreateNestedOneWithoutMistakesInput
+  session?: Prisma.RevisionSessionCreateNestedOneWithoutMistakesInput
+  sourceSessionLog?: Prisma.SessionLogCreateNestedOneWithoutMistakeFromSourceInput
 }
 
 export type MistakeUncheckedCreateWithoutTopicInput = {
   id?: string
+  questionId?: string | null
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -433,17 +656,189 @@ export type MistakeScalarWhereInput = {
   NOT?: Prisma.MistakeScalarWhereInput | Prisma.MistakeScalarWhereInput[]
   id?: Prisma.StringFilter<"Mistake"> | string
   topicId?: Prisma.StringFilter<"Mistake"> | string
+  questionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
+  sessionId?: Prisma.StringNullableFilter<"Mistake"> | string | null
+  sourceSessionLogId?: Prisma.StringNullableFilter<"Mistake"> | string | null
   mistakeText?: Prisma.StringFilter<"Mistake"> | string
   correctUnderstanding?: Prisma.StringFilter<"Mistake"> | string
   turnedIntoQuestion?: Prisma.BoolFilter<"Mistake"> | boolean
+  resolvedAt?: Prisma.DateTimeNullableFilter<"Mistake"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Mistake"> | Date | string
 }
 
-export type MistakeCreateManyTopicInput = {
+export type MistakeCreateWithoutQuestionInput = {
   id?: string
   mistakeText: string
   correctUnderstanding: string
   turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  topic: Prisma.TopicCreateNestedOneWithoutMistakesInput
+  session?: Prisma.RevisionSessionCreateNestedOneWithoutMistakesInput
+  sourceSessionLog?: Prisma.SessionLogCreateNestedOneWithoutMistakeFromSourceInput
+}
+
+export type MistakeUncheckedCreateWithoutQuestionInput = {
+  id?: string
+  topicId: string
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type MistakeCreateOrConnectWithoutQuestionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput>
+}
+
+export type MistakeCreateManyQuestionInputEnvelope = {
+  data: Prisma.MistakeCreateManyQuestionInput | Prisma.MistakeCreateManyQuestionInput[]
+  skipDuplicates?: boolean
+}
+
+export type MistakeUpsertWithWhereUniqueWithoutQuestionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  update: Prisma.XOR<Prisma.MistakeUpdateWithoutQuestionInput, Prisma.MistakeUncheckedUpdateWithoutQuestionInput>
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutQuestionInput, Prisma.MistakeUncheckedCreateWithoutQuestionInput>
+}
+
+export type MistakeUpdateWithWhereUniqueWithoutQuestionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  data: Prisma.XOR<Prisma.MistakeUpdateWithoutQuestionInput, Prisma.MistakeUncheckedUpdateWithoutQuestionInput>
+}
+
+export type MistakeUpdateManyWithWhereWithoutQuestionInput = {
+  where: Prisma.MistakeScalarWhereInput
+  data: Prisma.XOR<Prisma.MistakeUpdateManyMutationInput, Prisma.MistakeUncheckedUpdateManyWithoutQuestionInput>
+}
+
+export type MistakeCreateWithoutSourceSessionLogInput = {
+  id?: string
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  topic: Prisma.TopicCreateNestedOneWithoutMistakesInput
+  question?: Prisma.QuestionCreateNestedOneWithoutMistakesInput
+  session?: Prisma.RevisionSessionCreateNestedOneWithoutMistakesInput
+}
+
+export type MistakeUncheckedCreateWithoutSourceSessionLogInput = {
+  id?: string
+  topicId: string
+  questionId?: string | null
+  sessionId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type MistakeCreateOrConnectWithoutSourceSessionLogInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+}
+
+export type MistakeUpsertWithoutSourceSessionLogInput = {
+  update: Prisma.XOR<Prisma.MistakeUpdateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedUpdateWithoutSourceSessionLogInput>
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedCreateWithoutSourceSessionLogInput>
+  where?: Prisma.MistakeWhereInput
+}
+
+export type MistakeUpdateToOneWithWhereWithoutSourceSessionLogInput = {
+  where?: Prisma.MistakeWhereInput
+  data: Prisma.XOR<Prisma.MistakeUpdateWithoutSourceSessionLogInput, Prisma.MistakeUncheckedUpdateWithoutSourceSessionLogInput>
+}
+
+export type MistakeUpdateWithoutSourceSessionLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  topic?: Prisma.TopicUpdateOneRequiredWithoutMistakesNestedInput
+  question?: Prisma.QuestionUpdateOneWithoutMistakesNestedInput
+  session?: Prisma.RevisionSessionUpdateOneWithoutMistakesNestedInput
+}
+
+export type MistakeUncheckedUpdateWithoutSourceSessionLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MistakeCreateWithoutSessionInput = {
+  id?: string
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  topic: Prisma.TopicCreateNestedOneWithoutMistakesInput
+  question?: Prisma.QuestionCreateNestedOneWithoutMistakesInput
+  sourceSessionLog?: Prisma.SessionLogCreateNestedOneWithoutMistakeFromSourceInput
+}
+
+export type MistakeUncheckedCreateWithoutSessionInput = {
+  id?: string
+  topicId: string
+  questionId?: string | null
+  sourceSessionLogId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type MistakeCreateOrConnectWithoutSessionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput>
+}
+
+export type MistakeCreateManySessionInputEnvelope = {
+  data: Prisma.MistakeCreateManySessionInput | Prisma.MistakeCreateManySessionInput[]
+  skipDuplicates?: boolean
+}
+
+export type MistakeUpsertWithWhereUniqueWithoutSessionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  update: Prisma.XOR<Prisma.MistakeUpdateWithoutSessionInput, Prisma.MistakeUncheckedUpdateWithoutSessionInput>
+  create: Prisma.XOR<Prisma.MistakeCreateWithoutSessionInput, Prisma.MistakeUncheckedCreateWithoutSessionInput>
+}
+
+export type MistakeUpdateWithWhereUniqueWithoutSessionInput = {
+  where: Prisma.MistakeWhereUniqueInput
+  data: Prisma.XOR<Prisma.MistakeUpdateWithoutSessionInput, Prisma.MistakeUncheckedUpdateWithoutSessionInput>
+}
+
+export type MistakeUpdateManyWithWhereWithoutSessionInput = {
+  where: Prisma.MistakeScalarWhereInput
+  data: Prisma.XOR<Prisma.MistakeUpdateManyMutationInput, Prisma.MistakeUncheckedUpdateManyWithoutSessionInput>
+}
+
+export type MistakeCreateManyTopicInput = {
+  id?: string
+  questionId?: string | null
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -452,22 +847,130 @@ export type MistakeUpdateWithoutTopicInput = {
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  question?: Prisma.QuestionUpdateOneWithoutMistakesNestedInput
+  session?: Prisma.RevisionSessionUpdateOneWithoutMistakesNestedInput
+  sourceSessionLog?: Prisma.SessionLogUpdateOneWithoutMistakeFromSourceNestedInput
 }
 
 export type MistakeUncheckedUpdateWithoutTopicInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MistakeUncheckedUpdateManyWithoutTopicInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
   correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
   turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MistakeCreateManyQuestionInput = {
+  id?: string
+  topicId: string
+  sessionId?: string | null
+  sourceSessionLogId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type MistakeUpdateWithoutQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  topic?: Prisma.TopicUpdateOneRequiredWithoutMistakesNestedInput
+  session?: Prisma.RevisionSessionUpdateOneWithoutMistakesNestedInput
+  sourceSessionLog?: Prisma.SessionLogUpdateOneWithoutMistakeFromSourceNestedInput
+}
+
+export type MistakeUncheckedUpdateWithoutQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MistakeUncheckedUpdateManyWithoutQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MistakeCreateManySessionInput = {
+  id?: string
+  topicId: string
+  questionId?: string | null
+  sourceSessionLogId?: string | null
+  mistakeText: string
+  correctUnderstanding: string
+  turnedIntoQuestion?: boolean
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type MistakeUpdateWithoutSessionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  topic?: Prisma.TopicUpdateOneRequiredWithoutMistakesNestedInput
+  question?: Prisma.QuestionUpdateOneWithoutMistakesNestedInput
+  sourceSessionLog?: Prisma.SessionLogUpdateOneWithoutMistakeFromSourceNestedInput
+}
+
+export type MistakeUncheckedUpdateWithoutSessionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MistakeUncheckedUpdateManyWithoutSessionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  topicId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSessionLogId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mistakeText?: Prisma.StringFieldUpdateOperationsInput | string
+  correctUnderstanding?: Prisma.StringFieldUpdateOperationsInput | string
+  turnedIntoQuestion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -476,64 +979,105 @@ export type MistakeUncheckedUpdateManyWithoutTopicInput = {
 export type MistakeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   topicId?: boolean
+  questionId?: boolean
+  sessionId?: boolean
+  sourceSessionLogId?: boolean
   mistakeText?: boolean
   correctUnderstanding?: boolean
   turnedIntoQuestion?: boolean
+  resolvedAt?: boolean
   createdAt?: boolean
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }, ExtArgs["result"]["mistake"]>
 
 export type MistakeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   topicId?: boolean
+  questionId?: boolean
+  sessionId?: boolean
+  sourceSessionLogId?: boolean
   mistakeText?: boolean
   correctUnderstanding?: boolean
   turnedIntoQuestion?: boolean
+  resolvedAt?: boolean
   createdAt?: boolean
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }, ExtArgs["result"]["mistake"]>
 
 export type MistakeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   topicId?: boolean
+  questionId?: boolean
+  sessionId?: boolean
+  sourceSessionLogId?: boolean
   mistakeText?: boolean
   correctUnderstanding?: boolean
   turnedIntoQuestion?: boolean
+  resolvedAt?: boolean
   createdAt?: boolean
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }, ExtArgs["result"]["mistake"]>
 
 export type MistakeSelectScalar = {
   id?: boolean
   topicId?: boolean
+  questionId?: boolean
+  sessionId?: boolean
+  sourceSessionLogId?: boolean
   mistakeText?: boolean
   correctUnderstanding?: boolean
   turnedIntoQuestion?: boolean
+  resolvedAt?: boolean
   createdAt?: boolean
 }
 
-export type MistakeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "topicId" | "mistakeText" | "correctUnderstanding" | "turnedIntoQuestion" | "createdAt", ExtArgs["result"]["mistake"]>
+export type MistakeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "topicId" | "questionId" | "sessionId" | "sourceSessionLogId" | "mistakeText" | "correctUnderstanding" | "turnedIntoQuestion" | "resolvedAt" | "createdAt", ExtArgs["result"]["mistake"]>
 export type MistakeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }
 export type MistakeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }
 export type MistakeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   topic?: boolean | Prisma.TopicDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.Mistake$questionArgs<ExtArgs>
+  session?: boolean | Prisma.Mistake$sessionArgs<ExtArgs>
+  sourceSessionLog?: boolean | Prisma.Mistake$sourceSessionLogArgs<ExtArgs>
 }
 
 export type $MistakePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Mistake"
   objects: {
     topic: Prisma.$TopicPayload<ExtArgs>
+    question: Prisma.$QuestionPayload<ExtArgs> | null
+    session: Prisma.$RevisionSessionPayload<ExtArgs> | null
+    sourceSessionLog: Prisma.$SessionLogPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     topicId: string
+    questionId: string | null
+    sessionId: string | null
+    sourceSessionLogId: string | null
     mistakeText: string
     correctUnderstanding: string
     turnedIntoQuestion: boolean
+    resolvedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["mistake"]>
   composites: {}
@@ -930,6 +1474,9 @@ readonly fields: MistakeFieldRefs;
 export interface Prisma__MistakeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   topic<T extends Prisma.TopicDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TopicDefaultArgs<ExtArgs>>): Prisma.Prisma__TopicClient<runtime.Types.Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  question<T extends Prisma.Mistake$questionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mistake$questionArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  session<T extends Prisma.Mistake$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mistake$sessionArgs<ExtArgs>>): Prisma.Prisma__RevisionSessionClient<runtime.Types.Result.GetResult<Prisma.$RevisionSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sourceSessionLog<T extends Prisma.Mistake$sourceSessionLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mistake$sourceSessionLogArgs<ExtArgs>>): Prisma.Prisma__SessionLogClient<runtime.Types.Result.GetResult<Prisma.$SessionLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -961,9 +1508,13 @@ export interface Prisma__MistakeClient<T, Null = never, ExtArgs extends runtime.
 export interface MistakeFieldRefs {
   readonly id: Prisma.FieldRef<"Mistake", 'String'>
   readonly topicId: Prisma.FieldRef<"Mistake", 'String'>
+  readonly questionId: Prisma.FieldRef<"Mistake", 'String'>
+  readonly sessionId: Prisma.FieldRef<"Mistake", 'String'>
+  readonly sourceSessionLogId: Prisma.FieldRef<"Mistake", 'String'>
   readonly mistakeText: Prisma.FieldRef<"Mistake", 'String'>
   readonly correctUnderstanding: Prisma.FieldRef<"Mistake", 'String'>
   readonly turnedIntoQuestion: Prisma.FieldRef<"Mistake", 'Boolean'>
+  readonly resolvedAt: Prisma.FieldRef<"Mistake", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Mistake", 'DateTime'>
 }
     
@@ -1363,6 +1914,63 @@ export type MistakeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Mistakes to delete.
    */
   limit?: number
+}
+
+/**
+ * Mistake.question
+ */
+export type Mistake$questionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Question
+   */
+  select?: Prisma.QuestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Question
+   */
+  omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
+  where?: Prisma.QuestionWhereInput
+}
+
+/**
+ * Mistake.session
+ */
+export type Mistake$sessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RevisionSession
+   */
+  select?: Prisma.RevisionSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RevisionSession
+   */
+  omit?: Prisma.RevisionSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RevisionSessionInclude<ExtArgs> | null
+  where?: Prisma.RevisionSessionWhereInput
+}
+
+/**
+ * Mistake.sourceSessionLog
+ */
+export type Mistake$sourceSessionLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SessionLog
+   */
+  select?: Prisma.SessionLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SessionLog
+   */
+  omit?: Prisma.SessionLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionLogInclude<ExtArgs> | null
+  where?: Prisma.SessionLogWhereInput
 }
 
 /**

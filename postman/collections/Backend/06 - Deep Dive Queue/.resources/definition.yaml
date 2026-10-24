@@ -1,0 +1,8 @@
+$kind: collection
+name: 06 - Deep Dive Queue
+order: 7000
+description: |-
+  Phase 4 Deep Dive Queue APIs (Development Order §2.5.5).
+  List (RED first, then updatedAt desc) / patch reason+notes / delete-by-topicId.
+  Delete removes the note only — Topic.status and schedule are unchanged.
+  Step 4 complete-path may recreate a note on a later RED finalize (no tombstone).

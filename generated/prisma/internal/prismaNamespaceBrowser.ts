@@ -154,9 +154,13 @@ export type RevisionSessionQuestionScalarFieldEnum = (typeof RevisionSessionQues
 export const MistakeScalarFieldEnum = {
   id: 'id',
   topicId: 'topicId',
+  questionId: 'questionId',
+  sessionId: 'sessionId',
+  sourceSessionLogId: 'sourceSessionLogId',
   mistakeText: 'mistakeText',
   correctUnderstanding: 'correctUnderstanding',
   turnedIntoQuestion: 'turnedIntoQuestion',
+  resolvedAt: 'resolvedAt',
   createdAt: 'createdAt'
 } as const
 

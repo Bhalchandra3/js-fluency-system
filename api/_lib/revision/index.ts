@@ -10,5 +10,6 @@ export {
     completeRevisionSession,
     type CompleteSessionResponse,
 } from './completeService.js';
+export type { TopicStatusDto } from './completeSideEffects.js';
 export { RevisionApiError } from './errors.js';
 export { computeSessionProgress } from './sessionProgress.js';

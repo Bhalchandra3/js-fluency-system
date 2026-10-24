@@ -1,0 +1,43 @@
+$kind: http-request
+order: 2000
+method: GET
+url: '{{baseUrl}}/api/mistakes/{{mistakeId}}'
+description: |-
+  Purpose: Retrieve one mistake with topic name/slug.
+
+  Method / path: GET /api/mistakes/:id
+  Authentication: Required (collection bearer auth).
+
+  Success 200:
+  {
+    "status": "ok",
+    "mistake": {
+      "id": "cuid",
+      "topicId": "cuid",
+      "questionId": "cuid|null",
+      "sessionId": "cuid|null",
+      "sourceSessionLogId": "cuid|null",
+      "mistakeText": "string",
+      "correctUnderstanding": "string",
+      "turnedIntoQuestion": boolean,
+      "resolvedAt": "ISO-8601|null",
+      "createdAt": "ISO-8601",
+      "topic": { "id": "cuid", "name": "string", "slug": "string" }
+    }
+  }
+
+  Useful errors: 404 Mistake not found; 401 Unauthorized.
+
+  Source: api/mistakes/[id].ts
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200) {
+        pm.test('Detail envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.mistake).to.be.an('object');
+          pm.expect(json.mistake.topic).to.include.keys('id', 'name', 'slug');
+        });
+      }

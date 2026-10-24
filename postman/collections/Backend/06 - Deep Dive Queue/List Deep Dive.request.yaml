@@ -1,0 +1,50 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/deep-dive'
+description: |-
+  Purpose: List Deep Dive queue notes with topic status.
+
+  Method / path: GET /api/deep-dive
+  Authentication: Required (collection bearer auth).
+
+  Ordering (locked §2.5.5): RED topics first, then updatedAt descending.
+  No query filters or pagination in Phase 4 contract.
+
+  Success 200:
+  {
+    "status": "ok",
+    "notes": [
+      {
+        "id": "cuid",
+        "topicId": "cuid",
+        "reason": "string",
+        "notes": "string|null",
+        "createdAt": "ISO-8601",
+        "updatedAt": "ISO-8601",
+        "topic": {
+          "id": "cuid",
+          "name": "string",
+          "slug": "string",
+          "status": "GREEN|YELLOW|RED"
+        }
+      }
+    ]
+  }
+
+  Useful errors: 401 Unauthorized; 405 Method not allowed.
+  Source: api/deep-dive/index.ts + deepDiveService.listDeepDiveNotes
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      pm.test('Response has status', function () {
+        pm.expect(json).to.have.property('status');
+      });
+      if (pm.response.code === 200) {
+        pm.test('List envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.notes).to.be.an('array');
+        });
+      }

@@ -1,0 +1,36 @@
+$kind: http-request
+order: 3000
+method: DELETE
+url: '{{baseUrl}}/api/deep-dive/{{topicId}}'
+description: |-
+  Purpose: Explicitly remove a topic from the Deep Dive queue (delete the note).
+
+  Method / path: DELETE /api/deep-dive/:topicId
+  Authentication: Required (collection bearer auth).
+
+  Behavior:
+  - Deletes only the DeepDiveNote for topicId.
+  - Does NOT change Topic.status, intervalDays, or nextRevisionDate.
+  - Does NOT delete Mistakes or Questions.
+  - Repeated delete of a missing note → 404.
+  - A later RED complete may recreate a note via Step 4 ensure (no tombstone).
+
+  Success 200: { "status": "ok" }
+  Useful errors: 404 Deep Dive note not found; 401.
+
+  Source: api/deep-dive/[topicId].ts + deepDiveService.deleteDeepDiveNote
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200) {
+        pm.test('Delete envelope', function () {
+          pm.expect(json).to.eql({ status: 'ok' });
+        });
+      } else if (pm.response.code === 404) {
+        pm.test('Missing note error envelope', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string');
+        });
+      }

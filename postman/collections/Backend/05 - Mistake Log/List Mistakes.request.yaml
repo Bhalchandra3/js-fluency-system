@@ -1,0 +1,42 @@
+$kind: http-request
+order: 1000
+method: GET
+url: '{{baseUrl}}/api/mistakes?topicId={{topicId}}&unresolvedOnly=true&limit=50&offset=0'
+description: |-
+  Purpose: List mistakes with optional filters and pagination.
+
+  Method / path: GET /api/mistakes
+  Authentication: Required (collection bearer auth).
+
+  Query (all optional):
+  - topicId (string) — filter by topic
+  - unresolvedOnly (true|false) — true ⇒ resolvedAt is null
+  - limit (integer, default 50, max 200, min 1)
+  - offset (integer, default 0)
+
+  Success 200:
+  {
+    "status": "ok",
+    "mistakes": [ /* Mistake list items */ ],
+    "total": number
+  }
+
+  Useful errors: 400 invalid query; 401 Unauthorized; 405 Method not allowed.
+  Error envelope: { "status": "error", "message": "<string>" }
+
+  Source: api/mistakes/index.ts + api/_lib/mistakes/mistakeService.ts
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      pm.test('Response has status', function () {
+        pm.expect(json).to.have.property('status');
+      });
+      if (pm.response.code === 200) {
+        pm.test('List envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.mistakes).to.be.an('array');
+          pm.expect(json.total).to.be.a('number');
+        });
+      }

@@ -95,6 +95,7 @@ model Question {
   codeSnippet   String?                                  // for CODE_WRITING or DEBUGGING questions
   logs          SessionLog[]
   sessionQuestions RevisionSessionQuestion[]
+  mistakes      Mistake[]
 
   createdAt     DateTime        @default(now())
 
@@ -119,6 +120,9 @@ model SessionLog {
   confidence     ConfidenceLevel                               // spec §11
 
   answeredAt  DateTime        @default(now())
+
+  // Phase 4 — optional reverse link for auto Mistake provenance (SetNull on log delete).
+  mistakeFromSource Mistake?
 
   @@unique([sessionId, questionId])
   @@index([topicId, answeredAt])
@@ -146,6 +150,7 @@ model RevisionSession {
 
   questions                 RevisionSessionQuestion[]
   logs                      SessionLog[]
+  mistakes                  Mistake[]
 
   @@index([topicId, status])
   @@index([startedAt])
@@ -166,18 +171,29 @@ model RevisionSessionQuestion {
 }
 
 // Spec §15 — Mistake Log
+// Phase 4 provenance: nullable FKs + unique sourceSessionLogId for auto-dedupe.
+// Manual mistakes omit sourceSessionLogId (Postgres UNIQUE allows many NULLs).
 model Mistake {
   id                   String   @id @default(cuid())
   topicId              String
   topic                Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
+  questionId           String?
+  question             Question?        @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  sessionId            String?
+  session              RevisionSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  sourceSessionLogId   String?          @unique
+  sourceSessionLog     SessionLog?      @relation(fields: [sourceSessionLogId], references: [id], onDelete: SetNull)
+
   mistakeText          String                              // what was misunderstood
   correctUnderstanding String                              // the correction
   turnedIntoQuestion   Boolean  @default(false)             // spec §15 — mistakes can become future questions
+  resolvedAt           DateTime?                            // soft resolve; null = unresolved
 
   createdAt            DateTime @default(now())
 
   @@index([topicId])
+  @@index([topicId, resolvedAt])
 }
 
 // Spec §12 — Deep Dive Queue. One active note-set per topic.

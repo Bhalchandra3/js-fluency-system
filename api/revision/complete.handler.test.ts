@@ -96,6 +96,14 @@ describe('POST /api/revision/complete handler', () => {
                 policyVersion: 'phase3-g5-v1',
                 reason: 'Advance one ladder step; all answers correct with OKAY or EASY confidence',
             },
+            topicStatus: {
+                previous: 'RED' as const,
+                current: 'GREEN' as const,
+                policyVersion: 'phase4-status-v1' as const,
+                reason: 'Status GREEN (was RED) because session outcome ADVANCE — strong enough this session',
+                deepDiveEnsured: false,
+            },
+            mistakesCreated: 0,
         };
         await handleRevisionComplete(mockReq('POST', { sessionId: 's' }, 'Bearer tok'), res, {
             prisma: {} as never,

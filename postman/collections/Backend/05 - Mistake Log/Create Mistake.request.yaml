@@ -1,0 +1,51 @@
+$kind: http-request
+order: 3000
+method: POST
+url: '{{baseUrl}}/api/mistakes'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "topicId": "{{topicId}}",
+      "mistakeText": "Manual misunderstanding",
+      "correctUnderstanding": "Correct understanding notes",
+      "questionId": "{{questionId}}"
+    }
+description: |-
+  Purpose: Manually create a Mistake Log entry.
+
+  Method / path: POST /api/mistakes
+  Authentication: Required (collection bearer auth).
+
+  Request body:
+  - topicId (string, required)
+  - mistakeText (string, required, non-empty)
+  - correctUnderstanding (string, required, non-empty)
+  - questionId (string, optional) — must belong to topicId when provided
+
+  Forbidden (400 if present): sourceSessionLogId, sessionId, resolvedAt, turnedIntoQuestion, id.
+  Manual creates always leave sessionId and sourceSessionLogId null.
+
+  Success 200: { "status": "ok", "mistake": { …detail… } }
+
+  Useful errors: 400 validation / provenance forge; 404 topic or question not found; 401.
+
+  Source: api/mistakes/index.ts + mistakeService.createMistake
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200) {
+        pm.test('Create envelope', function () {
+          pm.expect(json.status).to.eql('ok');
+          pm.expect(json.mistake.sourceSessionLogId).to.eql(null);
+          pm.expect(json.mistake.sessionId).to.eql(null);
+        });
+        if (json.mistake && json.mistake.id) {
+          pm.environment.set('mistakeId', json.mistake.id);
+        }
+      }

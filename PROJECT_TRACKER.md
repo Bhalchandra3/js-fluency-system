@@ -12,13 +12,13 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 4 — Progress + Mistakes** (Step 1 architecture lock complete; feature APIs/UI not started) |
-| **Active step** | Step 2 — Status policy helpers (`CURRENT_STEP.md`) |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–1 |
-| **Next action** | Execute Step 2 — pure `phase4-status-v1` helpers + unit tests in [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) §8; follow locked contracts in §2.5 |
+| **Current phase** | **Phase 4 — Progress + Mistakes** (Step 7 progress API done; Angular FE next) |
+| **Active step** | Step 8 — Frontend data access (`CURRENT_STEP.md`) |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–7 |
+| **Next action** | Execute Step 8 — FE-local types/services for mistakes, deep dive, progress per Development Order §2.5.6; Neon migrate deploy still owner-authorized separately |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
-| **Phase 4 complete?** | **No** — architecture locked; implementation starts at Step 2 |
+| **Phase 4 complete?** | **No** — backend Steps 0–7 done; Angular Steps 8–11 remain |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Phase 4 plan (active)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 
@@ -31,7 +31,7 @@
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
-| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | 🟡 In progress (Steps 0–1 complete; Step 2 next) |
+| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | 🟡 In progress (Steps 0–7 complete; Step 8 next) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
@@ -323,8 +323,8 @@ Phase 3 is complete. **Phase 4 formally started in planning mode (2026-10-22).**
 | **Carry-forward decisions** | Do not silently change G1–G8 or Decisions A/B; Phase 3 scheduling remains backend-authoritative and finalize-once |
 | **Approved Phase 4 decisions (Step 0, 2026-10-23)** | Status policy `phase4-status-v1`; Mistake Log auto+manual with **no** auto Question insert; Deep Dive ensure on Red — see Phase 4 Development Order §§4–5 |
 | **Architecture lock (Step 1, 2026-10-23)** | Development Order §2.5 — status persistence, Mistake schema, complete-path order, APIs, FE routes, testing, step acceptance; see also this tracker §8.3 |
-| **Still open inside Phase 4** | Implementation Steps 2–14; no blocking owner architecture decisions |
-| **Recommended next action** | Execute Step 2 — status policy helpers + unit tests |
+| **Still open inside Phase 4** | Implementation Steps 8–14; Neon production migrate deploy for Mistake provenance still pending owner authorization |
+| **Recommended next action** | Execute Step 8 — Frontend data access (§2.5.6); apply migration to Neon only with explicit owner approval |
 | **Do not** | Re-open Phase 3 delivery; invent HTTP evidence that was not filed; clear or rewrite the Phase 3 Development Order baseline without cause; skip §2.5 contracts when implementing |
 
 ---
@@ -390,7 +390,7 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 
 ---
 
-## 8. Phase 4 — Progress + Mistakes (architecture locked; implementation next)
+## 8. Phase 4 — Progress + Mistakes (backend APIs done; FE next)
 
 ### 8.1 Objective
 
@@ -406,11 +406,17 @@ Canonical plan:
 | **Formally started** | Yes — planning mode (2026-10-22) |
 | **Step 0 approval** | ✅ Approved 2026-10-23 (scope, status policy, Mistake/Deep Dive scope, delivery workflow) |
 | **Step 1 architecture lock** | ✅ Complete 2026-10-23 (docs only; Development Order §2.5) |
-| **Feature implementation** | **Not started** (Step 2 may begin pure helpers) |
-| **Active step** | Step 2 — Status policy helpers |
+| **Step 2 status helpers** | ✅ Complete 2026-10-24 — `api/_lib/status/`; `test:status` 10/10; `test:scheduling` 30/30 |
+| **Step 3 Mistake schema** | ✅ Complete 2026-10-24 — migration `20261024163000_phase4_mistake_provenance` validated on local disposable Postgres; **Neon not applied** |
+| **Step 4 complete-path** | ✅ Complete 2026-10-24 — status + Deep Dive ensure + auto-mistakes in `completeRevisionSession`; `test:revision-write` 31/31 |
+| **Step 5 Mistake APIs** | ✅ Complete 2026-10-24 — `GET/POST /api/mistakes`, `GET/PATCH /api/mistakes/[id]`; `test:mistakes` 12/12 |
+| **Step 6 Deep Dive APIs** | ✅ Complete 2026-10-24 — `GET /api/deep-dive`, `PATCH/DELETE /api/deep-dive/[topicId]`; `test:deep-dive` 11/11 |
+| **Step 7 Progress API** | ✅ Complete 2026-10-24 — `GET /api/progress`; `test:progress` 7/7 |
+| **Feature APIs / UI** | Backend summary APIs done; Angular **not started** (Steps 8–11) |
+| **Active step** | Step 8 — Frontend data access |
 | **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
 
-### 8.3 Approved / locked decisions (not yet implemented in code)
+### 8.3 Approved / locked decisions (backend Steps 0–7 done; FE pending)
 
 | Decision | Summary |
 |---|---|
@@ -431,13 +437,13 @@ Canonical plan:
 |---|---|---|
 | 0 | Approve Development Order | ✅ Complete — approved 2026-10-23 |
 | 1 | Architecture lock | ✅ Complete — 2026-10-23 (Development Order §2.5) |
-| 2 | Status policy helpers | 🟡 Next — not started |
-| 3 | Schema migration (Mistake provenance) | ⬜ Not started |
-| 4 | Complete-path integration | ⬜ Not started |
-| 5 | Mistake Log APIs | ⬜ Not started |
-| 6 | Deep Dive APIs | ⬜ Not started |
-| 7 | Progress / dashboard summary API (`GET /api/progress`) | ⬜ Not started |
-| 8 | Frontend data access | ⬜ Not started |
+| 2 | Status policy helpers | ✅ Complete — 2026-10-24 (`api/_lib/status/`; `test:status` 10/10) |
+| 3 | Schema migration (Mistake provenance) | ✅ Complete — 2026-10-24 (`20261024163000_phase4_mistake_provenance`; local disposable validate; Neon pending) |
+| 4 | Complete-path integration | ✅ Complete — 2026-10-24 (`completeService` + `completeSideEffects`; `test:revision-write` 31/31; Neon/APIs/UI untouched) |
+| 5 | Mistake Log APIs | ✅ Complete — 2026-10-24 (`api/mistakes/**` + `_lib/mistakes`; `test:mistakes` 12/12; Postman folder 05) |
+| 6 | Deep Dive APIs | ✅ Complete — 2026-10-24 (`api/deep-dive/**` + `_lib/deep-dive`; `test:deep-dive` 11/11; Postman folder 06) |
+| 7 | Progress / dashboard summary API (`GET /api/progress`) | ✅ Complete — 2026-10-24 (`api/progress/**` + `_lib/progress`; `test:progress` 7/7; Postman folder 07) |
+| 8 | Frontend data access | 🟡 Next — not started |
 | 9 | Mistake Log UI | ⬜ Not started |
 | 10 | Deep Dive UI | ⬜ Not started |
 | 11 | Dashboard enrichment | ⬜ Not started |
@@ -458,7 +464,15 @@ Canonical detail: Phase 4 Development Order §9.1. Durable summary:
 ### 8.6 Notes
 
 - Phase 3 history in §5 is unchanged and remains the completed baseline.
-- Empty local directories `api/mistakes/`, `api/deep-dive/`, `api/progress/` (0 files) are placeholders only; Step 1 locked them as the homes for Steps 5–7 handlers.
+- `api/mistakes/`, `api/deep-dive/`, and `api/progress/` are populated (Steps 5–7).
 - Question-bank validation/seeding remains a Phase 2 completed concern, not a Phase 4 implementation prerequisite.
-- The workflow above governs delivery only; `PROJECT_SPECIFICATION.md` is not part of the Phase 4 documentation commit (owner deferred spec changes; pre-existing working-tree edits remain). Spec §12.1 / §12.7 still contain stale “pending Step 0 approval” wording — Phase 4 Development Order + this tracker §8 are authoritative for Phase 4.
-- **Step 1 → Step 2 handoff:** implement pure status helpers per Development Order Step 2 / §2.5.8; do not modify `completeService` until Steps 2–3 are ready for Step 4.
+- The workflow above governs delivery only; `PROJECT_SPECIFICATION.md` is not part of the Phase 4 backend commit (owner-deferred / unrelated working-tree edits preserved). Spec §12.1 / §12.7 may still contain stale “pending Step 0 approval” wording — Phase 4 Development Order + this tracker §8 are authoritative for Phase 4.
+- **Backend closeout (Steps 2–7):** re-verified 2026-10-24 on disposable `jsfluency_test` — `test:status` 10/10, `test:scheduling` 30/30, `test:prisma-guards` 1/1, `test:revision-write` 31/31, `test:mistakes` 12/12, `test:deep-dive` 11/11, `test:progress` 7/7; `prisma validate` OK. Migration `20261024163000_phase4_mistake_provenance` remains **local-only** until owner-authorized Neon `migrate deploy`.
+- **Step 2 delivered:** `mapG5OutcomeToTopicStatus`, `retainStatusWithoutCompletedSession`, `STATUS_POLICY_VERSION` (`phase4-status-v1`).
+- **Step 3 delivered:** Mistake nullable `questionId` / `sessionId` / unique `sourceSessionLogId` / `resolvedAt`; SetNull FKs; migration `20261024163000_phase4_mistake_provenance`. Validated on localhost disposable DBs only. **Do not assume Neon has this migration until an authorized production deploy.**
+- **Step 4 delivered:** On first successful complete only — persist `Topic.status` via `phase4-status-v1`; ensure `DeepDiveNote` when RED; auto-create Mistakes for incorrect or correct+`DIDNT_UNDERSTAND` with `sourceSessionLogId` dedupe; extend complete JSON with `topicStatus` + `mistakesCreated`. G5 schedule writes unchanged. Duplicate/concurrent completes do not repeat Phase 4 writes.
+- **Step 5 delivered:** Authenticated Mistake Log list/detail/manual-create/update-resolve under `api/mistakes`. Provenance (`sourceSessionLogId`, `sessionId`) rejected on create/update; optional create `questionId` must belong to topic; resolve via `resolved` boolean → `resolvedAt` (idempotent re-resolve). No hard-delete. Postman folder `05 - Mistake Log`.
+- **Step 6 delivered:** Authenticated Deep Dive list (`RED` first, then `updatedAt` desc) + patch `reason`/`notes` + delete-by-`topicId` under `api/deep-dive`. Delete does not mutate Topic status/schedule; Step 4 ensure remains create-if-missing (no overwrite; recreate after explicit delete). Postman folder `06 - Deep Dive Queue`.
+- **Step 7 delivered:** Authenticated read-only `GET /api/progress` with `statusCounts`, `deepDiveCount`, `unresolvedMistakeCount`, `dueCount`, `overdueCount`. Due/overdue reuse Kolkata helpers with the same semantics as Today’s Revision (`dueCount` includes overdue). No `DailyProgress` writes. Postman folder `07 - Progress Summary`.
+- **Step 7 → Step 8 handoff:** FE-local types + API services for mistakes, deep dive, and progress (§2.5.6); reuse auth interceptor; no `shared-types/` (G8).
+- **Known env caveat:** `test:revision-db` still fails the `inet_server_addr()` assertion on native Windows Postgres (`127.0.0.1/32` vs exact `127.0.0.1` / `172.*`); assertion not weakened.

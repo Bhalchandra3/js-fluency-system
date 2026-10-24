@@ -1,0 +1,7 @@
+$kind: collection
+name: 07 - Progress Summary
+order: 8000
+description: |-
+  Phase 4 thin read-only progress summary (Development Order §2.5.5).
+  GET /api/progress — status counts, Deep Dive count, unresolved mistakes,
+  due/overdue topic counts (Asia/Kolkata). No DailyProgress writes.
