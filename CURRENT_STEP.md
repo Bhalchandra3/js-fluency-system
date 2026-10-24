@@ -123,3 +123,4 @@ Step 0 ✅ → … → Step 7 ✅ → **Step 8** FE data access → Steps 9–11
 | 2026-10-24 | Steps 2–6 complete (status helpers, Mistake schema, complete-path, Mistake APIs, Deep Dive APIs). |
 | 2026-10-24 | Step 7 complete: `GET /api/progress`; `test:progress` 7/7. |
 | 2026-10-24 | Steps 2–7 re-verified for `master` commit: `test:status` 10/10, `test:scheduling` 30/30, `test:prisma-guards` 1/1, `test:revision-write` 31/31, `test:mistakes` 12/12, `test:deep-dive` 11/11, `test:progress` 7/7; `prisma validate` OK. `test:revision-db` still blocked (`127.0.0.1/32`). Neon migrate not run. Step 8 not started. |
+| 2026-10-24 | Backend committed and pushed to `origin/master`: `e4ef947` — `feat: complete Phase 4 backend APIs`. Unrelated local edits (`PROJECT_SPECIFICATION.md`, `QUESTION_BANK_FORMAT.md`, `.cursor/`, `project-structure-clean.txt`) left unstaged. |

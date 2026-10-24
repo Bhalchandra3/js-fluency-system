@@ -16,6 +16,7 @@
 | **Active step** | Step 8 — Frontend data access (`CURRENT_STEP.md`) |
 | **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–7 |
 | **Next action** | Execute Step 8 — FE-local types/services for mistakes, deep dive, progress per Development Order §2.5.6; Neon migrate deploy still owner-authorized separately |
+| **Backend on master** | `e4ef947` — `feat: complete Phase 4 backend APIs` (pushed to `origin/master` 2026-10-24) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **No** — backend Steps 0–7 done; Angular Steps 8–11 remain |
@@ -468,6 +469,7 @@ Canonical detail: Phase 4 Development Order §9.1. Durable summary:
 - Question-bank validation/seeding remains a Phase 2 completed concern, not a Phase 4 implementation prerequisite.
 - The workflow above governs delivery only; `PROJECT_SPECIFICATION.md` is not part of the Phase 4 backend commit (owner-deferred / unrelated working-tree edits preserved). Spec §12.1 / §12.7 may still contain stale “pending Step 0 approval” wording — Phase 4 Development Order + this tracker §8 are authoritative for Phase 4.
 - **Backend closeout (Steps 2–7):** re-verified 2026-10-24 on disposable `jsfluency_test` — `test:status` 10/10, `test:scheduling` 30/30, `test:prisma-guards` 1/1, `test:revision-write` 31/31, `test:mistakes` 12/12, `test:deep-dive` 11/11, `test:progress` 7/7; `prisma validate` OK. Migration `20261024163000_phase4_mistake_provenance` remains **local-only** until owner-authorized Neon `migrate deploy`.
+- **Git:** `e4ef947` on `origin/master` (`feat: complete Phase 4 backend APIs`). No production Neon migrate or manual deploy initiated by this closeout.
 - **Step 2 delivered:** `mapG5OutcomeToTopicStatus`, `retainStatusWithoutCompletedSession`, `STATUS_POLICY_VERSION` (`phase4-status-v1`).
 - **Step 3 delivered:** Mistake nullable `questionId` / `sessionId` / unique `sourceSessionLogId` / `resolvedAt`; SetNull FKs; migration `20261024163000_phase4_mistake_provenance`. Validated on localhost disposable DBs only. **Do not assume Neon has this migration until an authorized production deploy.**
 - **Step 4 delivered:** On first successful complete only — persist `Topic.status` via `phase4-status-v1`; ensure `DeepDiveNote` when RED; auto-create Mistakes for incorrect or correct+`DIDNT_UNDERSTAND` with `sourceSessionLogId` dedupe; extend complete JSON with `topicStatus` + `mistakesCreated`. G5 schedule writes unchanged. Duplicate/concurrent completes do not repeat Phase 4 writes.
