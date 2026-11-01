@@ -34,6 +34,8 @@ description: |-
   Useful errors: 400 validation / provenance forge; 404 topic or question not found; 401.
 
   Source: api/mistakes/index.ts + mistakeService.createMistake
+  Execution order: set {{topicId}} first (Get Topics or Today's Revision).
+    If you want to link to a specific question, set {{questionId}} from Today's Revision.
 scripts:
   - type: afterResponse
     language: text/javascript
@@ -48,4 +50,9 @@ scripts:
         if (json.mistake && json.mistake.id) {
           pm.environment.set('mistakeId', json.mistake.id);
         }
+      } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
+        });
       }

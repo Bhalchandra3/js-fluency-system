@@ -25,7 +25,9 @@ description: |-
   Error envelope: { "status": "error", "message": "<string>" }
 
   Source: api/mistakes/index.ts + api/_lib/mistakes/mistakeService.ts
-scripts:
+  Usage notes: if {{topicId}} is not set, the request lists mistakes across topics.
+    The post-response script will auto-populate {{mistakeId}} from the first result
+    only if {{mistakeId}} is currently empty. scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -38,5 +40,18 @@ scripts:
           pm.expect(json.status).to.eql('ok');
           pm.expect(json.mistakes).to.be.an('array');
           pm.expect(json.total).to.be.a('number');
+        });
+
+        if (
+          Array.isArray(json.mistakes) &&
+          json.mistakes.length > 0 &&
+          !pm.environment.get('mistakeId')
+        ) {
+          pm.environment.set('mistakeId', json.mistakes[0].id);
+        }
+      } else if (pm.response.code === 400 || pm.response.code === 401) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
         });
       }

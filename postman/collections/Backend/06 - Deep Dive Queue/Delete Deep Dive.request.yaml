@@ -19,7 +19,8 @@ description: |-
   Useful errors: 404 Deep Dive note not found; 401.
 
   Source: api/deep-dive/[topicId].ts + deepDiveService.deleteDeepDiveNote
-scripts:
+  Execution order: use a topicId with an existing DeepDiveNote. This does not
+    change Topic.status or schedule; a later RED complete may recreate the note. scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -30,6 +31,11 @@ scripts:
         });
       } else if (pm.response.code === 404) {
         pm.test('Missing note error envelope', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string');
+        });
+      } else if (pm.response.code === 401) {
+        pm.test('Unauthorized error envelope', function () {
           pm.expect(json.status).to.eql('error');
           pm.expect(json.message).to.be.a('string');
         });

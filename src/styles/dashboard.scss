@@ -45,6 +45,7 @@
 
 .dashboard__panel,
 .dashboard__summary,
+.dashboard__progress,
 .dashboard__focus,
 .dashboard__empty {
   background: var(--surface);
@@ -88,12 +89,52 @@
   color: var(--accent);
 }
 
-.dashboard__count-value--overdue {
+.dashboard__count-value--overdue,
+.dashboard__count-value--yellow {
   color: var(--warn-ink);
+}
+
+.dashboard__count-value--green {
+  color: var(--accent);
+}
+
+.dashboard__count-value--red {
+  color: var(--error);
 }
 
 .dashboard__count-note {
   font-size: 0.85rem;
+}
+
+.dashboard__progress-error {
+  margin: 0 0 0.75rem;
+}
+
+.dashboard__progress-error p {
+  margin: 0 0 0.5rem;
+  color: var(--error);
+}
+
+.dashboard__secondary-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.dashboard__btn--secondary {
+  background: #fff;
+  color: var(--ink);
+}
+
+.dashboard__cta-badge {
+  margin-left: 0.45rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: var(--due-bg);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .dashboard__focus-topic {
@@ -188,6 +229,10 @@
     width: 100%;
     margin-left: 0;
     margin-top: 0.5rem;
+  }
+
+  .dashboard__secondary-ctas .dashboard__btn {
+    width: 100%;
   }
 
   .dashboard__panel .dashboard__link {

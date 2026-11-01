@@ -27,8 +27,8 @@ description: |-
   - overdueCount — subset of due topics past the Kolkata due day
 
   Useful errors: 401 Unauthorized; 405 Method not allowed.
-  Source: api/progress/index.ts + api/_lib/progress/progressService.ts
-scripts:
+  Data dependencies: uses Topic.status, DeepDiveNote rows, Mistake.resolvedAt,
+    and Topic.nextRevisionDate (Kolkata). No session required. scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -45,5 +45,13 @@ scripts:
           pm.expect(json.dueCount).to.be.a('number');
           pm.expect(json.overdueCount).to.be.a('number');
           pm.expect(json.dueCount).to.be.at.least(json.overdueCount);
+          pm.expect(json.statusCounts.green).to.be.a('number');
+          pm.expect(json.statusCounts.yellow).to.be.a('number');
+          pm.expect(json.statusCounts.red).to.be.a('number');
+        });
+      } else if (pm.response.code === 401) {
+        pm.test('Unauthorized error envelope', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
         });
       }

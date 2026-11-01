@@ -24,6 +24,8 @@ describe('App', () => {
     expect(compiled.textContent).toContain('JavaScript Fluency');
     expect(compiled.textContent).toContain("Today's Revision");
     expect(compiled.textContent).toContain('Dashboard');
+    expect(compiled.textContent).toContain('Mistakes');
+    expect(compiled.textContent).toContain('Deep Dive');
     expect(compiled.textContent).toContain('Access token');
   });
 });

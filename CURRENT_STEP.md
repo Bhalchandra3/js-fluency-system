@@ -1,7 +1,7 @@
 # CURRENT_STEP — Phase 4 (active working record)
 
 > **Phase:** 4 — Progress + Mistakes  
-> **Mode:** Steps 2–7 backend complete and verified for `master` (2026-10-24); Step 8 next — Frontend data access (**not started**)  
+> **Mode:** Steps 0–11 complete (2026-10-29); Step 12 next — Local E2E verification (**not started**)  
 
 > **Canonical detailed plan:** [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md)  
 > **Overall tracker:** [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)  
@@ -14,63 +14,54 @@
 
 | Field | Value |
 |---|---|
-| **Active step** | **Step 8 — Frontend data access** |
+| **Active step** | **Step 12 — Local end-to-end verification** |
 | **Status** | Next (not started) |
-| **Implementation** | Steps 0–7 complete (backend APIs done); Angular FE types/services/UI **not** started |
+| **Implementation** | Steps 0–11 feature delivery complete; local E2E / production smoke / closeout remain |
 
-### Step 0–6 — Complete (see prior working-log entries)
+### Step 0–10 — Complete (see prior working-log entries)
 
-Status helpers, Mistake schema, complete-path side effects, Mistake APIs, Deep Dive APIs delivered and verified earlier on 2026-10-23/24.
+Backend APIs, FE clients, Mistake Log UI, and Deep Dive UI delivered through 2026-10-29.
 
-### Step 7 — Complete (2026-10-24)
+### Step 11 — Complete (2026-10-29)
 
-Authenticated read-only `GET /api/progress` per Development Order **§2.5.5**.
+Dashboard enrichment per Development Order Step 11 / §7.1: `GET /api/progress` status + Mistake/Deep Dive counts and CTAs; Today’s Revision remains primary CTA (G7). Shell nav already had Mistakes + Deep Dive from Steps 9–10.
 
-#### Endpoint
+#### Metrics (from `ProgressApiService.getProgress`)
 
-| Method / path | Behavior |
+| Field | Display |
 |---|---|
-| `GET /api/progress` | Bearer-auth summary. Response `{ status, statusCounts: { green, yellow, red }, deepDiveCount, unresolvedMistakeCount, dueCount, overdueCount }`. No query params. No writes. |
+| `statusCounts.green/yellow/red` | Green / Yellow / Red topic counts |
+| `unresolvedMistakeCount` | Unresolved mistakes + Mistake Log CTA badge |
+| `deepDiveCount` | Deep Dive queue size + Deep Dive CTA badge |
+| `dueCount` / `overdueCount` | Prefer progress summary when loaded (same Kolkata semantics as today) |
 
-#### Metric definitions
+#### Behavior
 
-| Field | Calculation |
+| Concern | Behavior |
 |---|---|
-| `statusCounts.*` | Count of `Topic` rows by `Topic.status` |
-| `deepDiveCount` | Count of `DeepDiveNote` rows |
-| `unresolvedMistakeCount` | Count of `Mistake` where `resolvedAt` is null |
-| `dueCount` | Topics with `nextRevisionDate` due today or earlier (Asia/Kolkata); **includes overdue** — same semantics as `GET /api/revision/today` |
-| `overdueCount` | Subset of due topics with due date before today (Kolkata) |
+| Primary CTA | Continue / Go to Today’s Revision → `/` (`dashboard__btn--primary`) |
+| Secondary CTAs | Open Mistake Log → `/mistakes`; Open Deep Dive Queue → `/deep-dive` |
+| Progress failure | Revision session/due UI still loads from today; progress panel shows error (no fake zeros) |
+| Today failure | Full dashboard error + Retry |
 
 #### Files
 
 | File | Purpose |
 |---|---|
-| `api/_lib/progress/errors.ts` | `ProgressApiError` |
-| `api/_lib/progress/progressService.ts` | Read-only aggregation |
-| `api/_lib/progress/index.ts` | Barrel exports |
-| `api/progress/index.ts` | GET handler |
-| `api/progress/index.handler.test.ts` | Auth / method / envelope |
-| `api/_lib/progress/progressService.integration.test.ts` | Aggregation + read-only mutation check |
-| `package.json` | `test:progress` |
-| `postman/collections/Backend/07 - Progress Summary/**` | Postman example |
+| `src/app/features/dashboard/dashboard.page.ts` | Parallel today + progress load |
+| `src/app/features/dashboard/dashboard.page.html` | Progress section + CTAs |
+| `src/app/features/dashboard/dashboard.page.spec.ts` | Updated dashboard tests |
+| `src/styles/dashboard.scss` | Progress / secondary CTA styles |
 
-#### Step 7 acceptance (met)
+#### Step 11 acceptance (met)
 
-1. ✅ Contract matches §2.5.5 field set; no `DailyProgress` writes; no due-topic name list.
-2. ✅ Bearer auth matrix (missing/invalid → 401; valid → 200).
-3. ✅ Aggregation accuracy + empty-shape / non-negative integers verified on disposable DB.
-4. ✅ Read-only: topic status/schedule, mistakes, deep-dive notes, `DailyProgress` count unchanged after calls.
-5. ✅ Tests (local disposable `jsfluency_test` @ `127.0.0.1`):
-   - `test:progress` **7/7**
-   - `test:deep-dive` **11/11**
-   - `test:mistakes` **12/12**
-   - `test:status` **10/10**
-   - `test:scheduling` **30/30**
-   - `test:prisma-guards` **1/1**
-   - `test:revision-write` **31/31**
-6. ⚠️ `test:revision-db` still blocked (`inet_server_addr()` = `127.0.0.1/32`). Assertion not weakened.
-7. ⬜ Neon / deploy / Angular not touched.
+1. ✅ Status counts + unresolved mistake + Deep Dive counts from verified progress contract.
+2. ✅ Mistake Log and Deep Dive CTAs use existing routes.
+3. ✅ Today’s Revision remains primary CTA; default app entry unchanged.
+4. ✅ Progress failure does not invent zero counts; core revision dashboard preserved.
+5. ✅ Verification:
+   - `npx ng test --watch=false --browsers=ChromeHeadless` → **100/100** SUCCESS
+   - `npx ng build` → SUCCESS
 
 ---
 
@@ -94,22 +85,21 @@ Authenticated read-only `GET /api/progress` per Development Order **§2.5.5**.
 
 ### Approved sequence
 
-Step 0 ✅ → … → Step 7 ✅ → **Step 8** FE data access → Steps 9–11 Angular UI → Steps 12–14 verify + closeout.
+Step 0 ✅ → … → Step 11 ✅ → **Step 12** local E2E → Step 13 production smoke → Step 14 documentation closeout.
 
 ---
 
 ## 4. Next step
 
-1. Execute **Step 8 — Frontend data access**: FE-local types + services for mistakes, deep dive, progress; reuse auth interceptor (G8 — no `shared-types/`).
-2. Neon `migrate deploy` for Mistake provenance still requires explicit owner authorization.
-3. Do not start Mistakes/Deep Dive/dashboard Angular UI until Steps 9–11.
+1. Execute **Step 12 — Local end-to-end verification**: unit/integration suites, Postman, manual revise → complete → status/mistake/deep dive → dashboard; Phase 3 regression.
+2. Neon `migrate deploy` for Mistake provenance still requires explicit owner authorization (needed for production-shaped local/prod data if not already applied on the target DB).
 
 ---
 
 ## 5. Explicit non-goals for the current moment
 
 - Do not deploy migration to Neon without explicit owner authorization.
-- Do not implement Angular Mistake/Deep Dive/dashboard enrichment UI yet (Steps 9–11).
+- Do not start production smoke (Step 13) until Step 12 evidence is recorded.
 - Do not edit `PROJECT_SPECIFICATION.md` unless separately approved.
 
 ---
@@ -124,3 +114,8 @@ Step 0 ✅ → … → Step 7 ✅ → **Step 8** FE data access → Steps 9–11
 | 2026-10-24 | Step 7 complete: `GET /api/progress`; `test:progress` 7/7. |
 | 2026-10-24 | Steps 2–7 re-verified for `master` commit: `test:status` 10/10, `test:scheduling` 30/30, `test:prisma-guards` 1/1, `test:revision-write` 31/31, `test:mistakes` 12/12, `test:deep-dive` 11/11, `test:progress` 7/7; `prisma validate` OK. `test:revision-db` still blocked (`127.0.0.1/32`). Neon migrate not run. Step 8 not started. |
 | 2026-10-24 | Backend committed and pushed to `origin/master`: `e4ef947` — `feat: complete Phase 4 backend APIs`. Unrelated local edits (`PROJECT_SPECIFICATION.md`, `QUESTION_BANK_FORMAT.md`, `.cursor/`, `project-structure-clean.txt`) left unstaged. |
+| 2026-10-29 | Audit: re-verified Steps 0–7 against repo (`e4ef947` + HEAD `330da32`); Step 0/1 approvals preserved (2026-10-23); Step 8 still not started (no FE mistake/deep-dive/progress clients). Owner reaffirmed Development Order approval — **not** re-recorded (already present). Tracker §5.7 stale “implementation not started” prose corrected. Phase 4 DO header/§15 remain stale (reference-only; not edited). |
+| 2026-10-29 | Step 8 complete: FE-local types + `MistakeApiService` / `DeepDiveApiService` / `ProgressApiService`; `ng test` 73/73; `ng build` OK. No UI/routes. Next: Step 9 Mistake Log UI. |
+| 2026-10-29 | Step 9 complete: Mistake Log list/detail/create/edit/resolve UI; routes `/mistakes`, `/mistakes/:id`; Mistakes nav; `TopicsApiService` for create; `ng test` 87/87; `ng build` OK. No Deep Dive UI / dashboard enrichment. Next: Step 10. |
+| 2026-10-29 | Step 10 complete: Deep Dive queue + notes editor on `/deep-dive`; clear notes (`null`) vs remove-from-queue (`DELETE`); Deep Dive nav; `ng test` 98/98; `ng build` OK. Next: Step 11 dashboard enrichment. |
+| 2026-10-29 | Step 11 complete: dashboard progress signals + Mistake/Deep Dive CTAs; Today’s Revision primary CTA preserved; progress failure soft-degrades; `ng test` 100/100; `ng build` OK. Next: Step 12 local E2E. |

@@ -4,3 +4,6 @@ order: 5000
 description: |-
   POST /api/revision/complete - finalize an OPEN session once; applies G5 scheduling
   and Asia/Kolkata calendar-day next revision. Repeated complete is idempotent.
+  On first successful complete it also persists Topic.status (phase4-status-v1),
+  ensures a DeepDiveNote when the new status is RED, and auto-creates qualifying
+  Mistake rows. Run only against local/disposable data.

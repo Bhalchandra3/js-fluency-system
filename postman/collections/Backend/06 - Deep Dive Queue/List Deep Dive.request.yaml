@@ -34,7 +34,8 @@ description: |-
 
   Useful errors: 401 Unauthorized; 405 Method not allowed.
   Source: api/deep-dive/index.ts + deepDiveService.listDeepDiveNotes
-scripts:
+  Execution order: requires a RED topic to appear (via complete with RED outcome)
+    or an existing DeepDiveNote. scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -46,5 +47,20 @@ scripts:
         pm.test('List envelope', function () {
           pm.expect(json.status).to.eql('ok');
           pm.expect(json.notes).to.be.an('array');
+        });
+
+        if (
+          Array.isArray(json.notes) &&
+          json.notes.length > 0 &&
+          json.notes[0].topic &&
+          json.notes[0].topic.id &&
+          !pm.environment.get('topicId')
+        ) {
+          pm.environment.set('topicId', json.notes[0].topic.id);
+        }
+      } else if (pm.response.code === 401) {
+        pm.test('Unauthorized error envelope', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
         });
       }

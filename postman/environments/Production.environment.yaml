@@ -4,7 +4,7 @@ values:
     value: 'https://js-fluency-system.vercel.app'
     enabled: true
     type: default
-    description: 'Verified production host from PROJECT_TRACKER.md. Do not run answer/complete smoke against production from this local setup task.'
+    description: 'Verified production host from PROJECT_TRACKER.md. Do not run answer/complete smoke against production data.'
   - key: bearerToken
     value: ''
     enabled: true
@@ -20,3 +20,13 @@ values:
     enabled: true
     type: default
     description: 'Leave empty unless intentionally testing production revision flows.'
+  - key: topicId
+    value: ''
+    enabled: true
+    type: default
+    description: 'Topic id for Mistake/Deep Dive requests if needed.'
+  - key: mistakeId
+    value: ''
+    enabled: true
+    type: default
+    description: 'Mistake id for GET/PATCH if needed.'

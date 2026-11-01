@@ -31,6 +31,9 @@ description: |-
   Error envelope: { "status": "error", "message": "<string>" }
 
   Source: api/topics/index.ts + prisma Topic model.
+
+  Data dependency: this is the primary way to populate {{topicId}} for Mistake Log
+  create/list and Deep Dive patch/delete when Today's Revision has no due session.
 scripts:
   - type: afterResponse
     language: text/javascript
@@ -47,6 +50,30 @@ scripts:
           pm.expect(json.status).to.eql('ok');
           pm.expect(json.topics).to.be.an('array');
         });
+
+        if (json.topics.length > 0) {
+          const first = json.topics[0];
+          pm.test('Topic row shape', function () {
+            pm.expect(first).to.include.keys(
+              'id',
+              'name',
+              'slug',
+              'area',
+              'category',
+              'status',
+              'intervalDays',
+              'nextRevisionDate',
+              'createdAt',
+              'updatedAt'
+            );
+            pm.expect(['GREEN', 'YELLOW', 'RED']).to.include(first.status);
+          });
+
+          // Reuse an existing explicit topicId when the workflow already picked one.
+          if (!pm.environment.get('topicId')) {
+            pm.environment.set('topicId', first.id);
+          }
+        }
       } else if (pm.response.code === 401) {
         pm.test('Unauthorized error envelope', function () {
           pm.expect(json).to.eql({ status: 'error', message: 'Unauthorized' });

@@ -1,0 +1,168 @@
+<section class="deep-dive" aria-labelledby="deep-dive-title">
+  <header class="deep-dive__header">
+    <div class="deep-dive__heading-block">
+      <h1 id="deep-dive-title">Deep Dive Queue</h1>
+      <p class="deep-dive__subtitle">
+        Topics needing deeper study (often after Red sessions). Edit owner notes here; removing an
+        entry does not change topic status or schedule.
+      </p>
+    </div>
+  </header>
+
+  @if (viewState() === 'loading') {
+    <div class="deep-dive__panel deep-dive__panel--loading" role="status" aria-busy="true">
+      <p>Loading Deep Dive queue…</p>
+    </div>
+  }
+
+  @if (viewState() === 'error') {
+    <div class="deep-dive__panel" role="alert">
+      <h2>Could not load Deep Dive queue</h2>
+      <p>{{ pageError() }}</p>
+      <button type="button" class="deep-dive__btn deep-dive__btn--primary" (click)="loadQueue()">
+        Retry
+      </button>
+      <a routerLink="/setup" class="deep-dive__link">Check access token</a>
+    </div>
+  }
+
+  @if (viewState() === 'ready') {
+    @if (notes().length === 0) {
+      <section class="deep-dive__panel" aria-labelledby="empty-heading">
+        <h2 id="empty-heading" class="deep-dive__section-title">Queue is empty</h2>
+        <p>
+          Deep Dive notes are created automatically when a topic becomes Red after a completed
+          revision session. Nothing is queued right now.
+        </p>
+      </section>
+    } @else {
+      <div class="deep-dive__layout">
+        <section class="deep-dive__queue" aria-labelledby="queue-heading">
+          <h2 id="queue-heading" class="deep-dive__section-title">
+            Queue
+            <span class="deep-dive__count">({{ notes().length }})</span>
+          </h2>
+          <ul class="deep-dive__list">
+            @for (note of notes(); track note.topicId) {
+              <li>
+                <button
+                  type="button"
+                  class="deep-dive__item"
+                  [class.deep-dive__item--selected]="selectedTopicId() === note.topicId"
+                  (click)="selectNote(note)"
+                >
+                  <span class="deep-dive__item-topic">{{ note.topic.name }}</span>
+                  <ul class="deep-dive__meta">
+                    <li>
+                      <span
+                        class="deep-dive__pill"
+                        [class.deep-dive__pill--red]="note.topic.status === 'RED'"
+                        [class.deep-dive__pill--yellow]="note.topic.status === 'YELLOW'"
+                        [class.deep-dive__pill--green]="note.topic.status === 'GREEN'"
+                      >
+                        {{ note.topic.status }}
+                      </span>
+                    </li>
+                    <li>Updated {{ formatKolkataDate(note.updatedAt) }}</li>
+                  </ul>
+                  <p class="deep-dive__item-reason">{{ note.reason }}</p>
+                  <p class="deep-dive__item-notes">
+                    @if (note.notes === null) {
+                      <em>No owner notes</em>
+                    } @else if (note.notes.length === 0) {
+                      <em>Notes empty</em>
+                    } @else {
+                      {{ note.notes }}
+                    }
+                  </p>
+                </button>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="deep-dive__editor" aria-labelledby="editor-heading">
+          @if (selectedNote(); as current) {
+            <h2 id="editor-heading" class="deep-dive__section-title">
+              Edit — {{ current.topic.name }}
+            </h2>
+            <p class="deep-dive__eyebrow">Slug: {{ current.topic.slug }}</p>
+
+            <form class="deep-dive__form" (ngSubmit)="saveEdits()" novalidate>
+              <label class="deep-dive__label" for="deep-dive-reason">Reason</label>
+              <textarea
+                id="deep-dive-reason"
+                class="deep-dive__textarea"
+                name="reason"
+                rows="2"
+                [ngModel]="editReason()"
+                (ngModelChange)="editReason.set($event)"
+                required
+              ></textarea>
+
+              <label class="deep-dive__label" for="deep-dive-notes">Owner notes</label>
+              <textarea
+                id="deep-dive-notes"
+                class="deep-dive__textarea"
+                name="notes"
+                rows="6"
+                [ngModel]="editNotes()"
+                (ngModelChange)="editNotes.set($event)"
+              ></textarea>
+              <p class="deep-dive__hint">
+                Save keeps the notes text as typed (including an empty string). Use Clear notes to
+                send <code>null</code> and clear stored notes. Remove from queue deletes the Deep
+                Dive entry only — it does not change topic status or schedule.
+              </p>
+
+              <div class="deep-dive__actions">
+                <button
+                  type="submit"
+                  class="deep-dive__btn deep-dive__btn--primary"
+                  [disabled]="saving() || removing()"
+                >
+                  {{ saving() ? 'Saving…' : 'Save' }}
+                </button>
+                <button
+                  type="button"
+                  class="deep-dive__btn deep-dive__btn--secondary"
+                  [disabled]="saving() || removing() || current.notes === null"
+                  (click)="clearNotes()"
+                >
+                  Clear notes
+                </button>
+                <button
+                  type="button"
+                  class="deep-dive__btn deep-dive__btn--danger"
+                  [disabled]="saving() || removing()"
+                  (click)="removeFromQueue()"
+                >
+                  {{ removing() ? 'Removing…' : 'Remove from queue' }}
+                </button>
+              </div>
+            </form>
+
+            @if (actionError()) {
+              <p class="deep-dive__status deep-dive__status--error" role="alert">
+                {{ actionError() }}
+              </p>
+            }
+            @if (actionSuccess()) {
+              <p class="deep-dive__status deep-dive__status--success" role="status">
+                {{ actionSuccess() }}
+              </p>
+            }
+          } @else {
+            <h2 id="editor-heading" class="deep-dive__section-title">Notes editor</h2>
+            <p class="deep-dive__subtitle">Select a topic from the queue to edit reason and notes.</p>
+            @if (actionSuccess()) {
+              <p class="deep-dive__status deep-dive__status--success" role="status">
+                {{ actionSuccess() }}
+              </p>
+            }
+          }
+        </section>
+      </div>
+    }
+  }
+</section>

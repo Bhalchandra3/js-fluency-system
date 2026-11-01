@@ -29,7 +29,8 @@ description: |-
   Useful errors: 400 validation; 404 Deep Dive note not found; 401.
 
   Source: api/deep-dive/[topicId].ts + deepDiveService.updateDeepDiveNote
-scripts:
+  Execution order: requires {{topicId}} for a topic that has a DeepDiveNote
+    (List Deep Dive or from a RED complete). scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -39,5 +40,10 @@ scripts:
           pm.expect(json.status).to.eql('ok');
           pm.expect(json.note).to.be.an('object');
           pm.expect(json.note.topic).to.include.keys('id', 'name', 'slug', 'status');
+        });
+      } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
         });
       }

@@ -23,7 +23,8 @@ description: |-
 
   Validation / behavior (completeService):
   - Session must exist.
-  - If already COMPLETED: returns stored scheduling audit (idempotent; no second Topic write).
+  - If already COMPLETED: returns stored scheduling audit + remapped topicStatus
+    (idempotent; no second Topic/status/Deep Dive/Mistake write; mistakesCreated = 0).
   - If OPEN: every frozen question must have a SessionLog; otherwise 409
     "Session has unanswered questions".
   - Empty frozen set => 409 "Session has no frozen questions".
@@ -33,6 +34,16 @@ description: |-
   - Outcomes: ADVANCE | REINFORCE | REINFORCE_AT_1 | RESET.
   - Next revision instant = Asia/Kolkata midnight on (completion Kolkata date + resultingIntervalDays).
   - Topic.intervalDays and Topic.nextRevisionDate update only on first successful complete.
+
+  Phase 4 side effects (first successful complete only, same transaction):
+  - Persists Topic.status via phase4-status-v1:
+    ADVANCE -> GREEN; REINFORCE -> YELLOW; REINFORCE_AT_1 | RESET -> RED.
+  - If the resulting status is RED: ensures a DeepDiveNote exists (create-if-missing;
+    never overwrites an existing reason/notes). deepDiveEnsured is true only when a
+    note was inserted by this finalize.
+  - Auto-creates Mistake rows for final logs where correct = false, or correct = true
+    with confidence DIDNT_UNDERSTAND. Deduped by sourceSessionLogId.
+  - G5 schedule behavior is unchanged.
 
   Success 200:
   {
@@ -45,13 +56,22 @@ description: |-
       "resultingNextRevisionDate": "ISO-8601",
       "policyVersion": "phase3-g5-v1",
       "reason": string
-    }
+    },
+    "topicStatus": {
+      "previous": "GREEN|YELLOW|RED",
+      "current": "GREEN|YELLOW|RED",
+      "policyVersion": "phase4-status-v1",
+      "reason": string,
+      "deepDiveEnsured": boolean
+    },
+    "mistakesCreated": number
   }
 
   Useful errors: 400 missing sessionId; 401 Unauthorized; 404 Session not found;
   409 unanswered / wrong status; 405; 500.
 
-  WARNING: This mutates local Topic schedule data. Use only against local development.
+  WARNING: This mutates local Topic status/schedule and may create Deep Dive and
+  Mistake rows. Use only against a development or disposable test database.
 examples: './.resources/Complete Revision Session.resources/examples'
 scripts:
   - type: afterResponse
@@ -80,6 +100,23 @@ scripts:
           pm.expect(['ADVANCE', 'REINFORCE', 'REINFORCE_AT_1', 'RESET']).to.include(
             json.scheduling.outcome
           );
+        });
+
+        pm.test('Phase 4 status and side-effect fields are present', function () {
+          pm.expect(json.topicStatus).to.be.an('object');
+          pm.expect(json.topicStatus).to.include.keys(
+            'previous',
+            'current',
+            'policyVersion',
+            'reason',
+            'deepDiveEnsured'
+          );
+          pm.expect(['GREEN', 'YELLOW', 'RED']).to.include(json.topicStatus.previous);
+          pm.expect(['GREEN', 'YELLOW', 'RED']).to.include(json.topicStatus.current);
+          pm.expect(json.topicStatus.policyVersion).to.eql('phase4-status-v1');
+          pm.expect(json.topicStatus.deepDiveEnsured).to.be.a('boolean');
+          pm.expect(json.mistakesCreated).to.be.a('number');
+          pm.expect(json.mistakesCreated).to.be.at.least(0);
         });
       } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404 || pm.response.code === 409) {
         pm.test('Error envelope shape', function () {

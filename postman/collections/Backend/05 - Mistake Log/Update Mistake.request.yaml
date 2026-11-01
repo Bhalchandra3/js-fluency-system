@@ -34,7 +34,8 @@ description: |-
   Useful errors: 400 validation / empty body / provenance forge; 404; 401.
 
   Source: api/mistakes/[id].ts + mistakeService.updateMistake
-scripts:
+  Execution order: use a mistakeId from Create Mistake or List Mistakes.
+    Setting resolved: true sets resolvedAt (idempotent). Setting resolved: false clears it. scripts:
   - type: afterResponse
     language: text/javascript
     code: |-
@@ -43,5 +44,10 @@ scripts:
         pm.test('Patch envelope', function () {
           pm.expect(json.status).to.eql('ok');
           pm.expect(json.mistake).to.be.an('object');
+        });
+      } else if (pm.response.code === 400 || pm.response.code === 401 || pm.response.code === 404) {
+        pm.test('Error envelope shape', function () {
+          pm.expect(json.status).to.eql('error');
+          pm.expect(json.message).to.be.a('string').and.not.empty;
         });
       }

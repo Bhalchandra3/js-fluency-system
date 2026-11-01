@@ -243,18 +243,20 @@ This contract is compatible with the current Phase 2 `Question` model without sc
 | No JSON `id` | Matches DB-owned `@default(cuid())` |
 | No `difficulty` / `hints` | Those fields do not exist on `Question` |
 
-Future Step 10 seed logic MUST:
+Seed loader requirements (Phase 2 Step 10 — **complete**; implemented by `prisma/seed.ts`):
 
 1. Validate every `topicSlug` against seeded topics.
 2. Resolve `topicSlug` → `topicId`.
 3. Persist only Prisma `Question` fields (not `topicSlug`).
 4. Enforce MULTIPLE_CHOICE index/`correctAnswer` consistency.
-5. Remain safe to re-run without unintended duplicate questions (implementation detail of Step 10; not a schema change).
+5. Remain safe to re-run without unintended duplicate questions (idempotent seed behavior; not a schema change).
+
+These rules remain current whenever the seed is re-run. They are not a Phase 4 prerequisite.
 
 ---
 
 ## 11. Status
 
-- Contract status: **documented and locked for Phase 2 Step 9 generation**
-- `questions.json`: **exists** at `prisma/seed-data/questions.json` (content generation/review tracked in `CURRENT_STEP.md` / `PROJECT_TRACKER.md`)
-- Schema changes required: **none**
+- Contract status: **documented and locked** (Phase 2 Steps 9–10 complete)
+- `questions.json`: **exists** at `prisma/seed-data/questions.json` (260 questions; see `PROJECT_TRACKER.md` §4)
+- Schema changes required for the question-bank contract: **none**

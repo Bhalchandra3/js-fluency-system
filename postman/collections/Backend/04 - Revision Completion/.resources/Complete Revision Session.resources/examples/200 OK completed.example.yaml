@@ -29,5 +29,13 @@ response:
           "resultingNextRevisionDate": "2026-10-19T18:30:00.000Z",
           "policyVersion": "phase3-g5-v1",
           "reason": "Reinforce one ladder step because at least one answer had DIFFICULT confidence"
-        }
+        },
+        "topicStatus": {
+          "previous": "GREEN",
+          "current": "YELLOW",
+          "policyVersion": "phase4-status-v1",
+          "reason": "Status YELLOW (was GREEN) because session outcome REINFORCE",
+          "deepDiveEnsured": false
+        },
+        "mistakesCreated": 0
       }

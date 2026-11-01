@@ -74,6 +74,9 @@ scripts:
           });
 
           pm.environment.set('sessionId', json.session.id);
+          if (json.session.topic && json.session.topic.id) {
+            pm.environment.set('topicId', json.session.topic.id);
+          }
           if (json.session.questions && json.session.questions.length > 0) {
             pm.environment.set('questionId', json.session.questions[0].id);
           }

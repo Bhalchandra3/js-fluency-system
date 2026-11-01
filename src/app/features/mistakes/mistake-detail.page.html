@@ -1,0 +1,153 @@
+<section class="mistakes" aria-labelledby="mistake-detail-title">
+  <header class="mistakes__header">
+    <div class="mistakes__heading-block">
+      <p class="mistakes__eyebrow">
+        <a routerLink="/mistakes" class="mistakes__link">← Mistake Log</a>
+      </p>
+      <h1 id="mistake-detail-title">Mistake detail</h1>
+    </div>
+  </header>
+
+  @if (viewState() === 'loading') {
+    <div class="mistakes__panel mistakes__panel--loading" role="status" aria-busy="true">
+      <p>Loading mistake…</p>
+    </div>
+  }
+
+  @if (viewState() === 'error') {
+    <div class="mistakes__panel" role="alert">
+      <h2>Could not load mistake</h2>
+      <p>{{ pageError() }}</p>
+      <button type="button" class="mistakes__btn mistakes__btn--primary" (click)="reload()">
+        Retry
+      </button>
+      <a routerLink="/mistakes" class="mistakes__link">Back to list</a>
+    </div>
+  }
+
+  @if (viewState() === 'ready' && mistake(); as current) {
+    <section class="mistakes__panel" aria-labelledby="detail-heading">
+      <h2 id="detail-heading" class="mistakes__section-title">{{ current.topic.name }}</h2>
+      <ul class="mistakes__meta">
+        <li>
+          @if (isResolved(current)) {
+            <span class="mistakes__pill mistakes__pill--resolved">Resolved</span>
+          } @else {
+            <span class="mistakes__pill mistakes__pill--open">Unresolved</span>
+          }
+        </li>
+        <li>Slug: {{ current.topic.slug }}</li>
+        <li>Created {{ formatKolkataDate(current.createdAt) }}</li>
+        @if (current.resolvedAt) {
+          <li>Resolved {{ formatKolkataDate(current.resolvedAt) }}</li>
+        }
+        @if (current.turnedIntoQuestion) {
+          <li><span class="mistakes__pill">Flagged for question</span></li>
+        }
+      </ul>
+
+      @if (!editing()) {
+        <div class="mistakes__detail-fields">
+          <h3 class="mistakes__field-label">Mistaken understanding</h3>
+          <p class="mistakes__field-value">{{ current.mistakeText }}</p>
+          <h3 class="mistakes__field-label">Correct understanding</h3>
+          <p class="mistakes__field-value">{{ current.correctUnderstanding }}</p>
+          @if (current.questionId) {
+            <h3 class="mistakes__field-label">Question id</h3>
+            <p class="mistakes__field-value mistakes__mono">{{ current.questionId }}</p>
+          }
+          @if (current.sessionId) {
+            <h3 class="mistakes__field-label">Session id</h3>
+            <p class="mistakes__field-value mistakes__mono">{{ current.sessionId }}</p>
+          }
+        </div>
+
+        <div class="mistakes__actions">
+          <button type="button" class="mistakes__btn mistakes__btn--secondary" (click)="startEditing()">
+            Edit
+          </button>
+          @if (isResolved(current)) {
+            <button
+              type="button"
+              class="mistakes__btn mistakes__btn--secondary"
+              [disabled]="saving()"
+              (click)="unresolveMistake()"
+            >
+              Mark unresolved
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="mistakes__btn mistakes__btn--primary"
+              [disabled]="saving()"
+              (click)="resolveMistake()"
+            >
+              {{ saving() ? 'Saving…' : 'Mark resolved' }}
+            </button>
+          }
+        </div>
+      } @else {
+        <form class="mistakes__form" (ngSubmit)="saveEdits()" novalidate>
+          <label class="mistakes__label" for="edit-mistake-text">Mistaken understanding</label>
+          <textarea
+            id="edit-mistake-text"
+            class="mistakes__textarea"
+            name="mistakeText"
+            rows="3"
+            [ngModel]="editMistakeText()"
+            (ngModelChange)="editMistakeText.set($event)"
+            required
+          ></textarea>
+
+          <label class="mistakes__label" for="edit-correct">Correct understanding</label>
+          <textarea
+            id="edit-correct"
+            class="mistakes__textarea"
+            name="correctUnderstanding"
+            rows="3"
+            [ngModel]="editCorrectUnderstanding()"
+            (ngModelChange)="editCorrectUnderstanding.set($event)"
+            required
+          ></textarea>
+
+          <label class="mistakes__filter" for="edit-turned">
+            <input
+              id="edit-turned"
+              type="checkbox"
+              [checked]="editTurnedIntoQuestion()"
+              (change)="editTurnedIntoQuestion.set($any($event.target).checked)"
+            />
+            Flag as turned into question (manual only — does not create a bank question)
+          </label>
+
+          <div class="mistakes__actions">
+            <button
+              type="submit"
+              class="mistakes__btn mistakes__btn--primary"
+              [disabled]="saving()"
+            >
+              {{ saving() ? 'Saving…' : 'Save changes' }}
+            </button>
+            <button
+              type="button"
+              class="mistakes__btn mistakes__btn--secondary"
+              [disabled]="saving()"
+              (click)="cancelEditing()"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      }
+
+      @if (actionError()) {
+        <p class="mistakes__status mistakes__status--error" role="alert">{{ actionError() }}</p>
+      }
+      @if (actionSuccess()) {
+        <p class="mistakes__status mistakes__status--success" role="status">
+          {{ actionSuccess() }}
+        </p>
+      }
+    </section>
+  }
+</section>

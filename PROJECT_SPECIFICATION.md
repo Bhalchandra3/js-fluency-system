@@ -281,13 +281,13 @@ Detailed status and Phase 2 steps: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md).
 
 Recorded explicitly so they are not invented later:
 
-1. **Exact confidence → Green/Yellow/Red algorithm** — specified directionally; algorithm deferred.
+1. **Exact confidence → Green/Yellow/Red algorithm** — specified directionally in §5.4. **Phase 4 proposal:** `phase4-status-v1` in [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) §4 (pending owner Step 0 approval; not implemented).
 2. **Configurable revision intervals** — “eventually”; not MVP-locked.
-3. **`GET /api/questions`** — optional for Phase 2 close; may be required by Phase 3.
-4. **Client one-time bearer setup UX** — decided in architecture; UI details not fully specified.
+3. **`GET /api/questions` (bank-wide)** — **not required.** Phase 3 decision **G3** embeds `REVISION` questions in Today’s Revision; a bank-wide questions list endpoint remains out of scope unless a future phase reopens it with demonstrated need.
+4. **Client one-time bearer setup UX** — decided in architecture; UI details not fully specified (Phase 3 delivered a minimal `/setup` flow).
 5. **Dark/light theme** — required for mobile; visual design tokens not specified.
 6. **Multi-area roadmap (TypeScript, Angular, etc.)** — future; only JavaScript roadmap is initial.
-7. **Turning mistakes into questions** — required capability; automation details open.
+7. **Turning mistakes into questions** — required capability. **Phase 4 proposal:** auto + manual Mistake Log; reuse existing `questionId`; `turnedIntoQuestion` is **manual only**; automatic new Question bank rows deferred — see Phase 4 Development Order §5 (pending owner Step 0 approval; not implemented).
 
 When resolving these, update this specification and the tracker; do not rely on chat history alone.
 
@@ -299,6 +299,8 @@ When resolving these, update this specification and the tracker; do not rely on 
 |---|---|
 | [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) | Overall progress, completed-phase history, major decisions, conclusions, next-phase handoff; lifecycle rules in §6 |
 | [`CURRENT_STEP.md`](./CURRENT_STEP.md) | Complete working record for the entire active phase |
+| [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) | Completed Phase 3 baseline |
+| [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) | Canonical Phase 4 detailed plan |
 | [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook |
 | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Question-bank JSON contract |
 | [`docs/archive/`](./docs/archive/) | Pre-consolidation specification and history sources |

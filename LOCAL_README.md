@@ -167,18 +167,23 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 ## Postman Desktop (local API QA)
 
-Git-managed collection source: `postman/collections/Backend/` (display name **JavaScript Fluency System API - Local**).
+Git-managed collection source: `postman/collections/Backend/` (display name **JavaScript Fluency System API - Local**). Environments: `postman/environments/` (`Local Development`, `Production`).
 
-1. Start the app with `npx vercel dev` (`http://localhost:3000`).
-2. In Postman Desktop, use the imported collection **JavaScript Fluency System API - Local** with environment **Local Development**.
-3. Set `bearerToken` as a Desktop **Current value** only (matches local `BEARER_TOKEN`). Do not commit tokens.
-4. To regenerate Desktop import JSON (gitignored under `postman/exports/`):
+1. Start the API with `npx vercel dev` (`http://localhost:3000`).
+2. Ensure `BEARER_TOKEN` is configured server-side.
+3. In Postman Desktop, use the imported collection **JavaScript Fluency System API - Local** with environment **Local Development**.
+4. Set `bearerToken` as a Desktop **Current value** only (never commit). `baseUrl` defaults to `http://localhost:3000`.
+5. To regenerate Desktop import JSON (gitignored under `postman/exports/`):
 
 ```bash
 python postman/scripts/export_v21_for_desktop.py
 ```
 
-Phase 3 Postman/local API QA notes: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §5.4. Phase 3 is complete. Phase 4 Step 0 is approved and Step 1 architecture lock is complete (2026-10-23); Step 2 — status policy helpers is next. See [`CURRENT_STEP.md`](./CURRENT_STEP.md) and [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md). Product feature APIs/UI have not started.
+Suggested order (local/disposable only): `00 - Health` → `01 - Topics` (populates `topicId`) → `02 - Today's Revision` (no-auth 401 check, then authed; populates `sessionId`/`questionId`/`topicId`) → `03 - Revision Answers` → `04 - Revision Completion` (mutates Topic status/schedule; may create Deep Dive notes and Mistake rows) → `05 - Mistake Log` (Create/List/Get/Update) → `06 - Deep Dive Queue` (List/Update/Delete) → `07 - Progress Summary` (`GET /api/progress`, read-only).
+
+Safety: run mutating requests only against local/disposable data; do not run mutating requests against production; mistake provenance (`sourceSessionLogId`, `sessionId`) is system-managed and rejected on manual writes; Phase 4 has no hard-delete for mistakes; Deep Dive DELETE removes the note only (Topic.status/schedule unchanged; may be recreated on a later RED complete); `GET /api/progress` is read-only with no `DailyProgress` writes.
+
+Phase 3 complete. Phase 4 backend Steps 0–7 complete (status policy + Mistake/Deep Dive/Progress APIs + complete-path side effects). Step 8 — Frontend data access is next. See [`CURRENT_STEP.md`](./CURRENT_STEP.md) and [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md). Product feature APIs/UI have not started.
 
 ## Additional Resources
 

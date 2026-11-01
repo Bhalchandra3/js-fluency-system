@@ -3,7 +3,7 @@
     <div class="dashboard__heading-block">
       <h1 id="dashboard-title">Dashboard</h1>
       <p class="dashboard__subtitle">
-        A quick look at what is due, then start Today’s Revision when you are ready.
+        See what is due, check confidence signals, then start Today’s Revision when you are ready.
       </p>
     </div>
   </header>
@@ -44,6 +44,79 @@
       </ul>
     </section>
 
+    <section class="dashboard__progress" aria-labelledby="progress-heading">
+      <h2 id="progress-heading" class="dashboard__section-title">Progress signals</h2>
+
+      @if (progressState() === 'loading') {
+        <p class="dashboard__hint" role="status">Loading progress summary…</p>
+      }
+
+      @if (progressState() === 'error') {
+        <div class="dashboard__progress-error" role="alert">
+          <p>Could not load Phase 4 progress counts.</p>
+          <p>{{ progressError() }}</p>
+          <button
+            type="button"
+            class="dashboard__btn dashboard__btn--secondary"
+            (click)="loadDashboard()"
+          >
+            Retry progress
+          </button>
+        </div>
+      }
+
+      @if (progressState() === 'ready' && statusCounts(); as counts) {
+        <ul class="dashboard__counts" aria-live="polite">
+          <li>
+            <span class="dashboard__count-label">Green topics</span>
+            <strong class="dashboard__count-value dashboard__count-value--green">
+              {{ counts.green }}
+            </strong>
+            <span class="dashboard__count-note">Confident (latest ADVANCE)</span>
+          </li>
+          <li>
+            <span class="dashboard__count-label">Yellow topics</span>
+            <strong class="dashboard__count-value dashboard__count-value--yellow">
+              {{ counts.yellow }}
+            </strong>
+            <span class="dashboard__count-note">Needs reinforcement</span>
+          </li>
+          <li>
+            <span class="dashboard__count-label">Red topics</span>
+            <strong class="dashboard__count-value dashboard__count-value--red">
+              {{ counts.red }}
+            </strong>
+            <span class="dashboard__count-note">Needs deeper attention</span>
+          </li>
+          <li>
+            <span class="dashboard__count-label">Unresolved mistakes</span>
+            <strong class="dashboard__count-value">{{ unresolvedMistakeCount() }}</strong>
+            <span class="dashboard__count-note">Open Mistake Log entries</span>
+          </li>
+          <li>
+            <span class="dashboard__count-label">Deep Dive queue</span>
+            <strong class="dashboard__count-value">{{ deepDiveCount() }}</strong>
+            <span class="dashboard__count-note">Topics with Deep Dive notes</span>
+          </li>
+        </ul>
+
+        <div class="dashboard__secondary-ctas">
+          <a routerLink="/mistakes" class="dashboard__btn dashboard__btn--secondary">
+            Open Mistake Log
+            @if (unresolvedMistakeCount() !== null) {
+              <span class="dashboard__cta-badge">{{ unresolvedMistakeCount() }} unresolved</span>
+            }
+          </a>
+          <a routerLink="/deep-dive" class="dashboard__btn dashboard__btn--secondary">
+            Open Deep Dive Queue
+            @if (deepDiveCount() !== null) {
+              <span class="dashboard__cta-badge">{{ deepDiveCount() }} queued</span>
+            }
+          </a>
+        </div>
+      }
+    </section>
+
     @if (session(); as activeSession) {
       <section class="dashboard__focus" aria-labelledby="focus-heading">
         <h2 id="focus-heading" class="dashboard__section-title">Current revision session</h2>
@@ -77,8 +150,8 @@
           }
         </ul>
         <p class="dashboard__hint">
-          Open Today’s Revision to continue this open session. Full due-topic lists and deep-dive
-          summaries are not part of this Phase 3 dashboard.
+          Open Today’s Revision to continue this open session. Mistake Log and Deep Dive are
+          available above or from the primary navigation.
         </p>
         <a routerLink="/" class="dashboard__btn dashboard__btn--primary">
           Continue Today’s Revision

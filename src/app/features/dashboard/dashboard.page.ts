@@ -6,8 +6,14 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { catchError, forkJoin, map, of } from 'rxjs';
 
 import { ApiClientError } from '../../core/api/api-error';
+import { ProgressApiService } from '../../core/api/progress-api.service';
+import {
+  ProgressStatusCounts,
+  ProgressSummaryResponse,
+} from '../../core/api/progress.types';
 import { RevisionApiService } from '../../core/api/revision-api.service';
 import {
   TodayRevisionResponse,
@@ -15,6 +21,11 @@ import {
 } from '../../core/api/revision.types';
 
 export type DashboardViewState = 'loading' | 'ready' | 'error';
+export type ProgressPanelState = 'loading' | 'ready' | 'error';
+
+type ProgressLoadResult =
+  | { ok: true; response: ProgressSummaryResponse }
+  | { ok: false; message: string };
 
 @Component({
   selector: 'app-dashboard-page',
@@ -23,14 +34,21 @@ export type DashboardViewState = 'loading' | 'ready' | 'error';
   styleUrl: './dashboard.page.scss',
 })
 export class DashboardPage {
-  private readonly api = inject(RevisionApiService);
+  private readonly revisionApi = inject(RevisionApiService);
+  private readonly progressApi = inject(ProgressApiService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly viewState = signal<DashboardViewState>('loading');
+  readonly progressState = signal<ProgressPanelState>('loading');
   readonly dueCount = signal(0);
   readonly overdueCount = signal(0);
   readonly session = signal<TodaySessionDto | null>(null);
   readonly pageError = signal<string | null>(null);
+  readonly progressError = signal<string | null>(null);
+
+  readonly statusCounts = signal<ProgressStatusCounts | null>(null);
+  readonly deepDiveCount = signal<number | null>(null);
+  readonly unresolvedMistakeCount = signal<number | null>(null);
 
   private loadGeneration = 0;
 
@@ -41,23 +59,54 @@ export class DashboardPage {
   loadDashboard(): void {
     const generation = ++this.loadGeneration;
     this.viewState.set('loading');
+    this.progressState.set('loading');
     this.pageError.set(null);
+    this.progressError.set(null);
+    this.statusCounts.set(null);
+    this.deepDiveCount.set(null);
+    this.unresolvedMistakeCount.set(null);
 
-    this.api
-      .getToday()
+    const progress$ = this.progressApi.getProgress().pipe(
+      map((response): ProgressLoadResult => ({ ok: true, response })),
+      catchError((error: unknown) =>
+        of<ProgressLoadResult>({
+          ok: false,
+          message: this.messageFromError(error),
+        }),
+      ),
+    );
+
+    forkJoin({
+      today: this.revisionApi.getToday(),
+      progress: progress$,
+    })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
+        next: ({ today, progress }) => {
           if (generation !== this.loadGeneration) {
             return;
           }
-          this.applyTodayResponse(response);
+          this.applyTodayResponse(today);
+          if (!progress.ok) {
+            this.progressState.set('error');
+            this.progressError.set(progress.message);
+            return;
+          }
+          const summary = progress.response;
+          this.statusCounts.set(summary.statusCounts);
+          this.deepDiveCount.set(summary.deepDiveCount);
+          this.unresolvedMistakeCount.set(summary.unresolvedMistakeCount);
+          // Same Kolkata due semantics as today; prefer the dedicated summary when present.
+          this.dueCount.set(summary.dueCount);
+          this.overdueCount.set(summary.overdueCount);
+          this.progressState.set('ready');
         },
         error: (error: unknown) => {
           if (generation !== this.loadGeneration) {
             return;
           }
           this.viewState.set('error');
+          this.progressState.set('error');
           this.pageError.set(this.messageFromError(error));
         },
       });

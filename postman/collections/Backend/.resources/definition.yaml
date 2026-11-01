@@ -1,7 +1,7 @@
 $kind: collection
 name: JavaScript Fluency System API - Local
 description: |-
-  Local Git-native collection for Phase 3 manual QA (Postman Desktop Local View
+  Local Git-native collection for Phase 3/4 manual QA (Postman Desktop Local View
   or import from postman/exports/). Distinct from the cloud collection named
   "JavaScript Fluency System API" — do not overwrite that cloud collection.
 
@@ -9,12 +9,28 @@ description: |-
   server BEARER_TOKEN (api/_lib/auth.ts). Health is public. The "no auth"
   request under Today's Revision disables auth for the 401 check.
 
-  Local workflow:
+  Workflow (local/disposable only):
   1. npx vercel dev (http://localhost:3000)
   2. Select Local Development environment; set bearerToken privately
   3. Get API Health → Get Topics → Today's Revision (no auth) → Today's Revision
-     → Submit Revision Answer → Complete Revision Session → Mistake Log → Deep Dive
-     → Progress Summary
+     → Submit Revision Answer → Complete Revision Session
+  4. Phase 4: Mistake Log (Create/List/Get/Update), Deep Dive (List/Update/Delete),
+     Progress Summary (GET /api/progress)
+
+  Safety:
+  - Complete Revision Session mutates Topic status/schedule and may create
+    Deep Dive notes and Mistake rows. Use only against local/disposable data.
+  - Never commit bearer tokens, DB URLs, or secrets.
+  - Do not run mutating requests against production to validate collections.
+  - Mistake provenance fields (sourceSessionLogId, sessionId) are system-managed
+    and rejected by manual create/update. There is no hard-delete endpoint in Phase 4.
+  - Deep Dive DELETE removes the note only; Topic.status/schedule unchanged; a
+    later RED complete may recreate the note.
+
+  Variable order hints:
+  - topicId from Get Topics or Today's Revision
+  - sessionId/questionId from Today's Revision
+  - mistakeId auto-populated by Create Mistake/List Mistakes when possible
 auth:
   type: bearer
   credentials:

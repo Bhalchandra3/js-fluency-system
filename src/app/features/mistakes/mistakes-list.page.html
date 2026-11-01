@@ -1,0 +1,174 @@
+<section class="mistakes" aria-labelledby="mistakes-title">
+  <header class="mistakes__header">
+    <div class="mistakes__heading-block">
+      <h1 id="mistakes-title">Mistake Log</h1>
+      <p class="mistakes__subtitle">
+        Review automatic and manual mistakes. Resolve when you have corrected the misunderstanding.
+      </p>
+    </div>
+    <button
+      type="button"
+      class="mistakes__btn mistakes__btn--secondary"
+      (click)="toggleCreateForm()"
+      [attr.aria-expanded]="showCreateForm()"
+    >
+      {{ showCreateForm() ? 'Hide new mistake' : 'Add mistake' }}
+    </button>
+  </header>
+
+  @if (viewState() === 'loading') {
+    <div class="mistakes__panel mistakes__panel--loading" role="status" aria-busy="true">
+      <p>Loading mistakes…</p>
+    </div>
+  }
+
+  @if (viewState() === 'error') {
+    <div class="mistakes__panel" role="alert">
+      <h2>Could not load mistakes</h2>
+      <p>{{ pageError() }}</p>
+      <button type="button" class="mistakes__btn mistakes__btn--primary" (click)="loadMistakes()">
+        Retry
+      </button>
+      <a routerLink="/setup" class="mistakes__link">Check access token</a>
+    </div>
+  }
+
+  @if (viewState() === 'ready') {
+    @if (showCreateForm()) {
+      <section class="mistakes__panel" aria-labelledby="create-heading">
+        <h2 id="create-heading" class="mistakes__section-title">Add a mistake</h2>
+        <form class="mistakes__form" (ngSubmit)="submitCreate()" novalidate>
+          <label class="mistakes__label" for="create-topic">Topic</label>
+          <select
+            id="create-topic"
+            class="mistakes__input"
+            name="topicId"
+            [ngModel]="createTopicId()"
+            (ngModelChange)="createTopicId.set($event)"
+            required
+          >
+            <option value="">Select a topic</option>
+            @for (topic of topics(); track topic.id) {
+              <option [value]="topic.id">{{ topic.name }}</option>
+            }
+          </select>
+
+          <label class="mistakes__label" for="create-mistake-text">Mistaken understanding</label>
+          <textarea
+            id="create-mistake-text"
+            class="mistakes__textarea"
+            name="mistakeText"
+            rows="3"
+            [ngModel]="createMistakeText()"
+            (ngModelChange)="createMistakeText.set($event)"
+            required
+          ></textarea>
+
+          <label class="mistakes__label" for="create-correct">Correct understanding</label>
+          <textarea
+            id="create-correct"
+            class="mistakes__textarea"
+            name="correctUnderstanding"
+            rows="3"
+            [ngModel]="createCorrectUnderstanding()"
+            (ngModelChange)="createCorrectUnderstanding.set($event)"
+            required
+          ></textarea>
+
+          <label class="mistakes__label" for="create-question-id">
+            Related question id (optional)
+          </label>
+          <input
+            id="create-question-id"
+            class="mistakes__input"
+            name="questionId"
+            type="text"
+            autocomplete="off"
+            [ngModel]="createQuestionId()"
+            (ngModelChange)="createQuestionId.set($event)"
+          />
+
+          <div class="mistakes__actions">
+            <button
+              type="submit"
+              class="mistakes__btn mistakes__btn--primary"
+              [disabled]="creating()"
+            >
+              {{ creating() ? 'Saving…' : 'Save mistake' }}
+            </button>
+          </div>
+        </form>
+
+        @if (createError()) {
+          <p class="mistakes__status mistakes__status--error" role="alert">{{ createError() }}</p>
+        }
+        @if (createSuccess()) {
+          <p class="mistakes__status mistakes__status--success" role="status">
+            {{ createSuccess() }}
+          </p>
+        }
+      </section>
+    }
+
+    <div class="mistakes__toolbar">
+      <label class="mistakes__filter" for="unresolved-only">
+        <input
+          id="unresolved-only"
+          type="checkbox"
+          [checked]="unresolvedOnly()"
+          (change)="onUnresolvedFilterChange($any($event.target).checked)"
+        />
+        Unresolved only
+      </label>
+      <p class="mistakes__count" aria-live="polite">
+        Showing <strong>{{ mistakes().length }}</strong> of <strong>{{ total() }}</strong>
+      </p>
+    </div>
+
+    @if (mistakes().length === 0) {
+      <section class="mistakes__panel" aria-labelledby="empty-heading">
+        <h2 id="empty-heading" class="mistakes__section-title">No mistakes yet</h2>
+        <p>
+          @if (unresolvedOnly()) {
+            No unresolved mistakes match this filter. Clear the filter or add a manual entry.
+          } @else {
+            Automatic mistakes appear after a revision session completes with incorrect answers or
+            DIDNT_UNDERSTAND. You can also add one manually.
+          }
+        </p>
+      </section>
+    } @else {
+      <ul class="mistakes__list">
+        @for (mistake of mistakes(); track mistake.id) {
+          <li class="mistakes__item">
+            <div class="mistakes__item-main">
+              <p class="mistakes__item-topic">{{ topicName(mistake.topicId) }}</p>
+              <p class="mistakes__item-text">{{ mistake.mistakeText }}</p>
+              <ul class="mistakes__meta">
+                <li>
+                  @if (isResolved(mistake)) {
+                    <span class="mistakes__pill mistakes__pill--resolved">Resolved</span>
+                  } @else {
+                    <span class="mistakes__pill mistakes__pill--open">Unresolved</span>
+                  }
+                </li>
+                <li>Created {{ formatKolkataDate(mistake.createdAt) }}</li>
+                @if (mistake.turnedIntoQuestion) {
+                  <li>
+                    <span class="mistakes__pill">Flagged for question</span>
+                  </li>
+                }
+              </ul>
+            </div>
+            <a
+              class="mistakes__btn mistakes__btn--primary"
+              [routerLink]="['/mistakes', mistake.id]"
+            >
+              Open
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>
