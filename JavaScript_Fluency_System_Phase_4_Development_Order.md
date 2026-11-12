@@ -1,7 +1,7 @@
 # JavaScript Fluency System — Phase 4 Development Order
 
 > Canonical detailed plan for **Phase 4 — Progress + Mistakes**.
-> Status: **Steps 0–12 complete (2026-11-12); Step 13 (Production smoke testing) is next** — local E2E verification, automated checks, UI flows, auth matrix, and Phase 3 regression checks are complete; Step 13 (production smoke) and Step 14 (documentation closeout) remain.
+> Status: **Complete (2026-11-12)** — Steps 0–14 complete (implementation, local E2E verification, production smoke testing on Vercel + Neon, and documentation closeout).
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
@@ -694,7 +694,7 @@ Until migration is applied, implementation must not invent silent columns.
 
 ---
 
-### Step 13 — Production smoke testing
+### Step 13 — Production smoke testing — ✅ Complete (2026-11-12)
 
 | | |
 |---|---|
@@ -704,9 +704,11 @@ Until migration is applied, implementation must not invent silent columns.
 | **Acceptance** | Owner-reported or filed evidence for status/mistake/deep dive + Phase 3 loop. |
 | **Evidence** | Tracker / working record (prefer granular statuses this phase). |
 
+**Step 13 result — complete 2026-11-12.** Owner confirmed production deployment on Vercel (`master`) against Neon (`20261024163000_phase4_mistake_provenance` applied): a normal revision session completed successfully, an incorrect answer automatically created a `Mistake` record, the resulting `RED` topic was added to the Deep Dive queue, Mistake Log and Mistake Detail displayed expected data, Deep Dive Queue displayed expected topic and reason, and Dashboard counts reflected production records.
+
 ---
 
-### Step 14 — Documentation closeout and handoff
+### Step 14 — Documentation closeout and handoff — ✅ Complete (2026-11-12)
 
 | | |
 |---|---|
@@ -715,6 +717,8 @@ Until migration is applied, implementation must not invent silent columns.
 | **Boundaries** | Do not auto-start Phase 5 implementation. |
 | **Acceptance** | Exit criteria §11 checked; Phase 4 marked complete in tracker when truly done. |
 | **Evidence** | Tracker Phase 4 section finalized. |
+
+**Step 14 result — complete 2026-11-12.** `PROJECT_SPECIFICATION.md` §12.1 and §12.7 updated; `PROJECT_TRACKER.md` finalized with Phase 4 history, verification summary, and Phase 5 readiness handoff; `CURRENT_STEP.md` cleared per §6.3 after verified transfer; all §11 exit criteria checked.
 
 ---
 
@@ -794,8 +798,8 @@ Do not “fix” regressions by loosening G5 assertions.
 - [x] Deep Dive Queue usable with notes; Red ensure behavior verified.
 - [x] Dashboard shows status / Deep Dive / mistake progress signals.
 - [x] G3/G8 honored; G6 not violated without documented exception.
-- [ ] Local verification + production smoke recorded *(Step 12 local E2E complete 2026-11-12; Step 13 production smoke pending)*.
-- [ ] Tracker history + Phase 5 handoff complete; `CURRENT_STEP.md` cleared per §6.3 *(Step 14 pending)*.
+- [x] Local verification + production smoke recorded *(Step 12 local E2E and Step 13 production smoke complete 2026-11-12)*.
+- [x] Tracker history + Phase 5 handoff complete; `CURRENT_STEP.md` cleared per §6.3 *(Step 14 complete 2026-11-12)*.
 
 ---
 
@@ -808,7 +812,7 @@ Do not “fix” regressions by loosening G5 assertions.
 | **Complete response DTO growth** | **Locked in §2.5.5** (`topicStatus` + `mistakesCreated`); FE contract tests in Steps 8/11 |
 | **Empty `api/mistakes` / `deep-dive` / `progress` dirs** | Confirmed 0 files; populate in Steps 5–7 per §2.5.5 |
 | **Dashboard data source** | **Locked:** thin `GET /api/progress`; due-topic name list remains deferred |
-| **Spec §12 stale wording** | §12.1 / §12.7 still say “pending Step 0 approval” in the working-tree `PROJECT_SPECIFICATION.md` though Step 0 is approved — spec changes remain deferred and excluded from the Phase 4 documentation commit (owner decision); treat this DO + tracker as Phase 4 authority |
+| **Spec §12 stale wording** | **Resolved at Step 14 closeout (2026-11-12):** `PROJECT_SPECIFICATION.md` §12.1 and §12.7 updated to reflect Phase 4 approval and implementation |
 | **`LOCAL_README.md`** | File exists and documents migrate/seed; tracker link is valid (not missing) |
 | **Production evidence culture** | Prefer filing granular smoke results (Phase 3 gap) |
 | **Assumption** | Single-user bearer architecture remains (spec §7) |
@@ -841,16 +845,16 @@ Do not “fix” regressions by loosening G5 assertions.
 
 | Field | Value |
 |---|---|
-| **Document status** | Steps 0–12 complete; **Step 13 (Production smoke testing) is next** |
-| **Phase 4 complete?** | **No** (Steps 12–14 remaining) |
-| **Feature implementation started?** | **Yes — Steps 0–11 complete** (verification, smoke, and closeout Steps 12–14 remain) |
+| **Document status** | **Complete (2026-11-12)** — Completed Phase 4 baseline (Steps 0–14 complete) |
+| **Phase 4 complete?** | **Yes** (2026-11-12) |
+| **Feature implementation started?** | **Yes — Steps 0–14 complete** |
 | **Step 0** | ✅ Approved 2026-10-23 (scope, §4 status policy, §§5–7 mistake/Deep Dive scope, §9.1 workflow) |
 | **Step 1** | ✅ Complete 2026-10-23 — decisions in §2.5 |
 | **Steps 2–11** | ✅ Complete — Backend APIs (2026-10-24) and Angular FE/UI/Dashboard (2026-10-29) |
-| **Step 12** | ✅ Complete 2026-11-12 — automated checks + owner-confirmed full local E2E, UI, auth matrix, idempotency, and Phase 3 regression (see `CURRENT_STEP.md`) |
-| **Step 13** | 🟡 Next — Production smoke testing on Vercel + Neon |
-| **Step 14** | ⬜ Pending — Documentation closeout |
-| **Next action** | Execute Step 13 — Production smoke testing on Vercel + Neon (see `CURRENT_STEP.md`) |
+| **Step 12** | ✅ Complete 2026-11-12 — automated checks + owner-confirmed full local E2E, UI, auth matrix, idempotency, and Phase 3 regression |
+| **Step 13** | ✅ Complete 2026-11-12 — production smoke on Vercel + Neon confirmed by owner |
+| **Step 14** | ✅ Complete 2026-11-12 — documentation closeout, tracker transfer, `CURRENT_STEP.md` cleared, Phase 5 handoff recorded |
+| **Next action** | Phase 4 closed; Phase 5 (Persistent Cloud Data) is ready to start when authorized (see `PROJECT_TRACKER.md` §8.8) |
 | **Blocking product gates** | None |
 
 **Canonical plan:** `JavaScript_Fluency_System_Phase_4_Development_Order.md`
