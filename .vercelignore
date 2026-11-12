@@ -1,0 +1,24 @@
+# Test files
+**/*.test.ts
+**/*.spec.ts
+
+# Documentation and diagrams
+docs/
+*.md
+*.svg
+
+# Postman collections and environments
+postman/
+.postman/
+
+# Database seed data, seed scripts, and test guards
+prisma/seed-data/
+prisma/openSessionQuestionGuard.ts
+prisma/openSessionQuestionGuard.test.ts
+prisma/revisionSession.integration.test.ts
+prisma/seed.ts
+
+# Local and IDE configuration
+.local/
+.cursor/
+.vscode/

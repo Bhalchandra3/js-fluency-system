@@ -17,6 +17,7 @@
     "test:mistakes": "tsx --test api/mistakes/index.handler.test.ts api/mistakes/id.handler.test.ts api/_lib/mistakes/mistakeService.integration.test.ts",
     "test:deep-dive": "tsx --test api/deep-dive/index.handler.test.ts api/deep-dive/topicId.handler.test.ts api/_lib/deep-dive/deepDiveService.integration.test.ts",
     "test:progress": "tsx --test api/progress/index.handler.test.ts api/_lib/progress/progressService.integration.test.ts",
+    "inspect:revision-sessions": "tsx scripts/inspect-revision-sessions.ts",
     "postinstall": "prisma generate"
   },
   "prettier": {

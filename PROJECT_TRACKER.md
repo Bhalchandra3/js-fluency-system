@@ -12,14 +12,14 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 4 — Progress + Mistakes** (Step 11 dashboard enrichment done; local E2E next) |
-| **Active step** | Step 12 — Local end-to-end verification (`CURRENT_STEP.md`) |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–11 |
-| **Next action** | Execute Step 12 — local E2E / regression verification per Development Order; Neon migrate deploy still owner-authorized separately |
+| **Current phase** | **Phase 4 — Progress + Mistakes** (Steps 0–12 complete; Step 13 production smoke next) |
+| **Active step** | Step 13 — Production smoke testing (`CURRENT_STEP.md`) |
+| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–12 |
+| **Next action** | Execute Step 13 — Production smoke testing on Vercel + Neon (Neon schema verified up to date with `20261024163000_phase4_mistake_provenance`) |
 | **Backend on master** | `e4ef947` — `feat: complete Phase 4 backend APIs` (pushed to `origin/master` 2026-10-24) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
-| **Phase 4 complete?** | **No** — Steps 0–11 feature delivery done; verification/closeout Steps 12–14 remain |
+| **Phase 4 complete?** | **No** — Steps 0–12 complete; production smoke (Step 13) and closeout (Step 14) remain |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Phase 4 plan (active)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 
@@ -32,7 +32,7 @@
 | **1 — Skeleton** | Angular app, Prisma schema, Neon, Vercel, production `/api/health` | ✅ Complete |
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
-| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | 🟡 In progress (Steps 0–11 complete; Step 12 next) |
+| **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | 🟡 In progress (Steps 0–12 complete; Step 13 next) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
@@ -324,8 +324,8 @@ Phase 3 is complete. **Phase 4 formally started in planning mode (2026-10-22).**
 | **Carry-forward decisions** | Do not silently change G1–G8 or Decisions A/B; Phase 3 scheduling remains backend-authoritative and finalize-once |
 | **Approved Phase 4 decisions (Step 0, 2026-10-23)** | Status policy `phase4-status-v1`; Mistake Log auto+manual with **no** auto Question insert; Deep Dive ensure on Red — see Phase 4 Development Order §§4–5 |
 | **Architecture lock (Step 1, 2026-10-23)** | Development Order §2.5 — status persistence, Mistake schema, complete-path order, APIs, FE routes, testing, step acceptance; see also this tracker §8.3 |
-| **Still open inside Phase 4** | Verification/closeout Steps 12–14; Neon production migrate deploy for Mistake provenance still pending owner authorization |
-| **Recommended next action** | Execute Step 12 — Local E2E verification; apply migration to Neon only with explicit owner approval |
+| **Still open inside Phase 4** | Production smoke (Step 13) and documentation closeout (Step 14); Neon schema verified up to date with `20261024163000_phase4_mistake_provenance` (2026-11-12) |
+| **Recommended next action** | Execute Step 13 — Production smoke testing on Vercel + Neon |
 | **Do not** | Re-open Phase 3 delivery; invent HTTP evidence that was not filed; clear or rewrite the Phase 3 Development Order baseline without cause; skip §2.5 contracts when implementing |
 
 ---
@@ -391,7 +391,7 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 
 ---
 
-## 8. Phase 4 — Progress + Mistakes (Steps 0–11 done; verification next)
+## 8. Phase 4 — Progress + Mistakes (Steps 0–12 done; Step 13 next)
 
 ### 8.1 Objective
 
@@ -417,8 +417,8 @@ Canonical plan:
 | **Step 9 Mistake Log UI** | ✅ Complete 2026-10-29 — `/mistakes` list+create, `/mistakes/:id` detail+edit+resolve; Mistakes nav; `ng test` 87/87; `ng build` OK |
 | **Step 10 Deep Dive UI** | ✅ Complete 2026-10-29 — `/deep-dive` queue+notes editor+remove; Deep Dive nav; `ng test` 98/98; `ng build` OK |
 | **Step 11 Dashboard enrichment** | ✅ Complete 2026-10-29 — progress status/mistake/deep-dive counts + CTAs; Today’s Revision primary CTA; `ng test` 100/100; `ng build` OK |
-| **Feature APIs / UI** | Backend + Mistake Log + Deep Dive + dashboard enrichment done; verification Steps 12–14 remain |
-| **Active step** | Step 12 — Local end-to-end verification |
+| **Feature APIs / UI** | Backend + Mistake Log + Deep Dive + dashboard enrichment + Step 12 local E2E complete; Steps 13–14 remain |
+| **Active step** | Step 13 — Production smoke testing |
 | **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
 
 ### 8.3 Approved / locked decisions (Steps 0–11 done; verification pending)
@@ -452,8 +452,8 @@ Canonical plan:
 | 9 | Mistake Log UI | ✅ Complete — 2026-10-29 (`mistakes-list` / `mistake-detail`; routes + Mistakes nav; `ng test` 87/87; `ng build` OK) |
 | 10 | Deep Dive UI | ✅ Complete — 2026-10-29 (`deep-dive-queue`; `/deep-dive` + Deep Dive nav; `ng test` 98/98; `ng build` OK) |
 | 11 | Dashboard enrichment | ✅ Complete — 2026-10-29 (`dashboard.page.*` + `ProgressApiService`; Today’s Revision primary CTA; `ng test` 100/100; `ng build` OK) |
-| 12 | Local E2E verification | 🟡 Next — not started |
-| 13 | Production smoke | ⬜ Not started |
+| 12 | Local E2E verification | ✅ Complete — 2026-11-12 (automated checks + owner-confirmed full local E2E, UI, auth matrix, idempotency, and Phase 3 regression) |
+| 13 | Production smoke | 🟡 Next — not started |
 | 14 | Documentation closeout | ⬜ Not started |
 
 ### 8.5 Approved AI-assisted development workflow (Step 0, 2026-10-23)
@@ -490,3 +490,7 @@ Canonical detail: Phase 4 Development Order §9.1. Durable summary:
 - **Step 11 delivered:** Dashboard loads `getToday` + `getProgress` in parallel. Shows Green/Yellow/Red counts, unresolved mistake count, Deep Dive count, and secondary CTAs to `/mistakes` and `/deep-dive`. Today’s Revision remains the only primary CTA (`/`). If progress fails, revision session/due UI still works and progress panel shows an error without fabricating zero Phase 4 counts. Verified 2026-10-29: `npx ng test --watch=false --browsers=ChromeHeadless` **100/100**; `npx ng build` OK. Unrelated dirty Postman/spec/docs working-tree files preserved.
 - **Step 11 → Step 12 handoff:** Local E2E + Phase 3 regression (unit/integration suites, Postman, manual revise→complete→status/mistake/deep dive→dashboard).
 - **Known env caveat:** `test:revision-db` still fails the `inet_server_addr()` assertion on native Windows Postgres (`127.0.0.1/32` vs exact `127.0.0.1` / `172.*`); assertion not weakened.
+- **Step 12 complete (2026-11-12):**
+  - **Owner-confirmed manual verification (`localhost:3000`, Postman Desktop, Neon SQL):** verified all four G5/`phase4-status-v1` outcomes (`RESET` on Arrow Functions → `RED`; `REINFORCE_AT_1` on async / await → `RED`; `REINFORCE` on Arrays and Array Methods → `YELLOW`; `ADVANCE` on Call Stack → `GREEN`, interval 1→3, `nextRevisionDate` 15 Nov 2026 `Asia/Kolkata`), 3 automatic `Mistake` rows with `sourceSessionLogId` provenance, 2 automatic `DeepDiveNote` rows on `RED` outcomes (no duplicates, `notes` null), duplicate `POST /api/revision/complete` idempotency on Call Stack (`200 OK` twice; `completedAt` and interval unchanged), Phase 3 `/api/health` + `GET /api/topics` regression, Phase 4 auth checks (missing/invalid/valid bearer), Mistake Log UI (create, edit, manual `turnedIntoQuestion`, resolve/unresolve), Deep Dive UI (reason edit, owner notes, clear notes, remove from queue), Dashboard (counts, status indicators, navigation), and the complete local revision-to-dashboard flow.
+  - **Repository-verified automated checks (2026-11-12):** `prisma validate` OK; `prisma migrate status` confirmed Neon `neondb` schema is up to date (5 migrations found, including `20261024163000_phase4_mistake_provenance`); `test:status` 10/10; `test:scheduling` 30/30; `test:prisma-guards` 1/1; handler/unit suites (`test:revision-today` 5/5, `test:revision-write` 23/23, `test:mistakes` 11/11, `test:deep-dive` 10/10, `test:progress` 5/5; `DATABASE_URL_TEST` unset for DB integration suites); `ng test` 100/100; `ng build` OK.
+  - **Next:** Step 13 — Production smoke testing on Vercel + Neon.

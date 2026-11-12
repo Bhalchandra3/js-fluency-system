@@ -11,7 +11,7 @@
 npm-debug.log
 yarn-error.log
 
-#env 
+# Environment variables
 .env
 .env.local
 .env.*
@@ -51,7 +51,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 .vercel
-.env*
 
 # Generated Postman Desktop import artifacts
 /postman/exports/

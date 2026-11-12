@@ -109,6 +109,25 @@ prisma/
 
 **Use JSON seed data + `prisma/seed.ts` loader.**
 
+### Locked JSON contract (source of truth)
+
+The explicit Phase 2 question-bank JSON contract is documented in:
+
+```text
+prisma/seed-data/QUESTION_BANK_FORMAT.md
+```
+
+Key locked rules:
+
+- Root shape: top-level JSON array (not wrapped in an object).
+- Topic reference: `topicSlug` matching a slug from `prisma/seed-data/topics.json`.
+- No JSON `id` / `topicId` / `seedId` / `difficulty` / `hints`.
+- Content fields: `sessionType`, `format`, `prompt`, optional `options`, `correctAnswer`, `explanation`, `codeSnippet`.
+- `MULTIPLE_CHOICE.options`: array of choice strings.
+- `MULTIPLE_CHOICE.correctAnswer`: zero-based option index encoded as a string.
+- Coverage: minimum 5 questions per topic (minimum 260 questions for 52 topics).
+- No Prisma schema changes are required for this contract.
+
 ---
 
 ## Step 3 — Build the Topic Roadmap Seed Data

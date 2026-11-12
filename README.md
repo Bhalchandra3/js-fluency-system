@@ -14,6 +14,8 @@ Personal JavaScript revision and practice app (Angular + Vercel serverless API +
 | [`LOCAL_README.md`](./LOCAL_README.md) | Local development runbook (includes Postman Desktop notes) |
 | [`postman/collections/Backend/`](./postman/collections/Backend/) | Git-native Postman collection for local API QA |
 | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) | Locked question-bank JSON contract |
+| [`docs/architecture/VERCEL_API_ROUTING_AND_BACKEND_REQUEST_FLOW.md`](./docs/architecture/VERCEL_API_ROUTING_AND_BACKEND_REQUEST_FLOW.md) | Vercel API routing and backend request flow |
+| [`docs/architecture/Js_revision_system_mermaid-diagram.svg`](./docs/architecture/Js_revision_system_mermaid-diagram.svg) | Revision system architecture diagram |
 
 Archived pre-consolidation sources: [`docs/archive/`](./docs/archive/).
 

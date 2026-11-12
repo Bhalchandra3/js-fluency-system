@@ -1,7 +1,7 @@
 # JavaScript Fluency System — Phase 4 Development Order
 
 > Canonical detailed plan for **Phase 4 — Progress + Mistakes**.
-> Status: **Step 1 architecture lock complete (2026-10-23)** — Step 2 (status helpers) is next. Feature implementation beyond pure helpers has **not** started.
+> Status: **Steps 0–12 complete (2026-11-12); Step 13 (Production smoke testing) is next** — local E2E verification, automated checks, UI flows, auth matrix, and Phase 3 regression checks are complete; Step 13 (production smoke) and Step 14 (documentation closeout) remain.
 > Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
 > Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
@@ -290,7 +290,7 @@ Phase 4 **must not** silently change:
 
 ## 4. Approved confidence → status algorithm v1 (`phase4-status-v1`)
 
-> **Approval:** Policy scope approved at Step 0 (2026-10-23). Implementation details were locked in Step 1 (complete 2026-10-23). It is **not** implemented.
+> **Approval & status:** Policy scope approved at Step 0 (2026-10-23), architecture locked in Step 1 (2026-10-23), and **implemented** in Steps 2 and 4 (`api/_lib/status/phase4StatusV1.ts`, `api/_lib/revision/completeService.ts`).
 
 ### 4.1 Design principles
 
@@ -396,7 +396,7 @@ Yellow → “add practice” (spec §5.4) is **acknowledged** but full PRACTICE
 
 ## 5. Mistake Log and mistake → question behavior
 
-> **Approval:** Scope approved at Step 0 (2026-10-23). Implementation details were locked in Step 1 (complete 2026-10-23). **Not** implemented.
+> **Approval & status:** Scope approved at Step 0 (2026-10-23), architecture locked in Step 1 (2026-10-23), and **implemented** in Steps 3–5 (schema + APIs) and Step 9 (UI).
 
 ### 5.1 What qualifies as a mistake (Phase 4)
 
@@ -419,7 +419,7 @@ Rationale: matches “mistaken understanding” (spec §5.8) and aligns Red-driv
 
 **Minimum using existing model:** `topicId`, `mistakeText`, `correctUnderstanding`, `turnedIntoQuestion` (default `false`), `createdAt`.
 
-**Schema extensions (Step 1 locked; migrate in Step 3 — not applied yet):** see §2.5.2 (`questionId`, `sessionId`, `sourceSessionLogId` unique nullable, `resolvedAt`; SetNull FKs).
+**Schema extensions (Step 1 locked; migrated in Step 3 via `20261024163000_phase4_mistake_provenance`, verified up to date on Neon):** see §2.5.2 (`questionId`, `sessionId`, `sourceSessionLogId` unique nullable, `resolvedAt`; SetNull FKs).
 
 Until migration is applied, implementation must not invent silent columns.
 
@@ -679,7 +679,7 @@ Until migration is applied, implementation must not invent silent columns.
 
 ---
 
-### Step 12 — Local end-to-end verification
+### Step 12 — Local end-to-end verification — ✅ Complete (2026-11-12)
 
 | | |
 |---|---|
@@ -689,6 +689,8 @@ Until migration is applied, implementation must not invent silent columns.
 | **Acceptance** | Suites green; owner-confirmed manual smoke; health/topics/revision regression. |
 | **Tests** | All Phase 3 + Phase 4 commands agreed in working record. |
 | **Evidence** | Matrix or owner confirmation recorded (prefer written matrix this phase). |
+
+**Step 12 result — complete 2026-11-12.** Automated checks (`prisma validate`, `prisma migrate status` up to date on Neon, `test:status` 10/10, `test:scheduling` 30/30, `test:prisma-guards` 1/1, handler/unit suites, `ng test` 100/100, `ng build` OK) and owner-confirmed full local E2E verification (Phase 3 `/api/health` + `GET /api/topics` regression, Phase 4 auth checks, all four G5/`phase4-status-v1` outcomes, auto Mistake/DeepDive creation, duplicate-complete idempotency, Mistake Log UI, Deep Dive UI, Dashboard, and full local revision-to-dashboard flow) are recorded in `CURRENT_STEP.md`. Step 13 (production smoke testing) is next.
 
 ---
 
@@ -786,14 +788,14 @@ Do not “fix” regressions by loosening G5 assertions.
 ## 11. Phase 4 exit criteria
 
 - [x] Step 0 approval recorded; §4 and §5 policies approved (or amended with version bump).
-- [ ] `phase4-status-v1` implemented, tested, and applied only on finalize-once complete.
-- [ ] G5 scheduling behavior unchanged (`phase3-g5-v1`).
-- [ ] Mistake Log usable (auto + manual + resolve); no automatic Question bank inserts.
-- [ ] Deep Dive Queue usable with notes; Red ensure behavior verified.
-- [ ] Dashboard shows status / Deep Dive / mistake progress signals.
-- [ ] G3/G8 honored; G6 not violated without documented exception.
-- [ ] Local verification + production smoke recorded.
-- [ ] Tracker history + Phase 5 handoff complete; `CURRENT_STEP.md` cleared per §6.3.
+- [x] `phase4-status-v1` implemented, tested, and applied only on finalize-once complete.
+- [x] G5 scheduling behavior unchanged (`phase3-g5-v1`).
+- [x] Mistake Log usable (auto + manual + resolve); no automatic Question bank inserts.
+- [x] Deep Dive Queue usable with notes; Red ensure behavior verified.
+- [x] Dashboard shows status / Deep Dive / mistake progress signals.
+- [x] G3/G8 honored; G6 not violated without documented exception.
+- [ ] Local verification + production smoke recorded *(Step 12 local E2E complete 2026-11-12; Step 13 production smoke pending)*.
+- [ ] Tracker history + Phase 5 handoff complete; `CURRENT_STEP.md` cleared per §6.3 *(Step 14 pending)*.
 
 ---
 
@@ -839,12 +841,16 @@ Do not “fix” regressions by loosening G5 assertions.
 
 | Field | Value |
 |---|---|
-| **Document status** | Step 1 architecture lock complete; Step 2 next |
-| **Phase 4 complete?** | **No** |
-| **Feature implementation started?** | **No** (Step 2 may begin pure status helpers only) |
+| **Document status** | Steps 0–12 complete; **Step 13 (Production smoke testing) is next** |
+| **Phase 4 complete?** | **No** (Steps 12–14 remaining) |
+| **Feature implementation started?** | **Yes — Steps 0–11 complete** (verification, smoke, and closeout Steps 12–14 remain) |
 | **Step 0** | ✅ Approved 2026-10-23 (scope, §4 status policy, §§5–7 mistake/Deep Dive scope, §9.1 workflow) |
 | **Step 1** | ✅ Complete 2026-10-23 — decisions in §2.5 |
-| **Next action** | Step 2 — status policy helpers (`api/_lib/status/`) + unit tests |
+| **Steps 2–11** | ✅ Complete — Backend APIs (2026-10-24) and Angular FE/UI/Dashboard (2026-10-29) |
+| **Step 12** | ✅ Complete 2026-11-12 — automated checks + owner-confirmed full local E2E, UI, auth matrix, idempotency, and Phase 3 regression (see `CURRENT_STEP.md`) |
+| **Step 13** | 🟡 Next — Production smoke testing on Vercel + Neon |
+| **Step 14** | ⬜ Pending — Documentation closeout |
+| **Next action** | Execute Step 13 — Production smoke testing on Vercel + Neon (see `CURRENT_STEP.md`) |
 | **Blocking product gates** | None |
 
 **Canonical plan:** `JavaScript_Fluency_System_Phase_4_Development_Order.md`
