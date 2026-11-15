@@ -33,7 +33,7 @@ Elevate the deployed system to enterprise-grade engineering reliability, data du
 | **Step 4** | Authentication UX & Shell Controls (`token-setup.page.ts`, header disconnect) | ✅ Complete (2026-11-13) |
 | **Step 5** | Tab Visibility Re-validation & Freshness (`dashboard.page.ts`, visibility listener) | ✅ Complete (2026-11-13) |
 | **Step 6** | Database Snapshot Tooling & Disaster Recovery Runbook (`scripts/backup-db.ts`) | ✅ Complete (2026-11-13) |
-| **Step 7** | Full Cross-Device E2E Verification & Phase 5 Documentation Closeout | 🔄 In Progress |
+| **Step 7** | Full Cross-Device E2E Verification & Phase 5 Documentation Closeout | ✅ Complete (2026-11-15) |
 
 ---
 
@@ -76,6 +76,27 @@ Elevate the deployed system to enterprise-grade engineering reliability, data du
 - Create `docs/operations/DISASTER_RECOVERY.md`.
 - Verification: Run backup command and verify generated JSON archive.
 
-### Step 7: Full Cross-Device E2E Verification & Phase 5 Closeout
-- Execute cross-device laptop ↔ mobile test matrix.
-- Update `PROJECT_TRACKER.md` and documentation.
+### Step 7: Full Cross-Device E2E Verification & Phase 5 Closeout (Complete 2026-11-15)
+- Cross-device laptop ↔ mobile test matrix executed and verified in production (`https://js-fluency-system.vercel.app`):
+  - Answered Question 1 on mobile device.
+  - Refreshed browser on laptop: confirmed Question 1 rendered answered with explanation and Question 2 was auto-selected.
+  - Progress header displayed `1 / 2 answered` and tab bar indicated answered status.
+  - Disconnect button in header verified: clears token and redirects to `/setup`.
+- Automated test suites passing: 6/6 `test:revision-today`, 10/10 `test:status`, 30/30 `test:scheduling`, 11/11 `test:mistakes`, 10/10 `test:deep-dive`, 5/5 `test:progress`, `ng build` clean.
+- Updated `PROJECT_TRACKER.md` and cleared `CURRENT_STEP.md` per §6.3.
+
+---
+
+## 4. Phase 5 Exit Criteria Checklist
+
+- [x] Database isolation: Dev database on Neon branch decoupled from production `main`.
+- [x] Environment files consolidated: `.env.local` deleted, `.env.example` provides explicit templates.
+- [x] Serverless connection bounding: `pg.Pool` restricted to `max: 1` per container, cached on `globalThis`.
+- [x] Security hardening: Constant-time token comparison implemented via `crypto.timingSafeEqual`.
+- [x] Cross-device resumption API: `TodaySessionDto` serves `answers` map with question feedback and user answers.
+- [x] Cross-device resumption UI: `RevisionTodayPage` hydrates answered states and auto-focuses on the first unanswered question.
+- [x] Auth UX improvements: Token verified before save on `/setup`; header disconnect action provided.
+- [x] Data freshness: Visibility change listeners refresh backgrounded tabs (>60s) on Dashboard and Revision pages.
+- [x] Disaster recovery: Zero-dependency local JSON backup script (`npm run db:backup`) and runbook created.
+- [x] Production verification: Cross-device session continuity verified on production Vercel deployment.
+

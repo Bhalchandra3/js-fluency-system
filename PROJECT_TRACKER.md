@@ -12,16 +12,18 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 5 — Persistent Cloud Data & Cross-Device Quality** (In Progress) |
+| **Current phase** | **Phase 5 complete** (2026-11-15); **Phase 6 — Mobile Optimization** ready |
 | **Active step** | None (`CURRENT_STEP.md` cleared per §6.3) |
-| **Completed through** | Phase 1–4 complete; Phase 5 Steps 0–6 complete (2026-11-13) |
-| **Next action** | Execute Phase 5 Step 1 tasks |
-| **Backend on master** | `e4ef947` — `feat: complete Phase 4 backend APIs` (pushed to `origin/master` 2026-10-24) |
+| **Completed through** | Phase 1–5 complete (2026-11-15) |
+| **Next action** | Plan and begin Phase 6 — Mobile Optimization (when authorized) |
+| **Backend on master** | `fe03fa3` — `feat: complete Phase 5 persistent cloud data and cross-device resumption` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **Yes** — all governing Phase 4 exit criteria verified (2026-11-12) |
+| **Phase 5 complete?** | **Yes** — all governing Phase 5 exit criteria verified (2026-11-15) |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Phase 4 baseline (completed)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
+| **Phase 5 baseline (completed)** | [`JavaScript_Fluency_System_Phase_5_Development_Order.md`](./JavaScript_Fluency_System_Phase_5_Development_Order.md) |
 
 ---
 
@@ -33,7 +35,7 @@
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
-| **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | 🔄 In Progress |
+| **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | ✅ Complete (2026-11-15) |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
 
@@ -524,15 +526,62 @@ Aligned with Phase 4 Development Order §11 exit criteria:
 - Native Windows `test:revision-db` (`inet_server_addr()` `127.0.0.1/32`) caveat and `DATABASE_URL_TEST` requirement for local DB integration suites remain unchanged.
 - `DailyProgress` model remains unused per G6.
 
-### 8.8 Phase 5 handoff
+### 8.8 Phase 5 handoff (historical)
 
-Phase 4 is complete (2026-11-12). **Phase 5 — Persistent Cloud Data** is not started and is ready to begin when authorized.
+Phase 4 completed (2026-11-12). Phase 5 executed and completed (2026-11-15) as recorded below.
+
+---
+
+## 9. Phase 5 — Persistent Cloud Data & Cross-Device Engineering Quality (Complete 2026-11-15)
+
+### 9.1 Objective & Summary
+
+Elevate the deployed system to enterprise-grade engineering reliability, data durability, and seamless cross-device continuity across laptop and mobile without introducing recurring costs or unnecessary architectural complexity:
+- **Resumption API & Hydration:** In-progress revision sessions resume identically across devices or tab refreshes without losing answered feedback, explanations, or selections.
+- **Database Isolation:** Decoupled local development from production Neon databases via dedicated `dev` branch.
+- **Serverless Connection Hardening:** Capped node-postgres connections (`max: 1` per container, 30s idle timeout) cached on `globalThis`.
+- **Security & UX Hardening:** Timing-safe token auth (`crypto.timingSafeEqual`), pre-flight token validation on `/setup`, and header session disconnect.
+- **Data Freshness:** Visibility change detection on Dashboard and Revision pages (>60s tab inactive triggers refresh) and manual refresh action.
+- **Disaster Recovery:** Zero-dependency local JSON database backup script (`scripts/backup-db.ts`) and recovery runbook (`docs/operations/DISASTER_RECOVERY.md`).
+
+Canonical plan source: [`JavaScript_Fluency_System_Phase_5_Development_Order.md`](./JavaScript_Fluency_System_Phase_5_Development_Order.md)
+
+### 9.2 Execution Order and Verified Delivery
+
+| # | Step | Scope | Verified Evidence |
+|---|---|---|---|
+| **0** | Database Isolation & Env Consolidation | Deleted `.env.local`, updated `.env.example`, verified Neon `dev` branch | `prisma migrate status` (5 migrations up to date on `dev`), `/api/health` OK on local & prod |
+| **1** | Serverless Connection & Security Hardening | `pg.Pool` (`max: 1`), `globalThis` cache, timing-safe auth, sanitized `/api/health` | `test:scheduling` 30/30, `test:status` 10/10, sanitized catch block verified |
+| **2** | Revision Session Resumption API & DTO | Extended `sessionInclude.logs`, `TodaySessionDto.answers` map | `api/revision/today.handler.test.ts` (6/6 passing) |
+| **3** | Frontend Resumption State Hydration | `applyTodayResponse()` hydrates `feedbackByQuestion` + `drafts`, auto-focuses first unanswered question | `revision-today.page.spec.ts` test passing; `ng build` clean |
+| **4** | Auth UX & Navigation Controls | Pre-flight token validation on `/setup`, auto-redirect to `/dashboard`, header Disconnect button | `token-setup.page.spec.ts`, `app.spec.ts` passing |
+| **5** | Tab Visibility & Freshness | Document `visibilitychange` listener (>60s inactivity) on Dashboard & Revision pages, Dashboard Refresh button | Component tests passing; tab switch verified |
+| **6** | Database Snapshot & Disaster Recovery | `scripts/backup-db.ts`, `npm run db:backup`, `DISASTER_RECOVERY.md` | Successfully exported 52 topics, 260 questions, 7 sessions, 12 logs, 5 mistakes, 2 notes to JSON |
+| **7** | Full Cross-Device E2E & Production Verification | Live multi-device session continuity on `https://js-fluency-system.vercel.app` | Owner verified: Question 1 answered on mobile, refreshed laptop, Question 1 showed answered with explanation, Question 2 active |
+
+### 9.3 Phase 5 Completion Checklist & Exit Criteria
+
+- [x] Database isolation verified with dedicated Neon dev branch.
+- [x] Environment files consolidated into single `.env` with `.env.example` guidance.
+- [x] Connection pooling restricted to `max: 1` per serverless container to prevent Neon connection limits.
+- [x] Constant-time auth comparison verified (`crypto.timingSafeEqual`).
+- [x] Revision session resumption API and DTO hydration verified across devices.
+- [x] Token validation and header disconnect controls operational.
+- [x] Tab visibility change freshness verified for backgrounded tabs.
+- [x] Zero-dependency database backup tool verified (`npm run db:backup`).
+- [x] Production smoke and cross-device resumption verified on Vercel + Neon.
+- [x] Git committed and pushed to `master` (`fe03fa3`).
+
+### 9.4 Phase 6 Handoff
+
+Phase 5 is complete (2026-11-15). **Phase 6 — Mobile Optimization** is ready to begin when authorized.
 
 | Handoff item | Detail |
 |---|---|
-| **Next phase** | Phase 5 — Persistent Cloud Data |
-| **Intended scope** | Full laptop ↔ mobile sync verification across Phases 1–4 features |
-| **Prerequisites** | Phase 4 schema/migrations (`20261024163000_phase4_mistake_provenance`), APIs, and Angular UI deployed on Vercel + Neon — **verified in production (2026-11-12)** |
-| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§5.11, 11; [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §2 |
-| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared per §6.3; ready for Phase 5 initialization) |
-| **Recommended starting action** | Initialize `CURRENT_STEP.md` for Phase 5 when authorized by the owner, plan ordered steps, and begin laptop ↔ mobile sync verification. |
+| **Next phase** | **Phase 6 — Mobile Optimization** |
+| **Intended scope** | Touch target ergonomics (minimum 44×44px hit areas), mobile commute layouts (360px+ zero horizontal page scroll, responsive code snippets), theme system (Dark/Light mode via `prefers-color-scheme` + header toggle) |
+| **Prerequisites** | Phase 5 cross-device resumption, cloud data persistence, and serverless hardening deployed on production (`fe03fa3`) — **verified in production (2026-11-15)** |
+| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§5.10, 12.5; [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §2 |
+| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared per §6.3; ready for Phase 6 initialization) |
+| **Recommended starting action** | Review Phase 6 plan, present for owner approval, initialize `CURRENT_STEP.md`, and execute Step 1 (Touch Target & Layout Audit). |
+
