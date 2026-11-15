@@ -14,9 +14,9 @@
 |---|---|
 | **Current phase** | **None** — Phases 1–7 complete (`CURRENT_STEP.md` cleared) |
 | **Active step** | None |
-| **Completed through** | Phase 7 complete (2026-11-15) — C1 MCQ revision + `phase7-pattern-gate-v1` escalate |
-| **Next action** | No planned phase in the product roadmap; optional offline MCQ bank batches as needed |
-| **Backend on master** | `67480b9` — `feat: complete Phase 7 MCQ-only revision and pattern-gate escalate` (pushed to `origin/master` 2026-11-15) |
+| **Completed through** | Phase 7 complete; post-closeout **8 REVISION MCQ/topic** bank (~571 questions) on Neon **dev** + **production**; Vercel Production wired to Neon `production` (2026-11-15) |
+| **Next action** | Owner logged-in production QA + daily use (no planned Phase 8) |
+| **Backend on master** | `9150ac8` — `feat: expand REVISION MCQ bank to 8 per topic with batch tooling` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **Yes** — all governing Phase 4 exit criteria verified (2026-11-12) |
@@ -693,8 +693,8 @@ Canonical detail: Development Order **§2.5**. C1 new freezes = `REVISION` + `MU
 
 | Limitation | Notes |
 |---|---|
-| Thin REVISION MCQ coverage | Many topics still have &lt;3 REVISION MCQs → thin-MCQ escalations expected until offline batches expand the bank |
-| Authenticated production progress UI | Step 7 verified health + bundle + unauthenticated progress `401`; full logged-in Dashboard escalate smoke left to owner |
+| Thin REVISION MCQ coverage | **Resolved for now (2026-11-15):** every topic has **8** REVISION MCQs on Neon **dev** and **production**; thin-MCQ escalate should stay quiet unless coverage drops again |
+| Authenticated production progress UI | Step 7 verified health + bundle + unauthenticated progress `401`; full logged-in Dashboard escalate smoke left to owner (fresh start makes this the next owner check) |
 | PRACTICE SHORT_ANSWER residual | 2 PRACTICE items remain; out of Today’s Revision by design |
 
 ### 11.8 Post-Phase 7 handoff
@@ -704,8 +704,21 @@ No further phase is defined in [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICAT
 | Handoff item | Detail |
 |---|---|
 | **Next phase** | None planned |
-| **Recommended next action** | Daily use; expand REVISION MCQ bank offline for thin topics when escalate signals fire |
-| **Do not** | Add hosted LLM keys/APIs without a new owner-approved phase; weaken C1 MCQ-only freezes; change G5 finalize-once |
+| **Recommended next action** | Owner logged-in production QA + daily spaced-repetition use |
+| **Do not** | Add hosted LLM keys/APIs without a new owner-approved phase; weaken C1 MCQ-only freezes; change G5 finalize-once; point Vercel Production and local `.env` at the same Neon branch |
 | **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) cleared — initialize only when a new phase starts (§6.1) |
+
+### 11.9 Post-closeout ops note (2026-11-15)
+
+Recorded after Phase 7 closeout; not a new product phase.
+
+| Item | Detail |
+|---|---|
+| **Bank** | **8** `REVISION` + `MULTIPLE_CHOICE` per topic (**416** REVISION MCQ); total questions **~571** (PRACTICE mix unchanged). Batch: [`prisma/seed-data/batches/rev-mcq-to-8.json`](./prisma/seed-data/batches/rev-mcq-to-8.json); tools: `scripts/build-rev-mcq-to-8.mjs`, `scripts/merge-question-batch.mjs` |
+| **Commit** | `9150ac8` — `feat: expand REVISION MCQ bank to 8 per topic with batch tooling` |
+| **Neon branches** | `dev` host `ep-snowy-lab-b5hczc9e-pooler.c-7.us-east-2.aws.neon.tech`; `production` host `ep-plain-art-b5b20rvd-pooler.c-7.us-east-2.aws.neon.tech` (passwords never recorded here) |
+| **Env wiring** | Local `.env` → Neon **dev**; Vercel **Production** → Neon **production**; Vercel Preview/Development → Neon **dev** |
+| **Fresh start** | Learning activity + questions wiped and re-seeded on **both** Neon branches via `scripts/fresh-start-learning-data.ts` + `prisma db seed` (owner-authorized) |
+| **Hygiene** | `.gitignore` ignores `.neon` and `docs/archive/project-structure-clean.txt` |
 
 

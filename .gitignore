@@ -20,6 +20,10 @@ yarn-error.log
 # Local agent/ops artifacts (backups, scratch) — not source
 /.local/
 /backups/
+.neon
+
+# One-off local dumps (not project source)
+/docs/archive/project-structure-clean.txt
 
 # IDEs and editors
 .cursor/

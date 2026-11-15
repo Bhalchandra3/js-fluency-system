@@ -198,6 +198,12 @@ Do **not** add unnecessary code snippets to purely conceptual questions.
 - Use a practical mixture of `REVISION` and `PRACTICE`.
 - Do not produce a bank that is accidentally 100% one `SessionType`.
 
+### Current operational bank (post–Phase 7)
+
+- Live seed target: **8** `REVISION` + `MULTIPLE_CHOICE` per topic (**416** REVISION MCQ; total questions **~571** with PRACTICE mix).
+- Further expansions use offline JSON under `prisma/seed-data/batches/` → merge → owner-authorized Neon seed.
+- Contract minimum above (5 / 260) remains the floor; do not ship below it.
+
 ---
 
 ## 9. Content quality
