@@ -16,10 +16,16 @@
   {
     "topicSlug": "variables",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What is the temporal dead zone (TDZ) for a let or const binding?",
-    "correctAnswer": "The period from entering the scope until the declaration is initialized, during which accessing the binding throws a ReferenceError",
-    "explanation": "let and const are hoisted in the sense that the binding exists for the whole scope, but they stay uninitialized until the declaration line runs. Reading or writing them in that gap throws ReferenceError—that gap is the TDZ."
+    "correctAnswer": "0",
+    "explanation": "let and const are hoisted in the sense that the binding exists for the whole scope, but they stay uninitialized until the declaration line runs. Reading or writing them in that gap throws ReferenceError—that gap is the TDZ.",
+    "options": [
+      "The period from entering the scope until the declaration is initialized, during which accessing the binding throws a ReferenceError",
+      "The time after the script ends when unused variables are deleted",
+      "Only the moment before the whole program starts, when no bindings exist yet",
+      "A browser-only pause while the garbage collector runs"
+    ]
   },
   {
     "topicSlug": "variables",
@@ -65,10 +71,16 @@
   {
     "topicSlug": "data-types",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Name the seven primitive types in modern JavaScript.",
-    "correctAnswer": "string, number, bigint, boolean, undefined, symbol, null",
-    "explanation": "Everything else is an object (including arrays, functions, dates, and plain objects). Primitives are immutable values; objects are reference types."
+    "correctAnswer": "0",
+    "explanation": "Everything else is an object (including arrays, functions, dates, and plain objects). Primitives are immutable values; objects are reference types.",
+    "options": [
+      "string, number, bigint, boolean, undefined, symbol, null",
+      "string, number, boolean, object, function, undefined, null",
+      "string, number, boolean, array, object, undefined, null",
+      "string, int, float, boolean, undefined, symbol, null"
+    ]
   },
   {
     "topicSlug": "data-types",
@@ -119,10 +131,16 @@
   {
     "topicSlug": "operators",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In modern JavaScript, what is the result type/value of 5 / 2 (using the / operator on numbers)?",
-    "correctAnswer": "2.5 (a floating-point number)",
-    "explanation": "Unlike integer-only division in some languages, JavaScript number division yields an IEEE-754 floating-point result, so 5 / 2 is 2.5."
+    "correctAnswer": "0",
+    "explanation": "Unlike integer-only division in some languages, JavaScript number division yields an IEEE-754 floating-point result, so 5 / 2 is 2.5.",
+    "options": [
+      "2.5 (a floating-point number)",
+      "2 (integer division truncates)",
+      "2 with a remainder of 1 as a separate value",
+      "NaN because mixed integer/float division is invalid"
+    ]
   },
   {
     "topicSlug": "operators",
@@ -168,10 +186,16 @@
   {
     "topicSlug": "type-coercion",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What string does String(null) produce?",
-    "correctAnswer": "\"null\"",
-    "explanation": "Explicit String(null) yields the characters n-u-l-l. This differs from template/coercion surprises elsewhere; null is not converted to an empty string by String()."
+    "correctAnswer": "0",
+    "explanation": "Explicit String(null) yields the characters n-u-l-l. This differs from template/coercion surprises elsewhere; null is not converted to an empty string by String().",
+    "options": [
+      "\"null\"",
+      "\"\" (empty string)",
+      "\"undefined\"",
+      "\"Null\""
+    ]
   },
   {
     "topicSlug": "type-coercion",
@@ -217,10 +241,16 @@
   {
     "topicSlug": "equality",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Which built-in method returns true when comparing NaN to NaN, unlike === ?",
-    "correctAnswer": "Object.is (Object.is(NaN, NaN))",
-    "explanation": "Object.is uses SameValue comparison: Object.is(NaN, NaN) is true, and Object.is(+0, -0) is false—two cases where === differs."
+    "correctAnswer": "0",
+    "explanation": "Object.is uses SameValue comparison: Object.is(NaN, NaN) is true, and Object.is(+0, -0) is false—two cases where === differs.",
+    "options": [
+      "Object.is (Object.is(NaN, NaN))",
+      "Number.isNaN alone comparing two values with ===",
+      "Array.prototype.includes cannot help with NaN",
+      "parseFloat(NaN) === parseFloat(NaN)"
+    ]
   },
   {
     "topicSlug": "equality",
@@ -266,10 +296,16 @@
   {
     "topicSlug": "conditionals",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What does the expression condition ? a : b evaluate to when condition is falsy?",
-    "correctAnswer": "b (the expression after the colon)",
-    "explanation": "The ternary operator evaluates and returns the second branch when the condition is falsy, without evaluating the first branch's value for the result (the unused branch is not evaluated)."
+    "correctAnswer": "0",
+    "explanation": "The ternary operator evaluates and returns the second branch when the condition is falsy, without evaluating the first branch's value for the result (the unused branch is not evaluated).",
+    "options": [
+      "b (the expression after the colon)",
+      "a (the expression after the question mark)",
+      "condition itself",
+      "undefined always"
+    ]
   },
   {
     "topicSlug": "conditionals",
@@ -315,10 +351,16 @@
   {
     "topicSlug": "loops",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Inside a for loop body, what does the continue statement do?",
-    "correctAnswer": "Skips the rest of the current iteration and proceeds to the next iteration (after running the loop's update expression in a classic for)",
-    "explanation": "continue does not exit the loop; it jumps to the next iteration. In a for(;;) loop, the update clause still runs before the next condition check."
+    "correctAnswer": "0",
+    "explanation": "continue does not exit the loop; it jumps to the next iteration. In a for(;;) loop, the update clause still runs before the next condition check.",
+    "options": [
+      "Skips the rest of the current iteration and proceeds to the next iteration (after running the loop update in a classic for)",
+      "Exits the entire loop immediately, like break",
+      "Restarts the program from the first statement",
+      "Pauses the loop until a Promise resolves"
+    ]
   },
   {
     "topicSlug": "loops",
@@ -364,10 +406,16 @@
   {
     "topicSlug": "functions",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In a concise arrow function with an expression body, what do you write to return an object literal without wrapping it in a block?",
-    "correctAnswer": "Wrap the object in parentheses, e.g. () => ({ a: 1 })",
-    "explanation": "Without parentheses, { is parsed as a block body, not an object literal. ({ ... }) forces an expression that evaluates to an object."
+    "correctAnswer": "0",
+    "explanation": "Without parentheses, { is parsed as a block body, not an object literal. ({ ... }) forces an expression that evaluates to an object.",
+    "options": [
+      "Wrap the object in parentheses, e.g. () => ({ a: 1 })",
+      "Use return without parentheses: () => return { a: 1 }",
+      "Use a bare block: () => { a: 1 }",
+      "Use new Object inside the arrow without parentheses"
+    ]
   },
   {
     "topicSlug": "functions",
@@ -413,10 +461,16 @@
   {
     "topicSlug": "scope",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What is lexical scope?",
-    "correctAnswer": "The rule that a function resolves free variables from the scope where it was defined (written), not where it is called",
-    "explanation": "Closures capture the lexical environment of their definition site. Call-site location does not change which outer bindings an inner function sees."
+    "correctAnswer": "0",
+    "explanation": "Closures capture the lexical environment of their definition site. Call-site location does not change which outer bindings an inner function sees.",
+    "options": [
+      "A function resolves free variables from the scope where it was defined, not where it is called",
+      "A function resolves free variables from the call site only",
+      "All variables are global unless marked private",
+      "Scope is determined solely by the this binding at runtime"
+    ]
   },
   {
     "topicSlug": "scope",
@@ -462,10 +516,16 @@
   {
     "topicSlug": "hoisting",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Can you call a function created as `const f = function() {}` before that line in the same scope? Why or why not?",
-    "correctAnswer": "No — the const binding is in the TDZ until initialized, so calling f early throws ReferenceError",
-    "explanation": "Unlike a function declaration, a function expression assigned to const/let is not available before initialization. The name exists but is uninitialized until the assignment runs."
+    "correctAnswer": "0",
+    "explanation": "Unlike a function declaration, a function expression assigned to const/let is not available before initialization. The name exists but is uninitialized until the assignment runs.",
+    "options": [
+      "No — the const binding is in the TDZ until initialized, so calling f early throws ReferenceError",
+      "Yes — function expressions assigned to const are fully hoisted like declarations",
+      "Yes — only if the file uses \"use strict\"",
+      "No — it returns undefined silently without throwing"
+    ]
   },
   {
     "topicSlug": "hoisting",
@@ -529,10 +589,16 @@
   {
     "topicSlug": "arrays",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In JavaScript, are sparse array holes the same as elements whose value is undefined? Answer yes or no, then briefly explain.",
-    "correctAnswer": "No — holes are missing indexes; undefined is a real stored value at that index.",
-    "explanation": "A hole means the index is not present (hasOwnProperty is false). An explicit undefined is an own property with value undefined. Methods like map skip holes differently than undefined entries."
+    "correctAnswer": "0",
+    "explanation": "A hole means the index is not present (hasOwnProperty is false). An explicit undefined is an own property with value undefined. Methods like map skip holes differently than undefined entries.",
+    "options": [
+      "No — holes are missing indexes; undefined is a real stored value at that index",
+      "Yes — holes and undefined entries are identical in every way",
+      "Yes — both always make hasOwnProperty return true",
+      "No — holes store null while undefined stores undefined"
+    ]
   },
   {
     "topicSlug": "arrays",
@@ -578,10 +644,16 @@
   {
     "topicSlug": "objects",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What is the difference between obj.key and obj[\"key\"] when accessing a property named key?",
-    "correctAnswer": "They access the same property when the name is a valid identifier; bracket notation is required for dynamic or non-identifier names.",
-    "explanation": "Dot notation only works with fixed identifier-like names. Bracket notation accepts any expression (variables, strings with spaces/hyphens), but for the literal name \"key\" both forms read the same property."
+    "correctAnswer": "0",
+    "explanation": "Dot notation only works with fixed identifier-like names. Bracket notation accepts any expression (variables, strings with spaces/hyphens), but for the literal name \"key\" both forms read the same property.",
+    "options": [
+      "For a fixed identifier name like key they read the same property; brackets are required for dynamic or non-identifier names",
+      "Dot notation always boxes the key as a Symbol",
+      "Bracket notation can only access inherited properties",
+      "obj.key reads a different property than obj[\"key\"] for the name key"
+    ]
   },
   {
     "topicSlug": "objects",
@@ -627,10 +699,16 @@
   {
     "topicSlug": "strings",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What does \"abc\".includes(\"\") return, and why?",
-    "correctAnswer": "true — every string is considered to include the empty substring.",
-    "explanation": "By specification, the empty string is a substring of every string, so includes(\"\") is true (including for \"\")."
+    "correctAnswer": "0",
+    "explanation": "By specification, the empty string is a substring of every string, so includes(\"\") is true (including for \"\").",
+    "options": [
+      "true — every string is considered to include the empty substring",
+      "false — the empty string is never a substring",
+      "true only for non-empty receiver strings",
+      "It throws a TypeError"
+    ]
   },
   {
     "topicSlug": "strings",
@@ -676,10 +754,16 @@
   {
     "topicSlug": "destructuring",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why does const { a } = null; throw, while const { a } = {}; does not?",
-    "correctAnswer": "Destructuring requires a coercible object; null/undefined cannot be converted, so it throws. {} is a valid object with missing a, so a is undefined.",
-    "explanation": "Object destructuring ToObjects the right-hand side. null and undefined throw TypeError. An empty object is fine; missing properties simply yield undefined."
+    "correctAnswer": "0",
+    "explanation": "Object destructuring ToObjects the right-hand side. null and undefined throw TypeError. An empty object is fine; missing properties simply yield undefined.",
+    "options": [
+      "Destructuring requires a coercible object; null/undefined throw, while {} is valid and missing a yields undefined",
+      "Both throw because a is missing",
+      "null is treated as {} automatically",
+      "Only arrays can be destructured, so both throw"
+    ]
   },
   {
     "topicSlug": "destructuring",
@@ -725,10 +809,16 @@
   {
     "topicSlug": "spread",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "When spreading two objects with the same key, which value wins and why?",
-    "correctAnswer": "The value from the later spread wins because properties are assigned left to right and later keys overwrite earlier ones.",
-    "explanation": "Object spread copies enumerable own properties in source order. Duplicate keys from a subsequent source replace earlier values."
+    "correctAnswer": "0",
+    "explanation": "Object spread copies enumerable own properties in source order. Duplicate keys from a subsequent source replace earlier values.",
+    "options": [
+      "The later spread wins because properties are copied left to right and later keys overwrite earlier ones",
+      "The earlier spread wins and later duplicates are ignored",
+      "Duplicate keys always throw TypeError",
+      "Neither key is kept when duplicates exist"
+    ]
   },
   {
     "topicSlug": "spread",
@@ -774,10 +864,16 @@
   {
     "topicSlug": "rest",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Can a rest parameter appear before other parameters in a function signature? Why or why not?",
-    "correctAnswer": "No — rest must be the last parameter because it collects all remaining arguments.",
-    "explanation": "If rest were not last, the engine could not know where the \"remaining\" arguments end. SyntaxError if rest is not final."
+    "correctAnswer": "0",
+    "explanation": "If rest were not last, the engine could not know where the \"remaining\" arguments end. SyntaxError if rest is not final.",
+    "options": [
+      "No — rest must be last because it collects all remaining arguments",
+      "Yes — rest can appear anywhere and still collect leftovers",
+      "Yes — rest must be first to collect early arguments",
+      "Rest parameters are only allowed in arrow functions"
+    ]
   },
   {
     "topicSlug": "rest",
@@ -823,10 +919,16 @@
   {
     "topicSlug": "callbacks",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why can forgetting to invoke a callback (writing onDone instead of onDone()) make a program appear \"stuck\"?",
-    "correctAnswer": "The continuation never runs, so later work that depends on the callback never executes.",
-    "explanation": "Callbacks are how asynchronous or higher-level APIs signal completion. If you never call the callback, the next step never starts."
+    "correctAnswer": "0",
+    "explanation": "Callbacks are how asynchronous or higher-level APIs signal completion. If you never call the callback, the next step never starts.",
+    "options": [
+      "The continuation never runs, so later work that depends on the callback never executes",
+      "JavaScript automatically retries the callback every frame",
+      "The event loop deletes the callback reference and finishes the program",
+      "Forgetting () still invokes the function as a method"
+    ]
   },
   {
     "topicSlug": "callbacks",
@@ -872,10 +974,16 @@
   {
     "topicSlug": "higher-order-functions",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Is Array.prototype.filter a higher-order function? Why?",
-    "correctAnswer": "Yes — it accepts a predicate function as an argument and calls it for each element.",
-    "explanation": "filter takes a function and uses it to decide which elements to keep, which is the definition of higher-order behavior."
+    "correctAnswer": "0",
+    "explanation": "filter takes a function and uses it to decide which elements to keep, which is the definition of higher-order behavior.",
+    "options": [
+      "Yes — it accepts a predicate function as an argument and calls it for each element",
+      "No — only functions that return functions are higher-order",
+      "No — Array methods are never higher-order",
+      "Yes — but only when used with async predicates"
+    ]
   },
   {
     "topicSlug": "higher-order-functions",
@@ -921,10 +1029,16 @@
   {
     "topicSlug": "array-methods",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What does [1, 2, 3].find((n) => n > 5) return?",
-    "correctAnswer": "undefined",
-    "explanation": "find returns the first matching element, or undefined if none match. No element is greater than 5."
+    "correctAnswer": "0",
+    "explanation": "find returns the first matching element, or undefined if none match. No element is greater than 5.",
+    "options": [
+      "undefined",
+      "null",
+      "[]",
+      "false"
+    ]
   },
   {
     "topicSlug": "array-methods",
@@ -970,10 +1084,16 @@
   {
     "topicSlug": "object-methods",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Does Object.freeze(obj) prevent adding new properties? What happens if you try in non-strict mode?",
-    "correctAnswer": "Yes it prevents adds; in non-strict mode the assignment fails silently, in strict mode it throws.",
-    "explanation": "freeze makes an object non-extensible and properties non-writable/non-configurable. Failed mutations throw in strict mode and are ignored otherwise."
+    "correctAnswer": "0",
+    "explanation": "freeze makes an object non-extensible and properties non-writable/non-configurable. Failed mutations throw in strict mode and are ignored otherwise.",
+    "options": [
+      "Yes it prevents adds; in non-strict mode the assignment fails silently, in strict mode it throws",
+      "No — freeze only makes existing properties non-enumerable",
+      "Yes — and non-strict mode always throws TypeError on failed adds",
+      "No — freeze only affects the prototype chain"
+    ]
   },
   {
     "topicSlug": "object-methods",
@@ -1019,10 +1139,16 @@
   {
     "topicSlug": "this-keyword",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "How does call differ from apply when setting this for a function?",
-    "correctAnswer": "call takes arguments individually; apply takes them as an array (or array-like). Both set this to the first argument.",
-    "explanation": "fn.call(thisArg, a, b) vs fn.apply(thisArg, [a, b]). Same this-binding behavior; argument packaging differs."
+    "correctAnswer": "0",
+    "explanation": "fn.call(thisArg, a, b) vs fn.apply(thisArg, [a, b]). Same this-binding behavior; argument packaging differs.",
+    "options": [
+      "call takes arguments individually; apply takes them as an array (or array-like). Both set this to the first argument",
+      "apply takes arguments individually; call takes an array",
+      "call cannot set this; apply can",
+      "They are identical aliases with no difference"
+    ]
   },
   {
     "topicSlug": "this-keyword",
@@ -1068,10 +1194,16 @@
   {
     "topicSlug": "arrow-functions",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why is an arrow function usually a poor choice for an object method that needs to use this?",
-    "correctAnswer": "Because this is lexical and will not refer to the object when the method is called.",
-    "explanation": "Method this should come from the receiver. Arrows ignore call-site binding and keep outer this, so obj.method() will not set this to obj."
+    "correctAnswer": "0",
+    "explanation": "Method this should come from the receiver. Arrows ignore call-site binding and keep outer this, so obj.method() will not set this to obj.",
+    "options": [
+      "Because this is lexical and will not refer to the object when the method is called",
+      "Because arrows cannot be stored as object properties",
+      "Because arrows always bind this to the global object on purpose",
+      "Because arrows reject any use of return"
+    ]
   },
   {
     "topicSlug": "arrow-functions",
@@ -1117,10 +1249,16 @@
   {
     "topicSlug": "closures",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In a for loop with var i from 0 to 2 scheduling setTimeout(() => console.log(i), 0), why do all timeouts often print 3?",
-    "correctAnswer": "var is function-scoped, so all callbacks share one i that is 3 after the loop ends.",
-    "explanation": "Each timeout closes over the same i. By the time callbacks run, the loop finished and i is 3. let per iteration would fix it."
+    "correctAnswer": "0",
+    "explanation": "Each timeout closes over the same i. By the time callbacks run, the loop finished and i is 3. let per iteration would fix it.",
+    "options": [
+      "var is function-scoped, so all callbacks share one i that is 3 after the loop ends",
+      "setTimeout coerces i to the string \"3\" for every callback",
+      "The loop runs backwards from 3 to 0",
+      "Each timeout gets a private copy of i that is still 3 by coincidence only"
+    ]
   },
   {
     "topicSlug": "closures",
@@ -1166,10 +1304,16 @@
   {
     "topicSlug": "modules",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Are ESM modules strict mode by default? Answer yes or no.",
-    "correctAnswer": "Yes",
-    "explanation": "ES modules always run in strict mode; you do not need \"use strict\" at the top of a .js module file for that behavior."
+    "correctAnswer": "0",
+    "explanation": "ES modules always run in strict mode; you do not need \"use strict\" at the top of a .js module file for that behavior.",
+    "options": [
+      "Yes",
+      "No",
+      "Only when the file starts with \"use strict\"",
+      "Only in CommonJS, not ESM"
+    ]
   },
   {
     "topicSlug": "modules",
@@ -1215,10 +1359,16 @@
   {
     "topicSlug": "error-handling",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Does a finally block run if the try block returns successfully? Answer yes or no, briefly why.",
-    "correctAnswer": "Yes — finally runs on the way out whether try completes, throws, or returns.",
-    "explanation": "finally is for cleanup. The engine runs it before the function actually returns or before the exception continues propagating."
+    "correctAnswer": "0",
+    "explanation": "finally is for cleanup. The engine runs it before the function actually returns or before the exception continues propagating.",
+    "options": [
+      "Yes — finally runs on the way out whether try completes, throws, or returns",
+      "No — finally runs only when an error is thrown",
+      "No — a return in try skips finally",
+      "Yes — but only in strict mode"
+    ]
   },
   {
     "topicSlug": "error-handling",
@@ -1255,10 +1405,16 @@
   {
     "topicSlug": "sync-vs-async",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In one sentence, why can a long synchronous loop make a page feel frozen even if no network request is in progress?",
-    "correctAnswer": "It occupies the call stack continuously, so the event loop cannot process UI events, timers, or other callbacks until the loop finishes.",
-    "explanation": "JavaScript in the browser is single-threaded for the main thread. Long sync work blocks rendering and input handling because those also depend on the event loop getting turns."
+    "correctAnswer": "0",
+    "explanation": "JavaScript in the browser is single-threaded for the main thread. Long sync work blocks rendering and input handling because those also depend on the event loop getting turns.",
+    "options": [
+      "It occupies the call stack continuously, so the event loop cannot process UI events, timers, or other callbacks until the loop finishes",
+      "The browser pauses all network activity until the loop ends",
+      "Synchronous loops are moved to a worker automatically and freeze the UI thread",
+      "The garbage collector locks the page for the duration of any loop"
+    ]
   },
   {
     "topicSlug": "sync-vs-async",
@@ -1309,10 +1465,16 @@
   {
     "topicSlug": "call-stack",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What runtime error typically occurs when recursive calls never bottom out and frames keep stacking?",
-    "correctAnswer": "RangeError: Maximum call stack size exceeded",
-    "explanation": "Each recursive call adds a frame. Without a base case (or enough stack space), the engine throws a RangeError when the stack limit is hit."
+    "correctAnswer": "0",
+    "explanation": "Each recursive call adds a frame. Without a base case (or enough stack space), the engine throws a RangeError when the stack limit is hit.",
+    "options": [
+      "RangeError: Maximum call stack size exceeded",
+      "TypeError: Cannot read properties of undefined",
+      "SyntaxError: Unexpected end of input",
+      "URIError: URI malformed"
+    ]
   },
   {
     "topicSlug": "call-stack",
@@ -1372,10 +1534,16 @@
   {
     "topicSlug": "event-loop",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Name the three core pieces involved when explaining how async callbacks eventually run in the browser (besides Web APIs themselves).",
-    "correctAnswer": "Call stack, microtask queue (job queue), and task/macrotask queue — coordinated by the event loop.",
-    "explanation": "Sync code uses the call stack. Promise jobs go to the microtask queue; timers/IO/UI messages go to the task queue. The event loop decides when to pull from those queues."
+    "correctAnswer": "0",
+    "explanation": "Sync code uses the call stack. Promise jobs go to the microtask queue; timers/IO/UI messages go to the task queue. The event loop decides when to pull from those queues.",
+    "options": [
+      "Call stack, microtask queue (job queue), and task/macrotask queue — coordinated by the event loop",
+      "Only the heap and the garbage collector",
+      "Only localStorage and sessionStorage",
+      "Only the CSSOM and the render tree"
+    ]
   },
   {
     "topicSlug": "event-loop",
@@ -1412,10 +1580,16 @@
   {
     "topicSlug": "web-apis",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Is setTimeout part of the ECMAScript language core, or a host/Web API? Answer with which one.",
-    "correctAnswer": "Host/Web API (browser or other host), not part of the ECMAScript language specification itself.",
-    "explanation": "ECMAScript defines language semantics (promises, etc.). Timers historically come from the HTML/host environment. In browsers they are Web APIs on window."
+    "correctAnswer": "0",
+    "explanation": "ECMAScript defines language semantics (promises, etc.). Timers historically come from the HTML/host environment. In browsers they are Web APIs on window.",
+    "options": [
+      "Host/Web API (browser or other host), not part of the ECMAScript language specification itself",
+      "Part of the ECMAScript language core since ES5",
+      "A CSS feature exposed to JavaScript",
+      "Only available inside WebAssembly modules"
+    ]
   },
   {
     "topicSlug": "web-apis",
@@ -1475,10 +1649,16 @@
   {
     "topicSlug": "microtasks",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why can an infinite chain of scheduling new microtasks from microtasks starve timers and rendering?",
-    "correctAnswer": "The event loop drains the entire microtask queue before the next macrotask; continuously enqueueing new microtasks never lets macrotasks (timers, paint) run.",
-    "explanation": "Microtask checkpoint keeps going while the queue is non-empty. Endless microtasks block timers and UI updates."
+    "correctAnswer": "0",
+    "explanation": "Microtask checkpoint keeps going while the queue is non-empty. Endless microtasks block timers and UI updates.",
+    "options": [
+      "The event loop drains the entire microtask queue before the next macrotask; continuously enqueueing new microtasks never lets macrotasks (timers, paint) run",
+      "Timers have lower priority than network I/O only",
+      "Microtasks run at most once per page load",
+      "Browsers cancel timers when any Promise is created"
+    ]
   },
   {
     "topicSlug": "microtasks",
@@ -1524,10 +1704,16 @@
   {
     "topicSlug": "macrotasks",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Between two setTimeout(..., 0) callbacks, when do newly queued microtasks from the first callback run?",
-    "correctAnswer": "Immediately after that first macrotask finishes (microtask checkpoint), before the second setTimeout macrotask starts.",
-    "explanation": "Each task is followed by draining microtasks. Promise work scheduled inside a timer runs before the next timer."
+    "correctAnswer": "0",
+    "explanation": "Each task is followed by draining microtasks. Promise work scheduled inside a timer runs before the next timer.",
+    "options": [
+      "Immediately after that first macrotask finishes (microtask checkpoint), before the second setTimeout macrotask starts",
+      "Only after both setTimeout callbacks have finished",
+      "Only on the next animation frame",
+      "Never — microtasks from a timer wait until the page unloads"
+    ]
   },
   {
     "topicSlug": "macrotasks",
@@ -1573,10 +1759,16 @@
   {
     "topicSlug": "promises",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Does calling resolve() twice inside a Promise executor change the fulfillment value the second time? Answer yes or no and briefly why.",
-    "correctAnswer": "No — a promise settles at most once; later resolve/reject calls are ignored.",
-    "explanation": "Promise state is immutable after settlement. Only the first settle operation wins."
+    "correctAnswer": "0",
+    "explanation": "Promise state is immutable after settlement. Only the first settle operation wins.",
+    "options": [
+      "No — a promise settles at most once; later resolve/reject calls are ignored",
+      "Yes — the second resolve replaces the fulfillment value",
+      "Yes — but only if both values are primitives",
+      "No — the second resolve throws TypeError"
+    ]
   },
   {
     "topicSlug": "promises",
@@ -1622,10 +1814,16 @@
   {
     "topicSlug": "async-await",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "How do you catch a rejection when using await inside an async function?",
-    "correctAnswer": "Wrap the await in try/catch (or let the async function reject and handle that promise with .catch).",
-    "explanation": "await turns rejection into a throw at the await expression, so try/catch works like synchronous error handling."
+    "correctAnswer": "0",
+    "explanation": "await turns rejection into a throw at the await expression, so try/catch works like synchronous error handling.",
+    "options": [
+      "Wrap the await in try/catch (or let the async function reject and handle that promise with .catch)",
+      "Use a second await on the rejection channel only",
+      "Pass a second callback argument to await",
+      "Rejection cannot be caught inside async functions"
+    ]
   },
   {
     "topicSlug": "async-await",
@@ -1671,10 +1869,16 @@
   {
     "topicSlug": "promise-all",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "If one of ten promises passed to Promise.all rejects, does Promise.all wait for the other nine before rejecting?",
-    "correctAnswer": "No — it rejects as soon as the first rejection happens (though the other promises may still settle independently).",
-    "explanation": "The aggregate promise rejects on first rejection. Other operations may continue, but they do not fulfill the Promise.all result."
+    "correctAnswer": "0",
+    "explanation": "The aggregate promise rejects on first rejection. Other operations may continue, but they do not fulfill the Promise.all result.",
+    "options": [
+      "No — it rejects as soon as the first rejection happens (other promises may still settle independently)",
+      "Yes — it always waits for all ten before rejecting",
+      "Yes — it converts rejections into null and waits",
+      "No — it cancels the other nine automatically"
+    ]
   },
   {
     "topicSlug": "promise-all",
@@ -1774,10 +1978,16 @@
   {
     "topicSlug": "promise-race",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "After Promise.race has settled from the winner, do the other racing promises get cancelled automatically?",
-    "correctAnswer": "No — other promises continue unless you implement cancellation separately (e.g. AbortController for fetch).",
-    "explanation": "Race only affects the aggregate promise. Losing promises still run to completion unless you cancel their underlying work."
+    "correctAnswer": "0",
+    "explanation": "Race only affects the aggregate promise. Losing promises still run to completion unless you cancel their underlying work.",
+    "options": [
+      "No — other promises continue unless you implement cancellation separately (e.g. AbortController for fetch)",
+      "Yes — losers are aborted by the engine automatically",
+      "Yes — losers are converted to never-settling promises",
+      "No — race freezes losers until the winner settles, then cancels them"
+    ]
   },
   {
     "topicSlug": "promise-race",
@@ -1823,10 +2033,16 @@
   {
     "topicSlug": "promise-any",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Contrast Promise.race and Promise.any in one sentence regarding a fast rejection vs a slower fulfillment.",
-    "correctAnswer": "race adopts the first settlement (so a fast rejection wins); any ignores rejections until a fulfillment (or AggregateError if all reject).",
-    "explanation": "That difference is the main practical distinction between race and any."
+    "correctAnswer": "0",
+    "explanation": "That difference is the main practical distinction between race and any.",
+    "options": [
+      "race adopts the first settlement (so a fast rejection wins); any ignores rejections until a fulfillment (or AggregateError if all reject)",
+      "any and race are identical for rejections and fulfillments",
+      "any always waits for every promise before settling",
+      "race ignores fulfillments until all reject"
+    ]
   },
   {
     "topicSlug": "promise-any",
@@ -1908,10 +2124,16 @@
   {
     "topicSlug": "execution-context",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Name the three primary components typically associated with a function execution context in JavaScript.",
-    "correctAnswer": "Variable Environment (or Lexical Environment), Scope Chain (outer lexical environment reference), and this binding",
-    "explanation": "An execution context holds the environment for bindings, a link to the outer environment for identifier resolution, and the value of this for that call."
+    "correctAnswer": "0",
+    "explanation": "An execution context holds the environment for bindings, a link to the outer environment for identifier resolution, and the value of this for that call.",
+    "options": [
+      "Variable/Lexical Environment, outer lexical environment reference (scope chain), and this binding",
+      "Only the call stack pointer and the heap address",
+      "Only import maps and the module cache",
+      "Only the prototype chain and Symbol.iterator"
+    ]
   },
   {
     "topicSlug": "execution-context",
@@ -1957,10 +2179,16 @@
   {
     "topicSlug": "lexical-environment",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In one sentence, how does identifier resolution use the lexical environment chain?",
-    "correctAnswer": "The engine looks up the identifier in the current Environment Record, then follows the outer reference until the binding is found or the chain ends.",
-    "explanation": "Lexical scoping is implemented by walking outer environment links established at definition time, not call time."
+    "correctAnswer": "0",
+    "explanation": "Lexical scoping is implemented by walking outer environment links established at definition time, not call time.",
+    "options": [
+      "Look up the identifier in the current Environment Record, then follow the outer reference until found or the chain ends",
+      "Always start lookup from the global object first",
+      "Resolve identifiers only from the call stack top frame’s this value",
+      "Skip outer environments when the identifier starts with _"
+    ]
   },
   {
     "topicSlug": "lexical-environment",
@@ -2006,10 +2234,16 @@
   {
     "topicSlug": "prototype",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What is the difference between obj.__proto__ (or Object.getPrototypeOf(obj)) and a constructor's .prototype property?",
-    "correctAnswer": "Object.getPrototypeOf(obj) is the instance's [[Prototype]]; Constructor.prototype is the object that will be set as [[Prototype]] for new instances of that constructor.",
-    "explanation": "Instances link to Constructor.prototype; Constructor.prototype is not the same as Constructor's own [[Prototype]] (which is Function.prototype)."
+    "correctAnswer": "0",
+    "explanation": "Instances link to Constructor.prototype; Constructor.prototype is not the same as Constructor's own [[Prototype]] (which is Function.prototype).",
+    "options": [
+      "Object.getPrototypeOf(obj) is the instance [[Prototype]]; Constructor.prototype is what becomes [[Prototype]] for new instances",
+      "They are always the same object reference",
+      "Constructor.prototype is the instance’s own [[Prototype]] only after freeze",
+      "obj.__proto__ stores static methods; .prototype stores instance fields"
+    ]
   },
   {
     "topicSlug": "prototype",
@@ -2055,10 +2289,16 @@
   {
     "topicSlug": "prototype-chain",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "For a plain object created with {}, what is typically the end of its prototype chain?",
-    "correctAnswer": "Object.prototype, then null",
-    "explanation": "Ordinary objects delegate to Object.prototype; Object.getPrototypeOf(Object.prototype) is null."
+    "correctAnswer": "0",
+    "explanation": "Ordinary objects delegate to Object.prototype; Object.getPrototypeOf(Object.prototype) is null.",
+    "options": [
+      "Object.prototype, then null",
+      "Function.prototype, then null",
+      "null immediately with no Object.prototype",
+      "Array.prototype, then Object.prototype, then null"
+    ]
   },
   {
     "topicSlug": "prototype-chain",
@@ -2104,10 +2344,16 @@
   {
     "topicSlug": "classes",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Are class declarations hoisted like function declarations? What happens if you use a class before its declaration?",
-    "correctAnswer": "Class declarations are hoisted into the TDZ like let; using the class before initialization throws ReferenceError.",
-    "explanation": "Unlike function declarations, classes cannot be used before the declaration is evaluated."
+    "correctAnswer": "0",
+    "explanation": "Unlike function declarations, classes cannot be used before the declaration is evaluated.",
+    "options": [
+      "Class declarations are in the TDZ like let; using the class before initialization throws ReferenceError",
+      "Classes hoist fully like function declarations and can be used earlier",
+      "Classes are not hoisted at all and create a global undefined binding",
+      "Using a class early returns null instead of throwing"
+    ]
   },
   {
     "topicSlug": "classes",
@@ -2153,10 +2399,16 @@
   {
     "topicSlug": "inheritance",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "In a derived class constructor, when must super() be called relative to using this?",
-    "correctAnswer": "super() must be called before accessing this in the derived constructor.",
-    "explanation": "The base constructor initializes the instance; using this beforehand throws a ReferenceError."
+    "correctAnswer": "0",
+    "explanation": "The base constructor initializes the instance; using this beforehand throws a ReferenceError.",
+    "options": [
+      "super() must be called before accessing this in the derived constructor",
+      "this may be used freely before super()",
+      "super() is optional when the subclass has no fields",
+      "super() must be called after returning from the constructor"
+    ]
   },
   {
     "topicSlug": "inheritance",
@@ -2202,10 +2454,16 @@
   {
     "topicSlug": "iterators",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What shape does iterator.next() return?",
-    "correctAnswer": "An IteratorResult object: { value, done } where done is a boolean",
-    "explanation": "When done is true, iteration is finished; value may be the return value or undefined."
+    "correctAnswer": "0",
+    "explanation": "When done is true, iteration is finished; value may be the return value or undefined.",
+    "options": [
+      "An IteratorResult object: { value, done } where done is a boolean",
+      "A bare value with no wrapper object",
+      "A Promise that always fulfills with the next item",
+      "A two-element array [value, done]"
+    ]
   },
   {
     "topicSlug": "iterators",
@@ -2251,10 +2509,16 @@
   {
     "topicSlug": "generators",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "What does yield express inside a generator, and what does next(value) do with that value?",
-    "correctAnswer": "yield pauses and produces a value to the caller; the argument to the subsequent next(value) becomes the result of that yield expression.",
-    "explanation": "Generators support two-way communication: yield out, next(in)."
+    "correctAnswer": "0",
+    "explanation": "Generators support two-way communication: yield out, next(in).",
+    "options": [
+      "yield pauses and produces a value to the caller; the argument to the next next(value) becomes the result of that yield expression",
+      "yield schedules a macrotask; next(value) ignores value",
+      "yield is identical to return and ends the generator",
+      "next(value) replaces the generator function source code"
+    ]
   },
   {
     "topicSlug": "generators",
@@ -2300,10 +2564,16 @@
   {
     "topicSlug": "map",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why can Map use an object as a key more reliably than a plain object using that object coerced to a string?",
-    "correctAnswer": "Map compares keys by SameValueZero / reference identity for objects, whereas object property keys are strings/symbols (objects become \"[object Object]\").",
-    "explanation": "Distinct objects remain distinct Map keys; they collide if used as object property names via coercion."
+    "correctAnswer": "0",
+    "explanation": "Distinct objects remain distinct Map keys; they collide if used as object property names via coercion.",
+    "options": [
+      "Map keeps object keys by identity; plain object keys are strings/symbols (objects coerce to \"[object Object]\")",
+      "Map stringifies object keys the same way plain objects do",
+      "Plain objects support object keys natively without coercion",
+      "Map forbids object keys and only allows strings"
+    ]
   },
   {
     "topicSlug": "map",
@@ -2349,10 +2619,16 @@
   {
     "topicSlug": "set",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Does new Set([NaN, NaN]).size equal 1 or 2? Why?",
-    "correctAnswer": "1, because Set uses SameValueZero, under which NaN is considered equal to NaN.",
-    "explanation": "Unlike ===, SameValueZero treats NaN as equal to itself for Map/Set membership."
+    "correctAnswer": "0",
+    "explanation": "Unlike ===, SameValueZero treats NaN as equal to itself for Map/Set membership.",
+    "options": [
+      "1, because Set uses SameValueZero, under which NaN equals NaN",
+      "2, because NaN !== NaN so both entries are kept",
+      "0, because NaN is not allowed in Set",
+      "1 only in strict mode; otherwise 2"
+    ]
   },
   {
     "topicSlug": "set",
@@ -2398,10 +2674,16 @@
   {
     "topicSlug": "weakmap",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why is WeakMap not iterable and why does it lack a size property?",
-    "correctAnswer": "Because keys are held weakly, the set of entries is nondeterministic under GC; enumeration/size would be unreliable, so the API omits them.",
-    "explanation": "Weak references allow keys to be collected; iteration would expose GC timing."
+    "correctAnswer": "0",
+    "explanation": "Weak references allow keys to be collected; iteration would expose GC timing.",
+    "options": [
+      "Keys are held weakly, so the entry set is GC-dependent; enumeration/size would be unreliable, so the API omits them",
+      "WeakMap is iterable but size is hidden for security",
+      "WeakMap stores only primitives, so size is meaningless",
+      "Browsers deprecate iteration on all map-like collections"
+    ]
   },
   {
     "topicSlug": "weakmap",
@@ -2447,10 +2729,16 @@
   {
     "topicSlug": "weakset",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Name a practical use case for WeakSet compared to Set.",
-    "correctAnswer": "Marking objects as 'seen' or 'visited' (e.g., circular-structure guards) without preventing those objects from being garbage-collected.",
-    "explanation": "WeakSet membership does not strongly retain the object."
+    "correctAnswer": "0",
+    "explanation": "WeakSet membership does not strongly retain the object.",
+    "options": [
+      "Marking objects as seen/visited without preventing garbage collection",
+      "Storing large strings more efficiently than Set",
+      "Guaranteeing insertion order for primitive numbers",
+      "Replacing arrays for stack algorithms"
+    ]
   },
   {
     "topicSlug": "weakset",
@@ -2496,10 +2784,16 @@
   {
     "topicSlug": "memory-management",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "How can a closure unintentionally retain memory?",
-    "correctAnswer": "A long-lived function may close over variables that reference large objects, keeping those objects reachable even if the rest of the scope is unused.",
-    "explanation": "Closures retain their lexical environment bindings, which can pin large graphs in memory."
+    "correctAnswer": "0",
+    "explanation": "Closures retain their lexical environment bindings, which can pin large graphs in memory.",
+    "options": [
+      "A long-lived function may close over variables that reference large objects, keeping them reachable",
+      "Closures always copy object graphs by value, doubling memory",
+      "The engine disables GC while any closure exists",
+      "Closures move captured variables into localStorage automatically"
+    ]
   },
   {
     "topicSlug": "memory-management",
@@ -2545,10 +2839,16 @@
   {
     "topicSlug": "garbage-collection",
     "sessionType": "REVISION",
-    "format": "SHORT_ANSWER",
+    "format": "MULTIPLE_CHOICE",
     "prompt": "Why can reference cycles between two objects still be collected by modern JS engines?",
-    "correctAnswer": "Because reachability-based collectors (mark-and-sweep) reclaim cycles that are not reachable from roots; reference counting alone would fail on cycles.",
-    "explanation": "JS engines do not rely solely on reference counting for heap objects."
+    "correctAnswer": "0",
+    "explanation": "JS engines do not rely solely on reference counting for heap objects.",
+    "options": [
+      "Reachability-based collectors (e.g. mark-and-sweep) reclaim cycles not reachable from roots; pure reference counting would fail on cycles",
+      "Engines never collect cycles; programmers must break them manually always",
+      "Cycles are stored on disk until reboot",
+      "Reference counting alone collects all cycles automatically"
+    ]
   },
   {
     "topicSlug": "garbage-collection",

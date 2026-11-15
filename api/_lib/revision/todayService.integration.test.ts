@@ -638,4 +638,100 @@ describe('getTodayRevision (integration / disposable DB)', () => {
         assert.ok(result.session);
         assert.equal(result.session!.id, winner.id);
     });
+
+    it('Phase 7 C1: new freeze includes REVISION MCQ only (excludes SHORT_ANSWER)', async () => {
+        const topic = await prisma.topic.create({
+            data: {
+                name: `${PREFIX}-c1-mixed`,
+                slug: `${PREFIX}-c1-mixed`,
+                category: 'Fundamentals',
+                nextRevisionDate: utcOn(TODAY),
+            },
+        });
+        createdTopicIds.push(topic.id);
+        await isolateTopics([topic.id]);
+
+        const mcq = await prisma.question.create({
+            data: {
+                topicId: topic.id,
+                sessionType: SessionType.REVISION,
+                format: QuestionFormat.MULTIPLE_CHOICE,
+                prompt: `${PREFIX}-c1-mcq`,
+                options: ['a', 'b'],
+                correctAnswer: '0',
+                createdAt: new Date(Date.UTC(2026, 0, 1)),
+            },
+        });
+        const shortAnswer = await prisma.question.create({
+            data: {
+                topicId: topic.id,
+                sessionType: SessionType.REVISION,
+                format: QuestionFormat.SHORT_ANSWER,
+                prompt: `${PREFIX}-c1-sa`,
+                correctAnswer: 'reference',
+                createdAt: new Date(Date.UTC(2026, 0, 2)),
+            },
+        });
+
+        const result = await getTodayRevision(prisma, NOW);
+        assert.ok(result.session);
+        assert.equal(result.session!.topic.id, topic.id);
+        assert.equal(result.session!.questions.length, 1);
+        assert.equal(result.session!.questions[0]!.id, mcq.id);
+        assert.equal(result.session!.questions[0]!.format, QuestionFormat.MULTIPLE_CHOICE);
+        assert.ok(!result.session!.questions.some((q) => q.id === shortAnswer.id));
+    });
+
+    it('Phase 7 C1: legacy OPEN freeze with SHORT_ANSWER is not rewritten', async () => {
+        const topic = await prisma.topic.create({
+            data: {
+                name: `${PREFIX}-c1-legacy`,
+                slug: `${PREFIX}-c1-legacy`,
+                category: 'Fundamentals',
+                nextRevisionDate: utcOn(TODAY),
+            },
+        });
+        createdTopicIds.push(topic.id);
+        await isolateTopics([topic.id]);
+
+        const mcq = await prisma.question.create({
+            data: {
+                topicId: topic.id,
+                sessionType: SessionType.REVISION,
+                format: QuestionFormat.MULTIPLE_CHOICE,
+                prompt: `${PREFIX}-c1-legacy-mcq`,
+                options: ['a', 'b'],
+                correctAnswer: '0',
+            },
+        });
+        const shortAnswer = await prisma.question.create({
+            data: {
+                topicId: topic.id,
+                sessionType: SessionType.REVISION,
+                format: QuestionFormat.SHORT_ANSWER,
+                prompt: `${PREFIX}-c1-legacy-sa`,
+                correctAnswer: 'reference',
+            },
+        });
+
+        const frozen = await prisma.revisionSession.create({
+            data: {
+                topicId: topic.id,
+                status: 'OPEN',
+                questions: {
+                    create: [
+                        { questionId: mcq.id, sortOrder: 0 },
+                        { questionId: shortAnswer.id, sortOrder: 1 },
+                    ],
+                },
+            },
+        });
+
+        const result = await getTodayRevision(prisma, NOW);
+        assert.ok(result.session);
+        assert.equal(result.session!.id, frozen.id);
+        assert.equal(result.session!.questions.length, 2);
+        assert.equal(result.session!.questions[0]!.format, QuestionFormat.MULTIPLE_CHOICE);
+        assert.equal(result.session!.questions[1]!.format, QuestionFormat.SHORT_ANSWER);
+    });
 });

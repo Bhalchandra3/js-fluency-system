@@ -217,11 +217,13 @@ describe('progressService (integration / disposable DB)', () => {
         assert.equal(summary.overdueCount, baseline.overdueCount + 2);
         assert.ok(summary.dueCount >= summary.overdueCount);
 
-        // Exact field set — no unapproved extras
+        // Exact field set — Phase 4 counts + Phase 7 escalations
         assert.deepEqual(Object.keys(summary).sort(), [
             'deepDiveCount',
             'dueCount',
+            'escalations',
             'overdueCount',
+            'patternGateVersion',
             'status',
             'statusCounts',
             'unresolvedMistakeCount',
@@ -231,6 +233,9 @@ describe('progressService (integration / disposable DB)', () => {
             'red',
             'yellow',
         ]);
+        assert.equal(summary.patternGateVersion, 'phase7-pattern-gate-v1');
+        assert.ok(Array.isArray(summary.escalations));
+        assert.ok(summary.escalations.length <= 5);
 
         // Read-only: no mutation of topics / mistakes / notes
         const topicsAfter = await prisma.topic.findMany({
@@ -287,5 +292,7 @@ describe('progressService (integration / disposable DB)', () => {
         assert.ok(summary.deepDiveCount >= 0);
         assert.ok(summary.unresolvedMistakeCount >= 0);
         assert.ok(summary.dueCount >= summary.overdueCount);
+        assert.equal(summary.patternGateVersion, 'phase7-pattern-gate-v1');
+        assert.ok(Array.isArray(summary.escalations));
     });
 });

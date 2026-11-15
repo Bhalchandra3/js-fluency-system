@@ -143,7 +143,7 @@ describe('GET /api/revision/today handler', () => {
         assert.deepEqual(res.body, payload);
     });
 
-    it('returns 200 with hydrated answers map for session resumption', async () => {
+    it('returns 200 with hydrated answers map for session resumption (legacy SHORT_ANSWER allowed in frozen payload)', async () => {
         process.env['BEARER_TOKEN'] = 'test-token';
         const payload: TodayRevisionResponse = {
             status: 'ok',

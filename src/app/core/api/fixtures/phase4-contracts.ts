@@ -82,4 +82,16 @@ export const progressSummaryFixture: ProgressSummaryResponse = {
   unresolvedMistakeCount: 3,
   dueCount: 4,
   overdueCount: 1,
+  patternGateVersion: 'phase7-pattern-gate-v1',
+  escalations: [
+    {
+      topicId: 'topic-fixture-1',
+      topicName: 'Closures',
+      topicSlug: 'closures',
+      status: 'RED',
+      gates: ['REPEATED_RED', 'THIN_MCQ_COVERAGE'],
+      unresolvedMistakeCount: 2,
+      revisionMcqCount: 2,
+    },
+  ],
 };

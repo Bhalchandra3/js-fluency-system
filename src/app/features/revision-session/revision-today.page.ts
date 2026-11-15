@@ -152,6 +152,7 @@ export class RevisionTodayPage {
         index < options.length
       );
     }
+    // Phase 7 C1: SHORT_ANSWER UI only for legacy frozen questions (new freezes are MCQ-only).
     if (question.format === 'SHORT_ANSWER') {
       return (
         draft.selectedAnswer.trim().length > 0 &&

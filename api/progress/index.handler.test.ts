@@ -105,6 +105,18 @@ describe('GET /api/progress handler', () => {
             unresolvedMistakeCount: 5,
             dueCount: 6,
             overdueCount: 2,
+            patternGateVersion: 'phase7-pattern-gate-v1' as const,
+            escalations: [
+                {
+                    topicId: 't1',
+                    topicName: 'Closures',
+                    topicSlug: 'closures',
+                    status: 'RED' as const,
+                    gates: ['REPEATED_RED' as const],
+                    unresolvedMistakeCount: 1,
+                    revisionMcqCount: 2,
+                },
+            ],
         };
         let capturedNow: Date | undefined;
         await handleProgress(mockReq('GET', 'Bearer tok'), res, {

@@ -219,9 +219,21 @@ async function loadOpenSessionForTopic(
     });
 }
 
+/**
+ * Phase 7 C1: new freezes / empty-association backfill use REVISION + MULTIPLE_CHOICE only.
+ * Existing nonempty OPEN freezes are not rewritten (Decision B / §2.5.3).
+ */
+export const REVISION_FREEZE_QUESTION_WHERE = {
+    sessionType: SessionType.REVISION,
+    format: QuestionFormat.MULTIPLE_CHOICE,
+} as const;
+
 async function loadRevisionQuestions(prisma: PrismaClient, topicId: string) {
     return prisma.question.findMany({
-        where: { topicId, sessionType: SessionType.REVISION },
+        where: {
+            topicId,
+            ...REVISION_FREEZE_QUESTION_WHERE,
+        },
         orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         select: { id: true, createdAt: true },
     });
@@ -229,7 +241,7 @@ async function loadRevisionQuestions(prisma: PrismaClient, topicId: string) {
 
 /**
  * If an OPEN session exists with zero associations (rare race), attach the
- * current REVISION bank once. Never overwrite a nonempty frozen set.
+ * current REVISION MCQ bank once. Never overwrite a nonempty frozen set.
  */
 async function ensureAssociationsIfEmpty(
     prisma: PrismaClient,

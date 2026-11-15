@@ -123,6 +123,53 @@
             }
           </a>
         </div>
+
+        @if (escalations().length > 0) {
+          <div class="dashboard__escalations" aria-labelledby="escalations-heading">
+            <h3 id="escalations-heading" class="dashboard__subsection-title">
+              Needs attention
+            </h3>
+            <p class="dashboard__hint">
+              Advisory only — does not change your schedule.
+              @if (patternGateVersion(); as version) {
+                <span class="dashboard__count-note"> ({{ version }})</span>
+              }
+            </p>
+            <ul class="dashboard__escalation-list">
+              @for (item of escalations(); track item.topicId) {
+                <li class="dashboard__escalation-card">
+                  <div class="dashboard__escalation-head">
+                    <strong class="dashboard__escalation-topic">{{ item.topicName }}</strong>
+                    <span
+                      class="dashboard__pill"
+                      [class.dashboard__pill--overdue]="item.status === 'RED'"
+                    >
+                      {{ item.status }}
+                    </span>
+                  </div>
+                  <ul class="dashboard__escalation-gates">
+                    @for (gate of item.gates; track gate) {
+                      <li>{{ escalationGateLabel(gate) }}</li>
+                    }
+                  </ul>
+                  @if (escalationPrimaryPath(item.gates); as path) {
+                    <a [routerLink]="path" class="dashboard__btn dashboard__btn--secondary">
+                      @if (path === '/deep-dive') {
+                        Open Deep Dive
+                      } @else {
+                        Open Mistake Log
+                      }
+                    </a>
+                  } @else {
+                    <p class="dashboard__count-note">
+                      Expand MCQ coverage offline when you next update the question bank.
+                    </p>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+        }
       }
     </section>
 

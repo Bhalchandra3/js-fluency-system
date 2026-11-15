@@ -12,20 +12,22 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 6 complete** (2026-11-15); **Phase 7 — AI Assistance** ready |
-| **Active step** | None (`CURRENT_STEP.md` cleared per §6.3) |
-| **Completed through** | Phase 1–6 complete (2026-11-15) |
-| **Next action** | Review Phase 7 requirements (post-MVP enhancement) |
+| **Current phase** | **Phase 7 — Learning-flow algorithm & MCQ-only revision** (post-MVP) |
+| **Active step** | **Step 7 — Production smoke + documentation closeout** (`CURRENT_STEP.md` active) |
+| **Completed through** | Phase 1–6 complete; Phase 7 Steps 0–6 complete; prod C1 seed verified (2026-11-15) |
+| **Next action** | Step 7 deploy/smoke + documentation closeout |
 | **Backend on master** | `978cbca` — `feat: complete Phase 6 mobile optimization and dark/light theme system` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **Yes** — all governing Phase 4 exit criteria verified (2026-11-12) |
 | **Phase 5 complete?** | **Yes** — all governing Phase 5 exit criteria verified (2026-11-15) |
 | **Phase 6 complete?** | **Yes** — all governing Phase 6 exit criteria verified (2026-11-15) |
+| **Phase 7 complete?** | **No** — Steps 0–6 done; prod seed ✅; Step 7 deploy/smoke/closeout in progress |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Phase 4 baseline (completed)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 | **Phase 5 baseline (completed)** | [`JavaScript_Fluency_System_Phase_5_Development_Order.md`](./JavaScript_Fluency_System_Phase_5_Development_Order.md) |
-| **Phase 6 baseline (completed)** | [`JavaScript_Fluency_System_Phase_6_Development_Order.md`](./JavaScript_Fluency_System_Phase_6_Development_Order.md) |
+| **Phase 6 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md) |
+| **Phase 7 baseline (active)** | [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md) |
 
 ---
 
@@ -39,7 +41,7 @@
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | ✅ Complete (2026-11-15) |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ✅ Complete (2026-11-15) |
-| **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
+| **7 — Learning-flow & MCQ revision** | Zero-cost tiered escalate + C1 MCQ-only revision + offline bank batches (spec label: AI assistance; **no LLM**) | 🔄 In progress (Step 0 complete 2026-11-15) |
 
 Phase 1 product wording in the original website spec (“static learning dashboard”) is superseded for tracking by the skeleton/infra definition above; later phase intents align with the product specification.
 
@@ -382,9 +384,10 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 | Resource | Path |
 |---|---|
 | Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
-| Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (empty when no phase active) |
+| Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (Phase 7 active) |
 | Phase 3 Development Order (completed baseline) | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | Phase 4 Development Order (canonical plan) | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
+| Phase 7 Development Order (active canonical plan) | [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
 | Postman Git-native collection | [`postman/collections/Backend/`](./postman/collections/Backend/) |
 | Postman Desktop export script | [`postman/scripts/export_v21_for_desktop.py`](./postman/scripts/export_v21_for_desktop.py) |
@@ -618,17 +621,85 @@ Canonical plan source: [`JavaScript_Fluency_System_Phase_6_Development_Order.md`
 - [x] Verified on production Vercel deployment across mobile and desktop (`main-SLPTWHPU.js`).
 - [x] Tracker and development orders finalized.
 
-### 10.4 Phase 7 Handoff
+### 10.4 Phase 7 Handoff (historical)
 
-Phase 6 is complete (2026-11-15). All MVP phases (Phases 1 through 6) are now complete and deployed in production. **Phase 7 — AI Assistance** represents post-MVP optional enhancements.
+Phase 6 completed (2026-11-15). Phase 7 started (2026-11-15) with owner-approved scope reframed from live AI to **zero-cost learning-flow algorithm + C1 MCQ-only revision**. See §11.
 
-| Handoff item | Detail |
+---
+
+## 11. Phase 7 — Learning-flow algorithm & MCQ-only revision (in progress)
+
+### 11.1 Objective & framing
+
+Post-MVP phase. Specification phase intent remains “AI assistance” ([`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §11), but **delivery does not use hosted LLMs**. Scope:
+
+- **C1:** Today’s Revision = **MCQ only**; convert REVISION `SHORT_ANSWER` → MCQ; block SHORT_ANSWER on the revision path.
+- **Tiers 0–3:** Deterministic escalate using existing G5 / status / Mistake / Deep Dive — no per-mistake AI.
+- **Offline MCQ JSON batches** when a topic needs more coverage; manual seed/DB update; Neon free-tier safe.
+- Preserve $0 stack, finalize-once G5, and core learning without Phase 7 UI.
+
+Canonical plan: [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md)  
+Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
+
+### 11.2 Locked decisions (Step 0, 2026-11-15)
+
+| Decision | Choice |
 |---|---|
-| **Next phase** | **Phase 7 — AI Assistance (Post-MVP)** |
-| **Intended scope** | Optional in-app question generation, mistake analysis, difficulty tuning, interview question preparation |
-| **Prerequisites** | All MVP Phases 1–6 complete, tested, and verified on production Vercel + Neon (`978cbca`) — **verified in production (2026-11-15)** |
-| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§9, 11; [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §2 |
-| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared per §6.3; ready for Phase 7 initialization when authorized) |
-| **Recommended starting action** | Review Phase 7 requirements with owner when post-MVP development is desired. |
+| Cost / LLM | $0; no hosted LLM APIs or keys |
+| Graded revision | **C1 — MCQ only** |
+| Mistake help | No AI on every mistake; tiered algorithm only |
+| Bank growth | Offline JSON batches → review → seed/manual DB |
+| Non-goals | LLM grading; SHORT_ANSWER as revision grading path; per-mistake generation; auto Question insert; G5 changes |
+
+### 11.3 Step 1 architecture lock (complete 2026-11-15)
+
+Canonical detail: Phase 7 Development Order **§2.5**. Summary:
+
+- **C1:** New Today’s Revision freezes = `REVISION` + `MULTIPLE_CHOICE` only; grading = server index compare.
+- **Legacy OPEN sessions:** Decision B — do not rewrite freeze; SHORT_ANSWER answer path only for already-frozen questions.
+- **Safe mid-conversion:** seed bank has **0** topics with zero REVISION MCQ.
+- **Pattern policy `phase7-pattern-gate-v1`:** unresolved≥3; last 2 completed both RED outcomes (`RESET`/`REINFORCE_AT_1`); same question incorrect≥2; thin MCQ&lt;3 when RED or any unresolved mistake.
+- **API:** extend `GET /api/progress` with read-only `escalations` (max 5 topics); no new tables / no LLM.
+- **Neon:** batch seed only for bank work; no AI write paths.
+- **Step 1 verification:** docs only; no application code changed.
+
+### 11.4 Step 2 bank conversion (JSON complete 2026-11-15)
+
+| Fact | Evidence |
+|---|---|
+| Converted | 50 `REVISION` SHORT_ANSWER → MULTIPLE_CHOICE |
+| Counts | `REVISION\|MULTIPLE_CHOICE` = 105; `REVISION\|SHORT_ANSWER` = 0 |
+| PRACTICE SHORT_ANSWER | 2 unchanged (not in Today’s Revision) |
+| Contract validation | 0 errors (options + index `correctAnswer`) |
+| Script | [`scripts/phase7-c1-convert-sa-to-mcq.mjs`](./scripts/phase7-c1-convert-sa-to-mcq.mjs) |
+| Neon **dev** seed | ✅ `created=0, updated=10, skipped=250` after abandoning empty OPEN Classes session; REVISION MCQ=105, SA=0 |
+| Neon **production** seed | ✅ Owner-authorized 2026-11-15 via `vercel env run --environment production`; idempotent `skipped=260`; MCQ=105, SA=0 (`c1Ok`) |
+
+### 11.5 Execution status
+
+| Step | Status |
+|---|---|
+| **0** Approve Development Order + docs sync | ✅ Complete (2026-11-15) |
+| **1** Architecture lock | ✅ Complete (2026-11-15) |
+| **2** Bank C1 conversion | ✅ JSON + Neon seed (dev + production C1 verified 2026-11-15) |
+| **3** App/API MCQ-only guard | ✅ Complete (2026-11-15) |
+| **4** Pattern-gate helpers + tests | ✅ Complete (2026-11-15) — `test:pattern-gate` 8/8 |
+| **5** Escalate signals API + UI | ✅ Complete (2026-11-15) |
+| **6** Local verification | ✅ Complete (2026-11-15) — ng test 110/110; ng build OK |
+| **7** Production smoke + closeout | 🔄 Prod seed ✅; deploy/smoke/closeout next |
+
+### 11.6 Recommended next action
+
+**Step 7 — Production smoke + closeout:** push Phase 7 to Vercel; smoke production; transfer history to tracker; clear `CURRENT_STEP.md`.
+
+### 11.8 Step 5 notes (2026-11-15)
+
+- Progress payload includes `patternGateVersion` + `escalations` (cap 5); Dashboard **Needs attention** panel.
+- Verified: handler 5/5; FE focused specs 15/15; Neon `.env` smoke returned 5 thin-MCQ escalations (expected while many topics still have &lt;3 REVISION MCQs).
+
+### 11.7 Step 3 notes (2026-11-15)
+
+- `REVISION_FREEZE_QUESTION_WHERE` on new freezes/backfill; Decision B legacy OPEN SHORT_ANSWER retained.
+- Verified: `c1FreezeFilter` + today handler tests; Neon `.env` disposable smoke `ok: true`.
 
 

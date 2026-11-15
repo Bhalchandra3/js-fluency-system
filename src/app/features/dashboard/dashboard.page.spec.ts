@@ -132,6 +132,17 @@ describe('DashboardPage', () => {
     expect(hrefs.some((h) => h.includes('/deep-dive'))).toBeTrue();
   });
 
+  it('renders Phase 7 Needs attention escalations from progress', () => {
+    createPage(() => of(todayRevisionFixture));
+    expect(page.escalations().length).toBe(1);
+    expect(page.patternGateVersion()).toBe('phase7-pattern-gate-v1');
+    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    expect(text).toContain('Needs attention');
+    expect(text).toContain('Repeated red sessions');
+    expect(text).toContain('Thin MCQ coverage');
+    expect(text).toContain('Open Deep Dive');
+  });
+
   it('renders the empty-session state without fabricating analytics', () => {
     createPage(() => of(emptyTodayRevisionFixture), () =>
       of({
@@ -193,6 +204,7 @@ describe('DashboardPage', () => {
           ...progressSummaryFixture,
           dueCount: 3,
           overdueCount: 1,
+          escalations: [],
         }),
     );
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
@@ -200,6 +212,7 @@ describe('DashboardPage', () => {
     expect(text).toContain('3');
     expect(text).toContain('overdue');
     expect(text).not.toContain('Closures');
+    expect(text).not.toContain('Needs attention');
   });
 
   it('surfaces today load failures without staying stuck loading', () => {

@@ -1,9 +1,14 @@
 // api/_lib/progress/progressService.ts
-// Read-only GET /api/progress aggregation (Phase 4 Step 7 — §2.5.5).
+// Read-only GET /api/progress aggregation (Phase 4 Step 7 + Phase 7 Step 5).
 // Does not write DailyProgress, Topic, Mistake, Deep Dive, or schedule fields.
 
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 import { TopicStatus } from '../../../generated/prisma/enums.js';
+import {
+    getEscalationSummary,
+    PATTERN_GATE_VERSION,
+    type TopicEscalation,
+} from '../patternGate/index.js';
 import {
     isRevisionDue,
     isRevisionOverdue,
@@ -22,34 +27,41 @@ export type ProgressSummaryResponse = {
     unresolvedMistakeCount: number;
     dueCount: number;
     overdueCount: number;
+    /** Phase 7 — pattern-gate advisory list (max 5 topics). */
+    patternGateVersion: typeof PATTERN_GATE_VERSION;
+    escalations: TopicEscalation[];
 };
 
 /**
- * Derive dashboard summary metrics from persisted Topic / Mistake / DeepDiveNote.
+ * Derive dashboard summary metrics from persisted Topic / Mistake / DeepDiveNote
+ * plus Phase 7 pattern-gate escalations.
  *
- * Metric definitions (§2.5.5 + Phase 3 today semantics):
+ * Metric definitions (§2.5.5 + Phase 3 today semantics + Phase 7 §2.5.4/§2.5.5):
  * - statusCounts: count of Topic rows by Topic.status
  * - deepDiveCount: count of DeepDiveNote rows
  * - unresolvedMistakeCount: Mistake rows with resolvedAt === null
  * - dueCount: topics with nextRevisionDate due today or earlier (Kolkata; includes overdue)
  * - overdueCount: subset of due topics with nextRevisionDate before today (Kolkata)
+ * - escalations: read-only phase7-pattern-gate-v1 topic cards (cap 5)
  */
 export async function getProgressSummary(
     prisma: DbClient,
     now: Date = new Date(),
 ): Promise<ProgressSummaryResponse> {
-    const [topics, deepDiveCount, unresolvedMistakeCount] = await Promise.all([
-        prisma.topic.findMany({
-            select: {
-                status: true,
-                nextRevisionDate: true,
-            },
-        }),
-        prisma.deepDiveNote.count(),
-        prisma.mistake.count({
-            where: { resolvedAt: null },
-        }),
-    ]);
+    const [topics, deepDiveCount, unresolvedMistakeCount, escalationSummary] =
+        await Promise.all([
+            prisma.topic.findMany({
+                select: {
+                    status: true,
+                    nextRevisionDate: true,
+                },
+            }),
+            prisma.deepDiveNote.count(),
+            prisma.mistake.count({
+                where: { resolvedAt: null },
+            }),
+            getEscalationSummary(prisma),
+        ]);
 
     let green = 0;
     let yellow = 0;
@@ -90,5 +102,7 @@ export async function getProgressSummary(
         unresolvedMistakeCount,
         dueCount,
         overdueCount,
+        patternGateVersion: escalationSummary.patternGateVersion,
+        escalations: escalationSummary.escalations,
     };
 }

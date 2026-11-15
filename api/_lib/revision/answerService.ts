@@ -103,6 +103,8 @@ function evaluateAnswer(input: {
         return { correct: input.selectedAnswer === input.correctAnswer };
     }
 
+    // Phase 7 C1: SHORT_ANSWER grading remains only for questions already frozen on
+    // a legacy OPEN session. New freezes are MCQ-only (todayService loadRevisionQuestions).
     if (input.format === QuestionFormat.SHORT_ANSWER) {
         if (typeof input.selfAssessedCorrect !== 'boolean') {
             throw new RevisionApiError(
