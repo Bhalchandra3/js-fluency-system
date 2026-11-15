@@ -12,18 +12,20 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 6 — Mobile Optimization** (In Progress) |
-| **Active step** | **Step 1: Centralized CSS Variables & Dark/Light Design Tokens** (see `CURRENT_STEP.md`) |
-| **Completed through** | Phase 1–5 complete (2026-11-15) |
-| **Next action** | Implement centralized design tokens and Dark/Light CSS custom properties |
-| **Backend on master** | `fe03fa3` — `feat: complete Phase 5 persistent cloud data and cross-device resumption` (pushed to `origin/master` 2026-11-15) |
+| **Current phase** | **Phase 6 complete** (2026-11-15); **Phase 7 — AI Assistance** ready |
+| **Active step** | None (`CURRENT_STEP.md` cleared per §6.3) |
+| **Completed through** | Phase 1–6 complete (2026-11-15) |
+| **Next action** | Review Phase 7 requirements (post-MVP enhancement) |
+| **Backend on master** | `978cbca` — `feat: complete Phase 6 mobile optimization and dark/light theme system` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **Yes** — all governing Phase 4 exit criteria verified (2026-11-12) |
 | **Phase 5 complete?** | **Yes** — all governing Phase 5 exit criteria verified (2026-11-15) |
+| **Phase 6 complete?** | **Yes** — all governing Phase 6 exit criteria verified (2026-11-15) |
 | **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
 | **Phase 4 baseline (completed)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
 | **Phase 5 baseline (completed)** | [`JavaScript_Fluency_System_Phase_5_Development_Order.md`](./JavaScript_Fluency_System_Phase_5_Development_Order.md) |
+| **Phase 6 baseline (completed)** | [`JavaScript_Fluency_System_Phase_6_Development_Order.md`](./JavaScript_Fluency_System_Phase_6_Development_Order.md) |
 
 ---
 
@@ -36,7 +38,7 @@
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | ✅ Complete (2026-11-15) |
-| **6 — Mobile Optimization** | Responsive/touch/theme polish | 🔄 In Progress |
+| **6 — Mobile Optimization** | Responsive/touch/theme polish | ✅ Complete (2026-11-15) |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
 
 Phase 1 product wording in the original website spec (“static learning dashboard”) is superseded for tracking by the skeleton/infra definition above; later phase intents align with the product specification.
@@ -572,16 +574,61 @@ Canonical plan source: [`JavaScript_Fluency_System_Phase_5_Development_Order.md`
 - [x] Production smoke and cross-device resumption verified on Vercel + Neon.
 - [x] Git committed and pushed to `master` (`fe03fa3`).
 
-### 9.4 Phase 6 Handoff
+### 9.4 Phase 6 Handoff (historical)
 
-Phase 5 is complete (2026-11-15). **Phase 6 — Mobile Optimization** is ready to begin when authorized.
+Phase 5 completed (2026-11-15). Phase 6 executed and completed (2026-11-15) as recorded below.
+
+---
+
+## 10. Phase 6 — Mobile Optimization & Ergonomics (Complete 2026-11-15)
+
+### 10.1 Objective & Summary
+
+Transform the system into a premier mobile learning experience optimized for daily 5–10 minute commutes on mobile screens down to 360px width while preserving desktop fidelity and design elegance:
+- **Centralized Design Token Palette:** Established single source of truth in `src/styles/_tokens.scss` defining comprehensive semantic colors, surfaces, borders, status badges, code styles, and contrast-safe variables for `:root`, `[data-theme='light']`, `[data-theme='dark']`, and `@media (prefers-color-scheme: dark)`.
+- **Reactive Theme System:** Built `ThemeService` managing `'system' | 'light' | 'dark'` modes with automatic system preference listener and `localStorage` (`js_fluency_theme`) persistence. Added header toggle button cycling between Auto 💻, Dark 🌙, and Light ☀️.
+- **Touch Target Ergonomics (44×44px minimum):** Question navigation pills, radio choice cards, action buttons, navigation links, and shell controls hardened to satisfy WCAG 2.1 AAA touch target guidelines for one-handed commute navigation.
+- **Commute Layout Hardening & Zero Horizontal Scroll:** Constrained code snippets (`.revision__code`) with internal scrolling and touch momentum (`-webkit-overflow-scrolling: touch`), adjusted mobile side paddings, and implemented responsive action button stacking for screens `<640px`.
+
+Canonical plan source: [`JavaScript_Fluency_System_Phase_6_Development_Order.md`](./JavaScript_Fluency_System_Phase_6_Development_Order.md)
+
+### 10.2 Execution Order and Verified Delivery
+
+| # | Step | Scope | Verified Evidence |
+|---|---|---|---|
+| **0** | Plan Initialization & Working Record | Created Phase 6 development order, updated `CURRENT_STEP.md` & tracker | `JavaScript_Fluency_System_Phase_6_Development_Order.md` created; tracker updated |
+| **1** | Design Tokens & Style Tokenization | `src/styles/_tokens.scss`, refactored all 6 stylesheets to consume tokens | `npm run build` compiled clean CSS with zero missing variables |
+| **2** | Theme Service & Header Toggle | `ThemeService`, `AppShell` toggle button, accessible labels, persistence | `theme.service.spec.ts` & `app.spec.ts` passing; 107/107 unit tests passed |
+| **3** | Touch Target Hardening | Enlarged `.revision__qbtn` (44px), `.revision__option` (44px whole card), buttons (44px/48px) | Audited hit areas in styles and templates |
+| **4** | Commute Layout & Overflow Prevention | 360px+ viewport containment, `-webkit-overflow-scrolling: touch` for `<pre><code>` | Zero page horizontal scroll on small viewports |
+| **5** | Typography, Code Block & Contrast Polish | High-contrast monospace code block palette, verified WCAG AA contrast | Dark & Light visual clarity verified |
+| **6** | Comprehensive Testing & Verification | Unit suites, production build, backend test suites | 107/107 `ng test` passed, `npm run build` OK, 6 backend suites passed |
+| **7** | Production Deployment & Closeout | Committed (`978cbca`), pushed to `origin/master`, verified live on Vercel | Verified bundle `main-SLPTWHPU.js` and `/api/health` live on `https://js-fluency-system.vercel.app` |
+
+### 10.3 Phase 6 Completion Checklist & Exit Criteria
+
+- [x] Centralized token palette implemented with full Light and Dark theme support.
+- [x] Theme service supports System / Light / Dark modes and persists preference.
+- [x] Header theme toggle allows 1-click theme switching with accessible labels.
+- [x] All interactive elements meet 44×44px minimum touch targets.
+- [x] Zero horizontal page overflow on screens down to 360px width.
+- [x] Code snippet blocks scroll internally without blowing out page layout.
+- [x] All unit test suites pass (`ng test` 107/107).
+- [x] Production build succeeds cleanly (`npm run build`).
+- [x] Verified on production Vercel deployment across mobile and desktop (`main-SLPTWHPU.js`).
+- [x] Tracker and development orders finalized.
+
+### 10.4 Phase 7 Handoff
+
+Phase 6 is complete (2026-11-15). All MVP phases (Phases 1 through 6) are now complete and deployed in production. **Phase 7 — AI Assistance** represents post-MVP optional enhancements.
 
 | Handoff item | Detail |
 |---|---|
-| **Next phase** | **Phase 6 — Mobile Optimization** |
-| **Intended scope** | Touch target ergonomics (minimum 44×44px hit areas), mobile commute layouts (360px+ zero horizontal page scroll, responsive code snippets), theme system (Dark/Light mode via `prefers-color-scheme` + header toggle) |
-| **Prerequisites** | Phase 5 cross-device resumption, cloud data persistence, and serverless hardening deployed on production (`fe03fa3`) — **verified in production (2026-11-15)** |
-| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§5.10, 12.5; [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §2 |
-| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared per §6.3; ready for Phase 6 initialization) |
-| **Recommended starting action** | Review Phase 6 plan, present for owner approval, initialize `CURRENT_STEP.md`, and execute Step 1 (Touch Target & Layout Audit). |
+| **Next phase** | **Phase 7 — AI Assistance (Post-MVP)** |
+| **Intended scope** | Optional in-app question generation, mistake analysis, difficulty tuning, interview question preparation |
+| **Prerequisites** | All MVP Phases 1–6 complete, tested, and verified on production Vercel + Neon (`978cbca`) — **verified in production (2026-11-15)** |
+| **Product sources** | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§9, 11; [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) §2 |
+| **Active working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared per §6.3; ready for Phase 7 initialization when authorized) |
+| **Recommended starting action** | Review Phase 7 requirements with owner when post-MVP development is desired. |
+
 
