@@ -2876,5 +2876,4359 @@
     "codeSnippet": "// linkCycle(): { a, b, unlink() }",
     "correctAnswer": "function linkCycle() {\n  const a = { name: 'a' };\n  const b = { name: 'b' };\n  a.other = b;\n  b.other = a;\n  return {\n    a,\n    b,\n    unlink() {\n      a.other = null;\n      b.other = null;\n    }\n  };\n}",
     "explanation": "unlink clears cross-references; once callers release a/b, nothing keeps the objects alive. (Cycles alone would also be collectible if unreachable, but clearing refs documents intent.)"
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which binding can be redeclared in the same scope with another declaration of the same kind?",
+    "options": [
+      "let",
+      "const",
+      "var",
+      "Only class fields"
+    ],
+    "correctAnswer": "2",
+    "explanation": "var allows redeclaration in the same function/global scope; let/const throw SyntaxError."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What happens if you read a let variable before its declaration in the same block?",
+    "options": [
+      "undefined",
+      "null",
+      "ReferenceError (TDZ)",
+      "It returns the outer scope value"
+    ],
+    "correctAnswer": "2",
+    "explanation": "let/const are in the Temporal Dead Zone until initialized."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which statement about const is correct?",
+    "options": [
+      "The binding cannot be reassigned",
+      "The value is deeply immutable",
+      "const variables are hoisted as undefined",
+      "const only works for objects"
+    ],
+    "correctAnswer": "0",
+    "explanation": "const prevents rebinding; object contents can still mutate."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In browsers, assigning to an undeclared variable in non-strict mode typically:",
+    "options": [
+      "Throws ReferenceError",
+      "Creates a global property",
+      "Creates a block-scoped binding",
+      "Is ignored"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Sloppy mode can create an implicit global; strict mode throws."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which keyword creates a block-scoped binding that must be initialized at declaration?",
+    "options": [
+      "var",
+      "function",
+      "const",
+      "with"
+    ],
+    "correctAnswer": "2",
+    "explanation": "const is block-scoped and requires an initializer."
+  },
+  {
+    "topicSlug": "variables",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Shadowing means:",
+    "options": [
+      "An inner binding hides an outer binding with the same name",
+      "A variable is deleted from memory",
+      "A variable becomes a constant",
+      "A function loses its prototype"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Inner scope names shadow outer ones for the duration of the inner scope."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which of these is NOT a primitive type in JavaScript?",
+    "options": [
+      "symbol",
+      "bigint",
+      "object",
+      "undefined"
+    ],
+    "correctAnswer": "2",
+    "explanation": "object is the non-primitive type; arrays/functions are objects."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does Number.isNaN(NaN) return?",
+    "options": [
+      "false",
+      "true",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Number.isNaN is the reliable NaN check (unlike global isNaN coercion)."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "typeof function(){} returns:",
+    "options": [
+      "object",
+      "function",
+      "callable",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Functions have a historical typeof of \"function\"."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which value is falsy?",
+    "options": [
+      "\"0\"",
+      "[]",
+      "0n",
+      "{}"
+    ],
+    "correctAnswer": "2",
+    "explanation": "0n (BigInt zero) is falsy; nonempty strings/objects/arrays are truthy."
+  },
+  {
+    "topicSlug": "data-types",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.is(-0, 0) returns:",
+    "options": [
+      "true",
+      "false",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Object.is distinguishes -0 and +0 (and treats NaN as equal to NaN)."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is the result of 2 ** 3?",
+    "options": [
+      "6",
+      "8",
+      "9",
+      "5"
+    ],
+    "correctAnswer": "1",
+    "explanation": "** is exponentiation: 2³ = 8."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does the nullish coalescing operator ?? return the right side for?",
+    "options": [
+      "Only null or undefined",
+      "Any falsy value",
+      "Only false",
+      "Only 0"
+    ],
+    "correctAnswer": "0",
+    "explanation": "?? triggers only for null/undefined, unlike ||."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is typeof ([] + [])?",
+    "options": [
+      "object",
+      "array",
+      "string",
+      "number"
+    ],
+    "correctAnswer": "2",
+    "explanation": "[] + [] stringifies to an empty string."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The expression a ||= b assigns when a is:",
+    "options": [
+      "nullish",
+      "falsy",
+      "always",
+      "only undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "||= assigns when the left side is falsy."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does ~5 evaluate to (32-bit)?",
+    "options": [
+      "5",
+      "-5",
+      "-6",
+      "0"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Bitwise NOT ~n equals -(n+1); ~5 === -6."
+  },
+  {
+    "topicSlug": "operators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "void 0 evaluates to:",
+    "options": [
+      "0",
+      "undefined",
+      "null",
+      "NaN"
+    ],
+    "correctAnswer": "1",
+    "explanation": "void always yields undefined; void 0 is a classic undefined idiom."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Boolean(\"false\") is:",
+    "options": [
+      "false",
+      "true",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Nonempty strings are truthy, including \"false\"."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Number(\"\") equals:",
+    "options": [
+      "NaN",
+      "0",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Empty string coerces to 0."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is \"5\" - 2?",
+    "options": [
+      "\"3\"",
+      "3",
+      "NaN",
+      "\"52\""
+    ],
+    "correctAnswer": "1",
+    "explanation": "Subtraction forces numeric coercion → 3."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What is true + false?",
+    "options": [
+      "truefalse",
+      "1",
+      "0",
+      "NaN"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Booleans coerce to 1 and 0 in numeric addition."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "String(null) is:",
+    "options": [
+      "\"undefined\"",
+      "\"null\"",
+      "\"\"",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "String(null) yields the string \"null\"."
+  },
+  {
+    "topicSlug": "type-coercion",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which call makes numeric addition intent clearest?",
+    "options": [
+      "Number(x) + Number(y)",
+      "x + y",
+      "\"\" + x + y",
+      "String(x) - String(y)"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Explicit Number() avoids + concatenation surprises."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which of these NaN checks is true?",
+    "options": [
+      "NaN === NaN",
+      "Object.is(NaN, NaN)",
+      "null === undefined",
+      "[] === []"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Object.is(NaN, NaN) is true; === is false for NaN."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "0 == \"0\" is:",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "NaN"
+    ],
+    "correctAnswer": "0",
+    "explanation": "== coerces the string to a number."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "null == undefined is:",
+    "options": [
+      "false",
+      "true",
+      "TypeError",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "== treats null and undefined as equal to each other."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "[] == false is:",
+    "options": [
+      "false",
+      "true",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "[] becomes \"\" then 0; false becomes 0."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "When should you prefer === over ==?",
+    "options": [
+      "Almost always for predictable checks",
+      "Never",
+      "Only for objects",
+      "Only for null"
+    ],
+    "correctAnswer": "0",
+    "explanation": "=== skips coercion and avoids most == footguns."
+  },
+  {
+    "topicSlug": "equality",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "SameValueZero (used by Set/Map key equality) treats -0 and 0 as:",
+    "options": [
+      "different",
+      "equal",
+      "NaN",
+      "errors"
+    ],
+    "correctAnswer": "1",
+    "explanation": "SameValueZero equates -0 and 0 and also equates NaN to NaN."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does switch use for matching cases?",
+    "options": [
+      "==",
+      "===",
+      "Object.is",
+      "typeof"
+    ],
+    "correctAnswer": "1",
+    "explanation": "switch uses strict equality (===)."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which value is falsy in an if condition?",
+    "options": [
+      "[]",
+      "\"0\"",
+      "0",
+      "\"false\""
+    ],
+    "correctAnswer": "2",
+    "explanation": "0 is falsy; nonempty strings and arrays are truthy."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What happens if a matching switch case omits break (and no return)?",
+    "options": [
+      "Only that case runs",
+      "Execution falls through to following cases",
+      "SyntaxError",
+      "The switch restarts"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Without break/return, switch falls through."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The ternary operator condition ? a : b is best used for:",
+    "options": [
+      "Side-effect chains",
+      "Choosing between two expressions",
+      "Replacing all if/else blocks",
+      "Declaring variables"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Ternary selects an expression value; prefer if for multi-statement branches."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "if (0) { A } else if (\"\") { B } else { C } runs:",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "Nothing"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Both 0 and \"\" are falsy, so else C runs."
+  },
+  {
+    "topicSlug": "conditionals",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Logical AND (a && b) returns:",
+    "options": [
+      "Always a boolean",
+      "The first falsy operand, else the last operand",
+      "Always b",
+      "Only true/false of a"
+    ],
+    "correctAnswer": "1",
+    "explanation": "&& yields the deciding operand value, not necessarily a boolean."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "for...of iterates over:",
+    "options": [
+      "Object keys",
+      "Iterable values",
+      "Prototype methods",
+      "Only arrays"
+    ],
+    "correctAnswer": "1",
+    "explanation": "for...of consumes iterable values (arrays, strings, maps, etc.)."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "for...in is primarily intended for:",
+    "options": [
+      "Array indexes only",
+      "Enumerable property keys",
+      "Map entries",
+      "Promise results"
+    ],
+    "correctAnswer": "1",
+    "explanation": "for...in walks enumerable keys; prefer for...of for array values."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does break do in a loop?",
+    "options": [
+      "Skips one iteration",
+      "Exits the loop immediately",
+      "Restarts the loop",
+      "Throws"
+    ],
+    "correctAnswer": "1",
+    "explanation": "break terminates the nearest loop/switch."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does continue do?",
+    "options": [
+      "Exits the function",
+      "Skips the rest of the current iteration",
+      "Deletes the loop variable",
+      "Pauses the event loop"
+    ],
+    "correctAnswer": "1",
+    "explanation": "continue jumps to the next iteration."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A for(;;) loop without a break is:",
+    "options": [
+      "A syntax error",
+      "An infinite loop",
+      "Impossible",
+      "Only valid in modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Missing exit conditions yield an infinite loop."
+  },
+  {
+    "topicSlug": "loops",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which loop guarantees the body runs at least once?",
+    "options": [
+      "for",
+      "while",
+      "do...while",
+      "for...of"
+    ],
+    "correctAnswer": "2",
+    "explanation": "do...while evaluates the condition after the first body run."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What are function declarations hoisted as?",
+    "options": [
+      "Uninitialized bindings",
+      "Callable functions for the whole scope",
+      "Only after the line runs",
+      "Arrow functions"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Function declarations are hoisted and can be called earlier in their scope."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A function expression assigned to const is:",
+    "options": [
+      "Fully hoisted as callable",
+      "In the TDZ until initialized",
+      "Always global",
+      "Not allowed"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The const binding is in TDZ; the function exists after initialization."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Rest parameters (...args) must:",
+    "options": [
+      "Be first",
+      "Be last",
+      "Be exactly two",
+      "Be numbers only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest must be the final formal parameter."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Default parameters are evaluated:",
+    "options": [
+      "Once at parse time",
+      "When the argument is undefined (each call)",
+      "Only for null",
+      "Only in strict mode"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Defaults run per call when the argument is undefined."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "arguments inside a modern non-arrow function refers to:",
+    "options": [
+      "An array of defaults",
+      "An array-like of passed args",
+      "The return value",
+      "The prototype"
+    ],
+    "correctAnswer": "1",
+    "explanation": "arguments is array-like; prefer rest parameters."
+  },
+  {
+    "topicSlug": "functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does return without a value produce?",
+    "options": [
+      "null",
+      "0",
+      "undefined",
+      "throws"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Bare return yields undefined."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Block scope applies to which bindings?",
+    "options": [
+      "var only",
+      "let and const",
+      "function declarations in all engines identically",
+      "globalThis only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "let/const are block-scoped."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Lexical scope means name resolution is based on:",
+    "options": [
+      "Call site",
+      "Where the code was written/nested",
+      "CPU registers",
+      "Prototype chain only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "JavaScript uses lexical (static) scoping."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A free variable in a function is:",
+    "options": [
+      "Always global",
+      "Resolved from an outer lexical environment",
+      "Always undefined",
+      "A var only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Closures capture free variables from outer scopes."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Module scope means top-level bindings are:",
+    "options": [
+      "Always on window",
+      "Scoped to the module, not global",
+      "Shared with every script tag",
+      "Deleted after import"
+    ],
+    "correctAnswer": "1",
+    "explanation": "ES modules keep top-level bindings module-private unless exported."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "var inside a block in a function is scoped to:",
+    "options": [
+      "That block",
+      "The function (or global)",
+      "The module only",
+      "The prototype"
+    ],
+    "correctAnswer": "1",
+    "explanation": "var ignores block boundaries."
+  },
+  {
+    "topicSlug": "scope",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "eval can affect scope, which is why it is:",
+    "options": [
+      "Required for modules",
+      "Generally discouraged",
+      "Faster than closures",
+      "Needed for const"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Dynamic scope mutation via eval is a maintainability/security smell."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "var declarations are hoisted and initialized as:",
+    "options": [
+      "The assigned value",
+      "undefined until assignment",
+      "null",
+      "TDZ error always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "var is hoisted as undefined."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "let/const are hoisted but remain unusable until init due to:",
+    "options": [
+      "Garbage collection",
+      "The Temporal Dead Zone",
+      "Prototype shadowing",
+      "Module caching"
+    ],
+    "correctAnswer": "1",
+    "explanation": "TDZ prevents access before initialization."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which is callable before its line in the same scope?",
+    "options": [
+      "const fn = () => {}",
+      "let fn = function(){}",
+      "function fn(){}",
+      "class Fn {}"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Function declarations are hoisted as initialized functions."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Accessing a class before its declaration throws because:",
+    "options": [
+      "Classes are not hoisted at all",
+      "They are hoisted into TDZ like let",
+      "typeof returns undefined safely",
+      "They become var"
+    ],
+    "correctAnswer": "1",
+    "explanation": "class declarations are TDZ-bound."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Duplicate function declarations in non-strict scripts:",
+    "options": [
+      "Always SyntaxError",
+      "Later declaration can overwrite earlier",
+      "Delete both",
+      "Convert to arrows"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Duplicate function declarations can overwrite in sloppy scripts; prefer const expressions."
+  },
+  {
+    "topicSlug": "hoisting",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "typeof x for a var x declared later yields:",
+    "options": [
+      "ReferenceError",
+      "\"undefined\"",
+      "\"object\"",
+      "\"var\""
+    ],
+    "correctAnswer": "1",
+    "explanation": "var is hoisted so typeof sees undefined, not TDZ."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Array.isArray([]) returns:",
+    "options": [
+      "false",
+      "true",
+      "object",
+      "TypeError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Array.isArray is the reliable array check."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "What does arr.length = 0 do?",
+    "options": [
+      "Throws",
+      "Clears the array in place",
+      "Creates a copy",
+      "Freezes the array"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Setting length to 0 truncates the array."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "sparse arrays have:",
+    "options": [
+      "No holes",
+      "Empty slots that are not own properties",
+      "Only undefined values as own props",
+      "Fixed size"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Holes are missing indexes, distinct from explicit undefined."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which method mutates the original array?",
+    "options": [
+      "map",
+      "filter",
+      "splice",
+      "concat"
+    ],
+    "correctAnswer": "2",
+    "explanation": "splice mutates; map/filter/concat return new arrays."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "arr.at(-1) returns:",
+    "options": [
+      "First element",
+      "Last element",
+      "undefined always",
+      "Negative index error"
+    ],
+    "correctAnswer": "1",
+    "explanation": "at() supports negative indexes from the end."
+  },
+  {
+    "topicSlug": "arrays",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Comparing two arrays with === checks:",
+    "options": [
+      "Deep equality",
+      "Same reference",
+      "Same length only",
+      "JSON equality"
+    ],
+    "correctAnswer": "1",
+    "explanation": "=== compares object identity, not contents."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.keys({a:1,b:2}) returns:",
+    "options": [
+      "[\"a\",\"b\"]",
+      "[[\"a\",1],[\"b\",2]]",
+      "values only",
+      "symbols"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Object.keys returns enumerable own string keys."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.assign(target, source) will:",
+    "options": [
+      "Deep clone nested objects",
+      "Shallow copy enumerable own props into target",
+      "Freeze target",
+      "Ignore source"
+    ],
+    "correctAnswer": "1",
+    "explanation": "assign is a shallow merge into target."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A property with value undefined still:",
+    "options": [
+      "Is omitted from Object.keys",
+      "Appears as an own key if set",
+      "Equals a missing key",
+      "Cannot exist"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Explicit undefined is still an own property."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "obj?.prop safely short-circuits when obj is:",
+    "options": [
+      "0",
+      "null or undefined",
+      "false",
+      "\"\""
+    ],
+    "correctAnswer": "1",
+    "explanation": "Optional chaining stops for nullish receivers."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.freeze makes an object:",
+    "options": [
+      "Deeply immutable always",
+      "Shallowly non-extensible/non-writable (own data props)",
+      "A primitive",
+      "A Proxy"
+    ],
+    "correctAnswer": "1",
+    "explanation": "freeze is shallow for nested objects."
+  },
+  {
+    "topicSlug": "objects",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Computed property keys [expr] are evaluated:",
+    "options": [
+      "At class parse only",
+      "When the object literal runs",
+      "Never",
+      "Only for symbols"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Computed keys run when creating the object."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Strings are:",
+    "options": [
+      "Mutable character arrays",
+      "Immutable primitives",
+      "Always objects",
+      "References to buffers only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "String primitives are immutable; methods return new strings."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "\"hi\".length counts:",
+    "options": [
+      "UTF-16 code units",
+      "Grapheme clusters always",
+      "Bytes in UTF-8",
+      "Code points always"
+    ],
+    "correctAnswer": "0",
+    "explanation": "length is UTF-16 code units (surrogate pairs count as 2)."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Template literals can:",
+    "options": [
+      "Only interpolate strings",
+      "Embed expressions with ${}",
+      "Mutate outer const",
+      "Replace modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "${} interpolates expressions."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "\"a\" + 1 yields:",
+    "options": [
+      "NaN",
+      "\"a1\"",
+      "2",
+      "TypeError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "+ with a string concatenates after string coercion."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "str.includes(\"x\") is case-sensitive:",
+    "options": [
+      "No",
+      "Yes",
+      "Only in Unicode mode",
+      "Only for ASCII"
+    ],
+    "correctAnswer": "1",
+    "explanation": "includes matches exact code-unit sequences."
+  },
+  {
+    "topicSlug": "strings",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "String.raw`\\n` typically contains:",
+    "options": [
+      "A newline character",
+      "Backslash and n",
+      "Nothing",
+      "A regex"
+    ],
+    "correctAnswer": "1",
+    "explanation": "String.raw preserves raw escapes."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "const {a:b} = {a:1} sets:",
+    "options": [
+      "a=1",
+      "b=1",
+      "both a and b",
+      "nothing"
+    ],
+    "correctAnswer": "1",
+    "explanation": "a:b renames property a into binding b."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "const [x, ...rest] = [1,2,3] gives rest:",
+    "options": [
+      "2",
+      "[2,3]",
+      "[1,2,3]",
+      "3"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Array rest collects remaining elements."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Default in const {a=2} = {} assigns a:",
+    "options": [
+      "undefined",
+      "2",
+      "null",
+      "throws"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Defaults apply when the value is undefined."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Nested destructuring const {user:{n}} = {user:{n:5}} yields n:",
+    "options": [
+      "5",
+      "undefined",
+      "{n:5}",
+      "throws"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Nested patterns dig into objects."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Destructuring null throws:",
+    "options": [
+      "Never",
+      "TypeError when unpacking object/array patterns",
+      "SyntaxError always",
+      "ReferenceError"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You cannot destructure null/undefined as object/array."
+  },
+  {
+    "topicSlug": "destructuring",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Swapping with [a,b] = [b,a] works because:",
+    "options": [
+      "Temps are implicit in the pattern",
+      "var is required",
+      "It mutates Array.prototype",
+      "It needs eval"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Destructuring assignment can swap without an explicit temp."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "[...[1,2], 3] produces:",
+    "options": [
+      "[1,2,3]",
+      "[[1,2],3]",
+      "[3,1,2]",
+      "Error"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Array spread expands elements into a new array."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "{...{a:1}, a:2}.a equals:",
+    "options": [
+      "1",
+      "2",
+      "undefined",
+      "[1,2]"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Later properties overwrite earlier ones."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Spreading a string \"...abc\" in an array yields:",
+    "options": [
+      "[\"abc\"]",
+      "[\"a\",\"b\",\"c\"]",
+      "Error",
+      "[97,98,99]"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Strings are iterable by code units."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Spread of a non-iterable object into an array:",
+    "options": [
+      "Copies keys",
+      "Throws TypeError",
+      "Yields []",
+      "Yields null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Array spread requires an iterable."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Function call f(...args) passes:",
+    "options": [
+      "One array argument",
+      "Elements as individual args",
+      "JSON string",
+      "Only first element"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Call spread expands into argument list."
+  },
+  {
+    "topicSlug": "spread",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Shallow copy of an array via spread:",
+    "options": [
+      "Clones nested objects deeply",
+      "Copies references of nested objects",
+      "Freezes the copy",
+      "Removes holes specially always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Spread is a shallow copy."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In function f(...xs), xs is:",
+    "options": [
+      "arguments object",
+      "A real array of remaining args",
+      "A string",
+      "Only used in browsers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest parameters create a true Array."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Rest property const {a, ...other} = obj puts unused keys in:",
+    "options": [
+      "a",
+      "other",
+      "arguments",
+      "prototype"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Object rest collects remaining enumerable own keys."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Rest element must be:",
+    "options": [
+      "First in the pattern",
+      "Last in the pattern",
+      "Middle only",
+      "Numeric"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest is only allowed at the end."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Rest vs arguments: rest is preferred because:",
+    "options": [
+      "It is array-like only",
+      "It is a real array and clearer with defaults",
+      "It ignores arrow functions differently always",
+      "It is slower on purpose"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest is a proper Array and works cleanly with modern param lists."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Can you have multiple rest parameters?",
+    "options": [
+      "Yes",
+      "No",
+      "Only in async",
+      "Only with types"
+    ],
+    "correctAnswer": "1",
+    "explanation": "At most one rest parameter is allowed."
+  },
+  {
+    "topicSlug": "rest",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object rest excludes:",
+    "options": [
+      "Enumerable string keys not picked",
+      "Symbol keys (typically) and already picked keys",
+      "All nested values",
+      "Inherited keys only always included"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rest skips picked keys; symbol handling differs from string enums."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A callback is:",
+    "options": [
+      "Always async",
+      "A function passed to be called later (or immediately)",
+      "Only used with promises",
+      "A DOM event only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Callbacks are functions provided for later/immediate invocation."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Callback hell refers to:",
+    "options": [
+      "Too many nested callbacks",
+      "Missing return",
+      "Strict mode",
+      "Module cycles"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Deep nesting of callbacks hurts readability; promises/async help."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Error-first Node callbacks conventionally pass:",
+    "options": [
+      "(result, err)",
+      "(err, result)",
+      "Only throw",
+      "Only events"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Node style is (error, result)."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Calling a callback twice for one operation can:",
+    "options": [
+      "Always be safe",
+      "Cause duplicate side effects/bugs",
+      "Convert to async/await",
+      "Disable GC"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Idempotency matters; guard against double invocation."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "setTimeout(fn, 0) means fn runs:",
+    "options": [
+      "Immediately on the stack",
+      "After current stack, as a macrotask",
+      "Before microtasks",
+      "Synchronously mid-expression"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Timer callbacks are macrotasks."
+  },
+  {
+    "topicSlug": "callbacks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Passing a method as a bare callback often loses:",
+    "options": [
+      "Its name",
+      "Its this binding",
+      "Its prototype",
+      "Its length"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Extracting obj.method passes a bare function; bind or wrap it."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A higher-order function:",
+    "options": [
+      "Cannot return values",
+      "Takes and/or returns functions",
+      "Must be async",
+      "Must use this"
+    ],
+    "correctAnswer": "1",
+    "explanation": "HOFs operate on functions as values."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Array.prototype.map is higher-order because:",
+    "options": [
+      "It mutates",
+      "It accepts a callback function",
+      "It only works on numbers",
+      "It blocks the event loop"
+    ],
+    "correctAnswer": "1",
+    "explanation": "map takes a mapper function."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Function composition typically:",
+    "options": [
+      "Nests calls so output feeds next function",
+      "Deletes closures",
+      "Uses eval",
+      "Requires classes"
+    ],
+    "correctAnswer": "0",
+    "explanation": "compose(f,g)(x) ≈ f(g(x))."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Partial application means:",
+    "options": [
+      "Running half a loop",
+      "Fixing some arguments and returning a function",
+      "Freezing an object",
+      "Awaiting a promise"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You pre-fill args and return a specialized function."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Closures enable HOFs by:",
+    "options": [
+      "Providing private captured state for returned functions",
+      "Removing lexical scope",
+      "Forcing globals",
+      "Disabling GC"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Returned functions keep outer variables."
+  },
+  {
+    "topicSlug": "higher-order-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which is NOT typically a HOF usage?",
+    "options": [
+      "map/filter/reduce",
+      "middleware wrappers",
+      "Declaring a number constant",
+      "debounce helpers"
+    ],
+    "correctAnswer": "2",
+    "explanation": "A bare number constant is not HOF usage."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "map vs forEach: map",
+    "options": [
+      "Mutates and returns undefined",
+      "Returns a new array of mapped values",
+      "Sorts in place",
+      "Only filters"
+    ],
+    "correctAnswer": "1",
+    "explanation": "map builds a new array; forEach is for side effects."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "filter keeps elements where callback returns:",
+    "options": [
+      "falsy",
+      "truthy",
+      "0",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Truthy predicate results are kept."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "reduce without initial value uses:",
+    "options": [
+      "0",
+      "First element as starter (careful on empty)",
+      "null",
+      "undefined always safely"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Empty arrays throw without an initial value."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "find returns:",
+    "options": [
+      "All matches",
+      "First matching element or undefined",
+      "Index only",
+      "Boolean"
+    ],
+    "correctAnswer": "1",
+    "explanation": "find stops at the first match."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "some returns true when:",
+    "options": [
+      "Every element matches",
+      "At least one element matches",
+      "None match",
+      "Array is empty always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "some is existential; every is universal."
+  },
+  {
+    "topicSlug": "array-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "flat(1) will:",
+    "options": [
+      "Deep flatten infinitely",
+      "Concat one level of nested arrays",
+      "Remove holes only",
+      "Sort"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Depth argument controls flattening levels."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.entries(obj) returns:",
+    "options": [
+      "Keys only",
+      "[key,value] pairs for enumerable own string keys",
+      "Values only",
+      "Prototype methods"
+    ],
+    "correctAnswer": "1",
+    "explanation": "entries pairs keys with values."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.fromEntries(entries) builds:",
+    "options": [
+      "A Map only",
+      "A plain object from key/value pairs",
+      "An array",
+      "A Set"
+    ],
+    "correctAnswer": "1",
+    "explanation": "fromEntries is the inverse of entries for objects."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.hasOwn(obj, key) checks:",
+    "options": [
+      "Prototype chain",
+      "Own property presence",
+      "Enumerable only always",
+      "Types"
+    ],
+    "correctAnswer": "1",
+    "explanation": "hasOwn is the modern own-property check."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.values ignores:",
+    "options": [
+      "Own enumerable string values",
+      "Symbol-keyed values and inherited props (typically)",
+      "Everything",
+      "Numbers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "values mirrors keys’ enumeration rules."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.create(null) creates an object:",
+    "options": [
+      "With Object.prototype",
+      "With null prototype",
+      "Frozen",
+      "That is not extensible"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Null-prototype objects avoid inherited props."
+  },
+  {
+    "topicSlug": "object-methods",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.seal allows:",
+    "options": [
+      "Adding properties",
+      "Deleting properties",
+      "Changing writable existing values (if writable)",
+      "Reconfiguring all keys freely"
+    ],
+    "correctAnswer": "2",
+    "explanation": "seal prevents add/remove; writable values may still change."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In a regular function call f(), this in non-strict mode is often:",
+    "options": [
+      "undefined",
+      "global object",
+      "f.prototype",
+      "null always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Sloppy-mode bare calls get the global object; strict gets undefined."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "obj.method() sets this to:",
+    "options": [
+      "global",
+      "obj",
+      "method",
+      "undefined always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Method call syntax sets this to the receiver."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Arrow functions take this from:",
+    "options": [
+      "Call site",
+      "Lexical enclosing scope",
+      "prototype",
+      "new.target"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Arrows have lexical this."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "bind(obj) returns:",
+    "options": [
+      "The same function mutated",
+      "A new function with bound this",
+      "A promise",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "bind creates a bound wrapper function."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "With new Fn(), this inside Fn is:",
+    "options": [
+      "global",
+      "The newly created instance",
+      "Fn.prototype only",
+      "undefined in sloppy"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Constructors receive the new object as this."
+  },
+  {
+    "topicSlug": "this-keyword",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "call vs apply: apply passes args as:",
+    "options": [
+      "A list",
+      "An array-like",
+      "A Map",
+      "Only one object"
+    ],
+    "correctAnswer": "1",
+    "explanation": "apply takes an array-like of arguments; call takes a list."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Arrow functions cannot be used as:",
+    "options": [
+      "Callbacks",
+      "Constructors with new",
+      "Array mappers",
+      "Promise then handlers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Arrows have no [[Construct]]; new throws."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Arrows do not have their own:",
+    "options": [
+      "Lexical scope",
+      "arguments object (use rest)",
+      "Name always",
+      "Body"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Prefer rest over arguments in arrows."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Concise body () => expr returns:",
+    "options": [
+      "undefined always",
+      "expr’s value",
+      "A block",
+      "this"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Concise bodies implicitly return the expression."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Block body () => { x } returns:",
+    "options": [
+      "x",
+      "undefined unless return",
+      "x always",
+      "throws"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Blocks need explicit return."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Arrow methods on objects still get this from:",
+    "options": [
+      "The object automatically",
+      "Lexical scope where defined",
+      "prototype",
+      "global always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Defining an arrow as an object field does not bind this to the object."
+  },
+  {
+    "topicSlug": "arrow-functions",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which is valid?",
+    "options": [
+      "new (()=>{})",
+      "([a,b]) => a+b",
+      "function => {}",
+      "=> 1"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Parameter destructuring in arrows is valid."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A closure is formed when a function:",
+    "options": [
+      "Uses only local consts",
+      "References variables from an outer scope that outlive the outer call",
+      "Uses var",
+      "Is async"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Closing over outer bindings preserves them."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Classic loop-closure bug with var i in setTimeout prints:",
+    "options": [
+      "0,1,2",
+      "Mostly the final i",
+      "ReferenceError",
+      "Nothing"
+    ],
+    "correctAnswer": "1",
+    "explanation": "var is function-scoped; all timeouts share one i."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "let in for-loops helps because:",
+    "options": [
+      "It disables closures",
+      "Each iteration gets a new binding",
+      "It is faster always",
+      "It removes TDZ"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Per-iteration bindings fix the classic bug."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Module-level closures are used to:",
+    "options": [
+      "Force globals",
+      "Hide private state behind exported functions",
+      "Stop GC forever intentionally",
+      "Replace prototypes"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Revealing module pattern / ESM privacy."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Returning a function that increments a captured counter demonstrates:",
+    "options": [
+      "Prototypal inheritance",
+      "Stateful closure",
+      "Hoisting of const",
+      "Microtasks"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Captured mutable state persists across calls."
+  },
+  {
+    "topicSlug": "closures",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Closures retain references, which can cause:",
+    "options": [
+      "Faster GC always",
+      "Memory retention if large data is captured unnecessarily",
+      "TDZ errors",
+      "Strict mode off"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Avoid capturing huge objects longer than needed."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "ES module imports are:",
+    "options": [
+      "Mutable live bindings (for ESM exports)",
+      "Always deep clones",
+      "Only strings",
+      "Evaluated after the whole app exits"
+    ],
+    "correctAnswer": "0",
+    "explanation": "ESM imports are live read-only views of exports."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "import happens:",
+    "options": [
+      "At runtime anywhere",
+      "Statically at load/parse (top-level)",
+      "Only inside functions always",
+      "After first export call"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Static import is hoisted/link-time."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "dynamic import() returns:",
+    "options": [
+      "The module namespace object via a Promise",
+      "A sync object",
+      "A string path",
+      "undefined"
+    ],
+    "correctAnswer": "0",
+    "explanation": "import() is async and promise-based."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "export default allows:",
+    "options": [
+      "Multiple defaults per module",
+      "One default export per module",
+      "Only classes",
+      "No imports"
+    ],
+    "correctAnswer": "1",
+    "explanation": "At most one default export."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Circular ESM dependencies:",
+    "options": [
+      "Are impossible",
+      "Can work via live bindings but need care",
+      "Crash Node always",
+      "Delete exports"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Partial initialization can surprise you."
+  },
+  {
+    "topicSlug": "modules",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "CommonJS module.exports vs ESM:",
+    "options": [
+      "Identical runtime linking",
+      "Different systems; interop needs care",
+      "Same static analysis",
+      "No difference in browsers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "CJS and ESM interop is a common footgun."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "throw 1 in JS:",
+    "options": [
+      "Is invalid",
+      "Throws the number as the rejection/exception value",
+      "Only allows Error objects",
+      "Returns 1"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You can throw any value; Error objects are preferred."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "catch (e) binds e for:",
+    "options": [
+      "The whole function",
+      "The catch block",
+      "The module",
+      "Forever"
+    ],
+    "correctAnswer": "1",
+    "explanation": "catch bindings are block-scoped to catch."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "finally runs:",
+    "options": [
+      "Only on success",
+      "Only on failure",
+      "After try/catch whether success or throw (unless process aborts)",
+      "Never with return"
+    ],
+    "correctAnswer": "2",
+    "explanation": "finally runs on both paths; be careful overriding returns."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "async function rejections are handled with:",
+    "options": [
+      "only try/catch around await or .catch",
+      "for loops",
+      "Object.freeze",
+      "var"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Unhandled promise rejections are dangerous."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Error.cause is useful to:",
+    "options": [
+      "Replace stacks",
+      "Chain underlying errors",
+      "Disable GC",
+      "Freeze messages"
+    ],
+    "correctAnswer": "1",
+    "explanation": "cause links wrapped errors."
+  },
+  {
+    "topicSlug": "error-handling",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Optional catch binding catch { } means:",
+    "options": [
+      "Errors are ignored silently with no binding",
+      "Syntax error",
+      "Only TypeError",
+      "Rethrows always"
+    ],
+    "correctAnswer": "0",
+    "explanation": "You may omit the binding when unused."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Synchronous code means:",
+    "options": [
+      "It always uses promises",
+      "Each step finishes before the next starts on the call stack",
+      "It never blocks",
+      "It runs only in workers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Sync code runs to completion on the stack without yielding."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Async operations let the engine:",
+    "options": [
+      "Skip the event loop",
+      "Continue other work while waiting on I/O/timers",
+      "Disable GC",
+      "Remove the call stack"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Async frees the thread while waiting."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Blocking the main thread with a tight loop will:",
+    "options": [
+      "Improve FPS",
+      "Freeze UI/event handling",
+      "Speed promises",
+      "Force microtasks first always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Long sync work blocks rendering and events."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which is typically asynchronous in browsers?",
+    "options": [
+      "1 + 1",
+      "fetch network I/O",
+      "object property read",
+      "JSON.parse of small strings"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Network I/O is async."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Callbacks/promises/async-await are tools to:",
+    "options": [
+      "Make CPU faster",
+      "Coordinate async completion",
+      "Replace the heap",
+      "Disable strict mode"
+    ],
+    "correctAnswer": "1",
+    "explanation": "They structure async control flow."
+  },
+  {
+    "topicSlug": "sync-vs-async",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "async functions always return:",
+    "options": [
+      "void",
+      "A Promise",
+      "A generator",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Even returning a bare value wraps it in a resolved promise."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The call stack tracks:",
+    "options": [
+      "DOM nodes",
+      "Function execution frames",
+      "Only promises",
+      "Network sockets"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Each call pushes a frame; return pops it."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Stack overflow usually means:",
+    "options": [
+      "Too much heap",
+      "Unbounded recursion/deep calls",
+      "Too many microtasks",
+      "GC failure only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Excessive stack frames blow the stack."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "While a sync function runs, the stack:",
+    "options": [
+      "Is empty",
+      "Holds its frame until it returns",
+      "Only holds timers",
+      "Is shared with other processes’ JS"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Frames remain until return."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Throwing an exception unwinds:",
+    "options": [
+      "Only microtasks",
+      "Stack frames until caught or top-level",
+      "The heap",
+      "Module graph"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Exceptions pop frames during unwind."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The stack is LIFO meaning:",
+    "options": [
+      "First call returns first",
+      "Last call returns first",
+      "Random order",
+      "Heap order"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Last-in, first-out."
+  },
+  {
+    "topicSlug": "call-stack",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Logging between nested calls shows:",
+    "options": [
+      "Parallel stacks",
+      "Depth of nested frames",
+      "Only async IDs",
+      "GC roots"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Nested calls deepen the stack."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The event loop’s job is to:",
+    "options": [
+      "Compile TypeScript",
+      "Move tasks from queues onto the call stack when empty",
+      "Allocate heap only",
+      "Replace modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It schedules macrotasks/microtasks onto an empty stack."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Microtasks generally run:",
+    "options": [
+      "After the next macrotask only tomorrow",
+      "After the current stack clears, before the next macrotask rendering turn",
+      "Instead of GC",
+      "Only in workers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Microtask checkpoint runs before rendering/next macrotask."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.then callbacks are typically:",
+    "options": [
+      "Macrotasks",
+      "Microtasks",
+      "Sync always",
+      "Idle callbacks"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Promise reactions are microtasks."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "setTimeout(fn, 0) schedules a:",
+    "options": [
+      "Microtask",
+      "Macrotask/timer",
+      "Immediate sync call",
+      "Animation frame always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Timers are macrotasks."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A never-ending microtask chain can:",
+    "options": [
+      "Starve rendering/macrotasks",
+      "Speed the UI",
+      "Clear the stack forever safely",
+      "Disable promises"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Microtask monopolies starve the page."
+  },
+  {
+    "topicSlug": "event-loop",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "requestAnimationFrame is aligned with:",
+    "options": [
+      "Microtasks only",
+      "Rendering/paint timing",
+      "GC only",
+      "Module eval"
+    ],
+    "correctAnswer": "1",
+    "explanation": "rAF hooks into the render pipeline."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "setTimeout is provided by:",
+    "options": [
+      "ECMAScript call stack alone",
+      "Host Web API / timer host",
+      "JSON",
+      "Object.prototype"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Timers are host APIs, not language builtins."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "DOM events are delivered via:",
+    "options": [
+      "Only generators",
+      "Host event target + task queues",
+      "const bindings",
+      "Prototype mutation"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The browser queues event callbacks."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "fetch is implemented by:",
+    "options": [
+      "Array.prototype",
+      "The host networking stack exposed as a Web API",
+      "eval",
+      "localStorage only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "fetch is a host-provided async API."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Web APIs run work:",
+    "options": [
+      "Only on the JS stack",
+      "Outside JS, then queue callbacks",
+      "Inside JSON.parse",
+      "In the prototype chain"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Host work completes then enqueues JS callbacks."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "document.querySelector is:",
+    "options": [
+      "A pure ECMAScript function",
+      "A DOM Web API",
+      "A Node-only binding",
+      "Deprecated always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "DOM APIs are host objects."
+  },
+  {
+    "topicSlug": "web-apis",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Why teach Web APIs with the event loop?",
+    "options": [
+      "They schedule async callbacks into queues",
+      "They replace promises",
+      "They freeze objects",
+      "They disable modules"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Host APIs are the source of many async tasks."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "queueMicrotask(fn) schedules fn as a:",
+    "options": [
+      "Macrotask",
+      "Microtask",
+      "Idle task",
+      "Worker thread"
+    ],
+    "correctAnswer": "1",
+    "explanation": "queueMicrotask enqueues a microtask."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "MutationObserver callbacks are:",
+    "options": [
+      "Macrotasks",
+      "Microtasks",
+      "Sync only",
+      "Animation frames"
+    ],
+    "correctAnswer": "1",
+    "explanation": "MO notifications are microtasks."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "After a promise resolves, then handlers run as:",
+    "options": [
+      "Sync immediately mid-expression always",
+      "Microtasks",
+      "setTimeout(0) only",
+      "rAF"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Promise jobs are microtasks."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Microtasks drain:",
+    "options": [
+      "One per animation frame only",
+      "Completely before next macrotask (checkpoint)",
+      "Never",
+      "Only on click"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The checkpoint empties the microtask queue."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Creating a resolved Promise.then inside a microtask:",
+    "options": [
+      "Waits for the next timer",
+      "Can enqueue more microtasks in the same turn",
+      "Becomes a macrotask",
+      "Throws"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Microtasks can chain more microtasks."
+  },
+  {
+    "topicSlug": "microtasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Prefer microtasks when you need:",
+    "options": [
+      "Multi-second delay",
+      "Soon-after-stack continuity before paint/timers",
+      "Disk I/O",
+      "WebSocket frames only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Microtasks are for prompt async continuation."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Which is a macrotask source?",
+    "options": [
+      "Promise.then",
+      "setTimeout",
+      "queueMicrotask",
+      "await microtask continuation"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Timers are classic macrotasks; promise jobs are microtasks."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "setInterval schedules repeating:",
+    "options": [
+      "Microtasks",
+      "Macrotasks",
+      "GC cycles",
+      "Imports"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Intervals enqueue timer macrotasks."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "MessageChannel / setImmediate-style tricks often schedule:",
+    "options": [
+      "Only sync code",
+      "Macrotasks",
+      "Class constructors",
+      "JSON"
+    ],
+    "correctAnswer": "1",
+    "explanation": "They are used as macrotask schedulers."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "UI event handlers are queued as:",
+    "options": [
+      "Microtasks always",
+      "Tasks (macrotask-like) by the browser",
+      "Generators",
+      "Modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Events are tasks in the HTML event loop model."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Between macrotasks, the browser may:",
+    "options": [
+      "Never paint",
+      "Render/update the page",
+      "Delete promises",
+      "Disable await"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rendering can happen between tasks."
+  },
+  {
+    "topicSlug": "macrotasks",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A long macrotask delays:",
+    "options": [
+      "Only GC",
+      "Subsequent tasks and interactivity",
+      "Only module load",
+      "Only JSON"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Heavy tasks hurt responsiveness."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A Promise is in one of:",
+    "options": [
+      "open/closed",
+      "pending/fulfilled/rejected",
+      "sync/async",
+      "hot/cold"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Those are the three states."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "then returns:",
+    "options": [
+      "undefined",
+      "A new promise for chaining",
+      "The same promise mutated",
+      "A generator"
+    ],
+    "correctAnswer": "1",
+    "explanation": "then always enables chaining via a new promise."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A thrown error inside then:",
+    "options": [
+      "Is swallowed silently always",
+      "Rejects the promise returned by then",
+      "Crashes Node always",
+      "Converts to setTimeout"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Exceptions become rejections downstream."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.resolve(value) when value is a thenable:",
+    "options": [
+      "Ignores it",
+      "Adopts its state",
+      "Throws",
+      "Wraps twice always visibly"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Resolving a thenable assimilates it."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "finally(handler) runs on:",
+    "options": [
+      "Fulfillment only",
+      "Rejection only",
+      "Either settle, preserving fulfillment/rejection outcome (with caveats)",
+      "Never"
+    ],
+    "correctAnswer": "2",
+    "explanation": "finally observes settlement; return values have special rules."
+  },
+  {
+    "topicSlug": "promises",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Unhandled rejection means:",
+    "options": [
+      "No catch/then rejection handler observed",
+      "GC failed",
+      "Stack overflow",
+      "Strict mode off"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Always attach error handling."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "await can be used:",
+    "options": [
+      "In any function",
+      "Only inside async functions (or top-level modules)",
+      "Only in constructors",
+      "Only in arrows without async"
+    ],
+    "correctAnswer": "1",
+    "explanation": "await needs async or top-level module context."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "await pauses the async function until:",
+    "options": [
+      "The next macrotask only",
+      "The promise settles, then resumes as a microtask continuation",
+      "GC runs",
+      "DOM paints"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Await yields and resumes via promise jobs."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "try/catch around await catches:",
+    "options": [
+      "Only sync errors",
+      "Rejections of the awaited promise",
+      "Only TypeError",
+      "Nothing"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rejected awaits throw into try/catch."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "async function foo(){ return 1 } → foo() yields:",
+    "options": [
+      "1",
+      "Promise resolved to 1",
+      "undefined",
+      "Generator"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Return values are wrapped in promises."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Sequential awaits in a loop:",
+    "options": [
+      "Always parallelize",
+      "Wait one-by-one (latency adds)",
+      "Ignore errors",
+      "Use macrotasks only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Use Promise.all for parallelism when safe."
+  },
+  {
+    "topicSlug": "async-await",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "await 5 (non-promise) will:",
+    "options": [
+      "Throw",
+      "Wrap/resolve immediately to 5",
+      "Hang",
+      "Return 5 sync without async fn"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Non-promises are treated like resolved values."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.all fails fast when:",
+    "options": [
+      "Any input rejects",
+      "All reject",
+      "Any fulfills",
+      "Timeout"
+    ],
+    "correctAnswer": "0",
+    "explanation": "First rejection rejects the all promise."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.all([]) resolves to:",
+    "options": [
+      "undefined",
+      "[]",
+      "null",
+      "rejects"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Empty iterable resolves to []."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.all preserves:",
+    "options": [
+      "Settlement order of completion",
+      "Input order of results",
+      "Only rejected indexes",
+      "Random order"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Results align with input order."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "If one input is a non-promise value, Promise.all:",
+    "options": [
+      "Throws",
+      "Treats it as already fulfilled",
+      "Ignores it",
+      "Converts to null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Values are wrapped via Promise.resolve semantics."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.all is best when:",
+    "options": [
+      "You need all successes or fail together",
+      "You want every outcome even on failure",
+      "You want the first success only",
+      "You want the first settle only"
+    ],
+    "correctAnswer": "0",
+    "explanation": "allSettled/race/any cover other cases."
+  },
+  {
+    "topicSlug": "promise-all",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Rejection reason of Promise.all is:",
+    "options": [
+      "An array of errors",
+      "The first rejection reason",
+      "Always AggregateError",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Fail-fast surfaces that first error."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.allSettled resolves when:",
+    "options": [
+      "First fulfills",
+      "All inputs settle (fulfill or reject)",
+      "First rejects",
+      "Never if any rejects"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It waits for every settlement."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "each result object has:",
+    "options": [
+      "only value",
+      "status and value or reason",
+      "only reason",
+      "stack only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "status is fulfilled/rejected with value/reason."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "allSettled([]) resolves to:",
+    "options": [
+      "[]",
+      "undefined",
+      "rejects",
+      "null"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Empty → []."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Use allSettled when:",
+    "options": [
+      "One failure should cancel all",
+      "You need every outcome for reporting",
+      "You want fastest success",
+      "You want first settle"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Great for fan-out with partial failures."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "When an input promise rejects, Promise.allSettled:",
+    "options": [
+      "Rejects immediately",
+      "Still fulfills with a rejected descriptor for that input",
+      "Throws synchronously",
+      "Drops that input"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Input rejections become {status:\"rejected\", reason} entries; allSettled fulfills."
+  },
+  {
+    "topicSlug": "promise-allsettled",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Compared to all, allSettled is:",
+    "options": [
+      "Fail-fast",
+      "Wait-for-all outcomes",
+      "First-success",
+      "First-settle"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It never fail-fasts on input rejection."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.race settles with:",
+    "options": [
+      "All results",
+      "The first settled input (fulfill or reject)",
+      "The last settled",
+      "Only fulfillments"
+    ],
+    "correctAnswer": "1",
+    "explanation": "First settlement wins."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "If the fastest input rejects, race:",
+    "options": [
+      "Still waits",
+      "Rejects with that reason",
+      "Ignores it",
+      "Converts to null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rejection can win the race."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.race([]) :",
+    "options": [
+      "Resolves []",
+      "Rejects immediately",
+      "Pending forever",
+      "Throws sync always"
+    ],
+    "correctAnswer": "2",
+    "explanation": "No competitors → forever pending."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Common race use case:",
+    "options": [
+      "Timeout vs fetch",
+      "Deep clone",
+      "Module init only",
+      "Array sort"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Timeout patterns use race."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Later settlements after the winner:",
+    "options": [
+      "Change the race result",
+      "Are ignored by the race promise",
+      "Restart race",
+      "Throw"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Only the first settlement matters."
+  },
+  {
+    "topicSlug": "promise-race",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "race does not cancel other promises automatically:",
+    "options": [
+      "False— they always abort",
+      "True—you must abort manually (e.g. AbortSignal)",
+      "Only in browsers",
+      "Only in Node"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Racing does not equal cancellation."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.any fulfills with:",
+    "options": [
+      "First fulfillment",
+      "First rejection",
+      "All fulfillments",
+      "All settlements"
+    ],
+    "correctAnswer": "0",
+    "explanation": "First success wins."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "If all inputs reject, any rejects with:",
+    "options": [
+      "First reason",
+      "AggregateError of reasons",
+      "null",
+      "TypeError always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "AggregateError collects rejections."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Promise.any([]) rejects with:",
+    "options": [
+      "[]",
+      "AggregateError",
+      "forever pending",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Empty any rejects with AggregateError."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "any ignores earlier rejections if a later fulfillment happens:",
+    "options": [
+      "No",
+      "Yes",
+      "Only with await",
+      "Only in workers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Rejections are ignored until all fail or one fulfills."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Prefer any when:",
+    "options": [
+      "You have multiple mirrors and need any success",
+      "You need fail-fast on first error",
+      "You need all values ordered",
+      "You need all outcomes"
+    ],
+    "correctAnswer": "0",
+    "explanation": "any is first-success."
+  },
+  {
+    "topicSlug": "promise-any",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Unlike race, any does not fulfill on:",
+    "options": [
+      "Fulfillment",
+      "A fast rejection",
+      "Timeouts that fulfill",
+      "Cached values"
+    ],
+    "correctAnswer": "1",
+    "explanation": "A rejection cannot win any."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "fetch returns:",
+    "options": [
+      "JSON",
+      "A Promise of a Response",
+      "A string body",
+      "XMLHttpRequest"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You get a Response promise."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "response.ok is false for:",
+    "options": [
+      "200",
+      "HTTP 404/500 statuses",
+      "Only network errors",
+      "CORS preflight only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "HTTP error statuses still resolve; check ok/status."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Network failure (DNS etc.) causes fetch to:",
+    "options": [
+      "Resolve with ok:false",
+      "Reject the promise",
+      "Return null",
+      "Hang forever always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Transport failures reject."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "To read JSON you typically:",
+    "options": [
+      "response.json()",
+      "JSON.parse(response)",
+      "response.bodyText",
+      "await fetch.json"
+    ],
+    "correctAnswer": "0",
+    "explanation": "json() is an async body parser."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "AbortController lets you:",
+    "options": [
+      "Clone responses",
+      "Cancel an in-flight fetch via signal",
+      "Force HTTP 200",
+      "Disable CORS"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Pass signal to fetch to abort."
+  },
+  {
+    "topicSlug": "fetch",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "CORS errors appear as:",
+    "options": [
+      "Detailed body JSON always",
+      "Network-like failures opaque to JS (type errors)",
+      "HTTP 299",
+      "Resolved empty objects"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Browser hides cross-origin details."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "An execution context contains:",
+    "options": [
+      "Only the heap",
+      "Variable environment, lexical environment, this binding (conceptually)",
+      "Only the DOM",
+      "Only modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Contexts track environments and this."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Global execution context is created:",
+    "options": [
+      "Per function call only",
+      "When the script/module starts",
+      "Only after await",
+      "Never in modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "There is a global/module context at start."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Calling a function creates:",
+    "options": [
+      "A new heap",
+      "A new execution context pushed on the stack",
+      "A new event loop",
+      "A new prototype root"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Each call pushes a context/frame."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "this binding is determined:",
+    "options": [
+      "Only by lexical position for all functions",
+      "By how the function is called (except arrows)",
+      "By typeof",
+      "By var"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Call-site rules set this for non-arrows."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "eval can create:",
+    "options": [
+      "Only microtasks",
+      "A new execution context (direct eval nuances)",
+      "A Worker always",
+      "A Proxy"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Direct eval interacts with the current context."
+  },
+  {
+    "topicSlug": "execution-context",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "After a function returns, its context is:",
+    "options": [
+      "Kept forever",
+      "Popped from the stack (unless closed-over env retained)",
+      "Moved to heap as bytecode",
+      "Frozen on globalThis"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Frames pop; closed-over environments may remain."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A lexical environment holds:",
+    "options": [
+      "Only this",
+      "Environment record + outer reference",
+      "Only prototypes",
+      "Only timers"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It’s the structure behind lexical scope."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Outer reference links to:",
+    "options": [
+      "The call stack top always",
+      "The enclosing lexical environment",
+      "globalThis only",
+      "The heap root only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Scope chain walks outer refs."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Block scopes introduce:",
+    "options": [
+      "No environments",
+      "New declarative environments for let/const",
+      "Only var slots",
+      "Only modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Blocks get their own env records."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Closures keep alive:",
+    "options": [
+      "The entire call stack",
+      "The lexical environment(s) they reference",
+      "All timers",
+      "The DOM"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Closed-over envs remain reachable."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Module environment records store:",
+    "options": [
+      "Imported/exported bindings",
+      "Only DOM nodes",
+      "Only promises",
+      "CPU registers"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Modules have their own env records."
+  },
+  {
+    "topicSlug": "lexical-environment",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Identifier resolution walks:",
+    "options": [
+      "Prototypes first always",
+      "Lexical environment chain",
+      "Only globals",
+      "JSON"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Name lookup is lexical."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Almost all objects have:",
+    "options": [
+      "A class keyword",
+      "An internal [[Prototype]] link",
+      "A fixed size",
+      "A module path"
+    ],
+    "correctAnswer": "1",
+    "explanation": "[[Prototype]] powers inheritance."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "obj.__proto__ is:",
+    "options": [
+      "The only standard way",
+      "A legacy accessor; prefer Object.getPrototypeOf",
+      "A primitive",
+      "Frozen always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Prefer getPrototypeOf/setPrototypeOf."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Fn.prototype is used when:",
+    "options": [
+      "Calling Fn()",
+      "new Fn() to set instance [[Prototype]]",
+      "await Fn",
+      "import Fn"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Constructor .prototype becomes instance proto."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.create(proto) creates an object whose [[Prototype]] is:",
+    "options": [
+      "Object.prototype always",
+      "proto",
+      "null always",
+      "Fn"
+    ],
+    "correctAnswer": "1",
+    "explanation": "create sets the prototype explicitly."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Own vs inherited properties:",
+    "options": [
+      "Same for hasOwn",
+      "hasOwn sees only own; in/[[Get]] can see inherited",
+      "in ignores inherited",
+      "for...in ignores inherited"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Distinguish own vs prototype data."
+  },
+  {
+    "topicSlug": "prototype",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Changing Fn.prototype after instances exist:",
+    "options": [
+      "Always updates old instances’ [[Prototype]]",
+      "Does not retroactively change existing [[Prototype]] links",
+      "Deletes instances",
+      "Freezes Fn"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Existing instance links stay as assigned at creation."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Property lookup walks:",
+    "options": [
+      "Only own keys",
+      "Own then [[Prototype]] chain until null",
+      "Only Object.prototype",
+      "Modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The chain ends at null."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.prototype [[Prototype]] is:",
+    "options": [
+      "Object",
+      "null",
+      "Function",
+      "Array"
+    ],
+    "correctAnswer": "1",
+    "explanation": "The root of typical chains is null above Object.prototype."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Shadowing on an instance:",
+    "options": [
+      "Deletes the prototype property",
+      "Hides the prototype property for that object",
+      "Freezes the chain",
+      "Throws"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Own properties take precedence."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "for...in enumerates:",
+    "options": [
+      "Only symbols",
+      "Enumerable props including inherited (typically)",
+      "Only own non-enumerable",
+      "Map keys"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It walks enumerable names up the chain."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object.getPrototypeOf(Object.prototype) is:",
+    "options": [
+      "Object",
+      "null",
+      "Function.prototype",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Top of the default chain."
+  },
+  {
+    "topicSlug": "prototype-chain",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "A null-prototype object’s chain length beyond itself is:",
+    "options": [
+      "Long",
+      "Zero further prototypes",
+      "Infinite",
+      "Two"
+    ],
+    "correctAnswer": "1",
+    "explanation": "[[Prototype]] is null immediately."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "class declarations are:",
+    "options": [
+      "Fully hoisted like function declarations",
+      "TDZ-bound like let",
+      "var-like",
+      "Not parsed"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Classes are in TDZ until evaluated."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "class methods are on:",
+    "options": [
+      "Each instance as own props by default",
+      "The prototype (non-instance own typically)",
+      "globalThis",
+      "JSON"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Prototype methods are shared."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "constructor runs when:",
+    "options": [
+      "You call Class()",
+      "You new Class() (or super construct)",
+      "You import",
+      "You await Class"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Construction invokes constructor."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "static methods live on:",
+    "options": [
+      "Instances",
+      "The constructor function itself",
+      "Object.prototype",
+      "Modules only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "static attaches to the class/function."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Private fields #x are:",
+    "options": [
+      "On the prototype publicly",
+      "Truly private per instance/brand",
+      "Same as _x convention",
+      "JSON serializable always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Private fields are not accessible outside."
+  },
+  {
+    "topicSlug": "classes",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "extends sets up:",
+    "options": [
+      "Only copying methods shallowly once",
+      "Prototype linkage between child and parent",
+      "A Worker",
+      "A Proxy always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "extends wires the prototype chain."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "super.method() in a child calls:",
+    "options": [
+      "global function",
+      "Parent prototype method with child’s this",
+      "Child private only",
+      "Object.assign"
+    ],
+    "correctAnswer": "1",
+    "explanation": "super dispatches to parent while keeping this."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "In derived constructors, super() must run before:",
+    "options": [
+      "class parse",
+      "Using this",
+      "import",
+      "export"
+    ],
+    "correctAnswer": "1",
+    "explanation": "this is uninitialized until super()."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Prototypal inheritance shares behavior via:",
+    "options": [
+      "Deep clones",
+      "[[Prototype]] delegation",
+      "eval",
+      "JSON"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Delegation, not copy by default."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Overriding a method means:",
+    "options": [
+      "Deleting parent forever",
+      "Defining a same-named method closer on the chain",
+      "Freezing parent",
+      "Changing typeof"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Closer definitions shadow parents."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "instanceof checks:",
+    "options": [
+      "Constructor name strings",
+      "Prototype chain membership vs .prototype",
+      "Only own keys",
+      "Modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "It walks the instance’s prototype chain."
+  },
+  {
+    "topicSlug": "inheritance",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Composition over inheritance suggests:",
+    "options": [
+      "Always use extends",
+      "Prefer assembling behaviors/objects over deep hierarchies",
+      "Ban prototypes",
+      "Use only classes"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Favor flexible composition."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "An iterable must implement:",
+    "options": [
+      "then",
+      "Symbol.iterator returning an iterator",
+      "next only on the object itself always",
+      "map"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Iterable protocol uses Symbol.iterator."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "iterator.next() returns:",
+    "options": [
+      "A value only",
+      "{ value, done }",
+      "A promise always",
+      "boolean"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Iterator result objects have value/done."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "for...of requires:",
+    "options": [
+      "An iterable",
+      "Only arrays",
+      "Only generators",
+      "A Map exclusively"
+    ],
+    "correctAnswer": "0",
+    "explanation": "for...of consumes iterables."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Array iterators are:",
+    "options": [
+      "One-shot and fail on mutation always",
+      "Iterable iterators",
+      "Not restartable without new iterator",
+      "Synced to JSON"
+    ],
+    "correctAnswer": "2",
+    "explanation": "Get a fresh iterator to restart."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "for...of over a string yields:",
+    "options": [
+      "UTF-8 bytes",
+      "Unicode code points",
+      "Only BMP chars as numbers",
+      "Grapheme clusters always"
+    ],
+    "correctAnswer": "1",
+    "explanation": "for...of on strings iterates by Unicode code point."
+  },
+  {
+    "topicSlug": "iterators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Breaking for...of early:",
+    "options": [
+      "Leaks the iterator always",
+      "May call iterator.return if present",
+      "Freezes the iterable",
+      "Deletes Symbol.iterator"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Abrupt completion can close iterators."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "function* declares a:",
+    "options": [
+      "Async function",
+      "Generator function producing iterators",
+      "Class",
+      "Proxy"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Generators return generator iterators."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "yield pauses the generator until:",
+    "options": [
+      "GC",
+      "next() resumes it",
+      "await always",
+      "import"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Generators are cooperative via next."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "The first next() runs until:",
+    "options": [
+      "Return",
+      "The first yield (or completion)",
+      "Timeout",
+      "throw"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Execution starts at first next."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "generator.throw(err) injects:",
+    "options": [
+      "A microtask",
+      "An exception at the yield point",
+      "A new prototype",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "throw can be caught inside the generator."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "yield* delegates to:",
+    "options": [
+      "Another iterable/generator",
+      "Only arrays",
+      "Only promises",
+      "JSON"
+    ],
+    "correctAnswer": "0",
+    "explanation": "yield* forwards iteration."
+  },
+  {
+    "topicSlug": "generators",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Generators are useful for:",
+    "options": [
+      "Lazy sequences and custom iteration",
+      "Replacing the event loop",
+      "Deleting prototypes",
+      "CORS"
+    ],
+    "correctAnswer": "0",
+    "explanation": "They shine for lazy/custom iteration."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Map keys can be:",
+    "options": [
+      "Only strings",
+      "Any value (object identity for objects)",
+      "Only numbers",
+      "Only symbols"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Maps use SameValueZero and object identity."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "map.get(key) when missing returns:",
+    "options": [
+      "null",
+      "undefined",
+      "throws",
+      "0"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Missing keys → undefined."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Map preserves:",
+    "options": [
+      "Insertion order of keys",
+      "Sorted order always",
+      "Prototype order",
+      "Random order"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Iteration is insertion-ordered."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "map.size is:",
+    "options": [
+      "A method",
+      "A number accessor of entry count",
+      "Always 0",
+      "A string"
+    ],
+    "correctAnswer": "1",
+    "explanation": "size tracks entries."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Using an object as a Map key compares by:",
+    "options": [
+      "Deep equality",
+      "Reference identity",
+      "JSON.stringify",
+      "keys list"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Different object values are different keys."
+  },
+  {
+    "topicSlug": "map",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Object vs Map: Map is better when keys are:",
+    "options": [
+      "Only valid identifiers",
+      "Arbitrary values / frequent add-delete",
+      "Only symbols on prototypes",
+      "Only arrays"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Maps handle arbitrary keys and churn well."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Set stores:",
+    "options": [
+      "Key/value pairs",
+      "Unique values",
+      "Only strings",
+      "Duplicates allowed"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Sets are unique collections."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "set.has(NaN) after adding NaN is:",
+    "options": [
+      "false",
+      "true",
+      "throws",
+      "null"
+    ],
+    "correctAnswer": "1",
+    "explanation": "SameValueZero treats NaN as equal."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "set.add returns:",
+    "options": [
+      "boolean",
+      "The set (chainable)",
+      "size",
+      "undefined"
+    ],
+    "correctAnswer": "1",
+    "explanation": "add returns the Set."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Converting array to unique values:",
+    "options": [
+      "new Set(arr) then [...set]",
+      "arr.unique()",
+      "Object.keys(arr)",
+      "arr.flat()"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Set dedupes then spread back."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "set.size counts:",
+    "options": [
+      "Capacity",
+      "Number of values",
+      "Prototypes",
+      "Buckets only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "size is the cardinality."
+  },
+  {
+    "topicSlug": "set",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Iteration order of Set is:",
+    "options": [
+      "Sorted",
+      "Insertion order",
+      "Hash order unstable always",
+      "Reverse"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Insertion-ordered like Map."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakMap keys must be:",
+    "options": [
+      "Strings",
+      "Objects",
+      "Numbers",
+      "Booleans"
+    ],
+    "correctAnswer": "1",
+    "explanation": "WeakMap keys are objects (held weakly)."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakMap is not iterable because:",
+    "options": [
+      "It is slow",
+      "Weakness precludes reliable enumeration",
+      "It stores only primitives",
+      "It is sync only"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You cannot list weak keys."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "If a WeakMap key object becomes unreachable:",
+    "options": [
+      "Entry remains forever",
+      "Entry may be GC’ed",
+      "Throws",
+      "Converts to Map"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Weak references allow GC of entries."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakMap common use:",
+    "options": [
+      "Private data associated with objects",
+      "Counting strings",
+      "Sorting numbers",
+      "CORS flags"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Metadata without preventing GC."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "weakmap.set returns:",
+    "options": [
+      "boolean",
+      "The WeakMap",
+      "undefined",
+      "key"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Chainable set."
+  },
+  {
+    "topicSlug": "weakmap",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Can you use a primitive string as WeakMap key?",
+    "options": [
+      "Yes",
+      "No",
+      "Only in modules",
+      "Only with new String always required?"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Primitives are not valid WeakMap keys."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakSet holds:",
+    "options": [
+      "Unique weakly held objects",
+      "Any primitives",
+      "Key/value pairs",
+      "Strings only"
+    ],
+    "correctAnswer": "0",
+    "explanation": "WeakSet values are objects."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakSet is iterable?",
+    "options": [
+      "Yes",
+      "No",
+      "Only with for...of polyfill guaranteed",
+      "Only in Node"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Not enumerable/iterable."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "weakset.has(obj) after GC of obj:",
+    "options": [
+      "May become false",
+      "Always true",
+      "Throws",
+      "Returns null"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Collected objects disappear."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Typical WeakSet use:",
+    "options": [
+      "Marking objects seen (e.g. cycles) without retaining them",
+      "Storing passwords",
+      "Sorting",
+      "HTTP caching strings"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Presence flags without strong retention."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "weakset.add(1) :",
+    "options": [
+      "Works",
+      "TypeError",
+      "Adds number weakly",
+      "Converts to object"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Primitives invalid."
+  },
+  {
+    "topicSlug": "weakset",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakSet vs Set: WeakSet",
+    "options": [
+      "Keeps objects alive strongly",
+      "Allows GC of members",
+      "Stores primitives",
+      "Is iterable"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Weakness is the point."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Reachability means:",
+    "options": [
+      "A value can be accessed from roots via references",
+      "A value is in TDZ",
+      "A value is frozen",
+      "A value is a primitive"
+    ],
+    "correctAnswer": "0",
+    "explanation": "GC cares about reachability."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Detaching references helps:",
+    "options": [
+      "Keep memory forever",
+      "Allow GC of unused objects",
+      "Speed typeof",
+      "Disable modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Drop refs you no longer need."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Closures can retain memory by:",
+    "options": [
+      "Capturing large outer objects",
+      "Using const",
+      "Using ===",
+      "Using modules only"
+    ],
+    "correctAnswer": "0",
+    "explanation": "Avoid capturing unused large data."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Detached DOM nodes retained by JS handlers cause:",
+    "options": [
+      "Faster paint",
+      "Leaks until references drop",
+      "Automatic WeakMap",
+      "CORS errors"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Classic browser leak pattern."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Choosing Map vs object for dynamic keys can affect:",
+    "options": [
+      "Only colors",
+      "Allocation/churn characteristics",
+      "Prototype legality only",
+      "Await"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Data structure choice impacts memory patterns."
+  },
+  {
+    "topicSlug": "memory-management",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "manual memory free like free() in C:",
+    "options": [
+      "Is required",
+      "Is not exposed; GC manages",
+      "Is done via delete always freeing immediately",
+      "Is await free"
+    ],
+    "correctAnswer": "1",
+    "explanation": "JS is garbage-collected."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Mark-and-sweep roughly:",
+    "options": [
+      "Deletes random objects",
+      "Marks reachable objects then sweeps unmarked",
+      "Compacts only stacks",
+      "Runs only on await"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Classic GC algorithm family."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "GC timing is:",
+    "options": [
+      "Developer-controlled exactly",
+      "Nondeterministic / engine-driven",
+      "Once per click",
+      "Disabled in modules"
+    ],
+    "correctAnswer": "1",
+    "explanation": "You don’t schedule GC precisely in app code."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Circular references between reachable objects:",
+    "options": [
+      "Always leak forever in modern engines",
+      "Are collectable if unreachable from roots",
+      "Disable GC",
+      "Require WeakMap"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Reachability from roots matters, not cycles alone."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "FinalizationRegistry lets you:",
+    "options": [
+      "Force GC sync",
+      "Register cleanup callbacks after GC (best-effort)",
+      "Pin objects forever",
+      "Disable WeakRef"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Finalizers are best-effort."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "WeakRef provides:",
+    "options": [
+      "Strong pinning",
+      "A weak reference to an object",
+      "A deep clone",
+      "A promise"
+    ],
+    "correctAnswer": "1",
+    "explanation": "deref may return undefined after GC."
+  },
+  {
+    "topicSlug": "garbage-collection",
+    "sessionType": "REVISION",
+    "format": "MULTIPLE_CHOICE",
+    "prompt": "Optimizing for GC usually means:",
+    "options": [
+      "Creating more temporary objects always",
+      "Reducing allocation churn and retaining less",
+      "Calling gc() in browsers portably",
+      "Using eval"
+    ],
+    "correctAnswer": "1",
+    "explanation": "Less garbage → less collector work."
   }
 ]
