@@ -1,3 +1,4 @@
+@use './styles/tokens';
 @use './styles/revision-today';
 @use './styles/dashboard';
 @use './styles/mistakes';
@@ -17,5 +18,8 @@ body {
 }
 
 body {
-  background: #eef2f5;
+  background: var(--app-bg);
+  color: var(--app-ink);
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

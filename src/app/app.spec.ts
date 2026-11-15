@@ -46,4 +46,14 @@ describe('App', () => {
     expect(tokenStore.clearToken).toHaveBeenCalled();
     expect(router.navigateByUrl).toHaveBeenCalledWith('/setup');
   });
+
+  it('should toggle theme when toggleTheme is clicked', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+    const initial = app.themeService.theme();
+
+    app.toggleTheme();
+    expect(app.themeService.theme()).not.toBe(initial);
+  });
 });

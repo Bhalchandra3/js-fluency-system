@@ -12,10 +12,10 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 5 complete** (2026-11-15); **Phase 6 — Mobile Optimization** ready |
-| **Active step** | None (`CURRENT_STEP.md` cleared per §6.3) |
+| **Current phase** | **Phase 6 — Mobile Optimization** (In Progress) |
+| **Active step** | **Step 1: Centralized CSS Variables & Dark/Light Design Tokens** (see `CURRENT_STEP.md`) |
 | **Completed through** | Phase 1–5 complete (2026-11-15) |
-| **Next action** | Plan and begin Phase 6 — Mobile Optimization (when authorized) |
+| **Next action** | Implement centralized design tokens and Dark/Light CSS custom properties |
 | **Backend on master** | `fe03fa3` — `feat: complete Phase 5 persistent cloud data and cross-device resumption` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
@@ -36,7 +36,7 @@
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | ✅ Complete (2026-11-15) |
-| **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
+| **6 — Mobile Optimization** | Responsive/touch/theme polish | 🔄 In Progress |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
 
 Phase 1 product wording in the original website spec (“static learning dashboard”) is superseded for tracking by the skeleton/infra definition above; later phase intents align with the product specification.

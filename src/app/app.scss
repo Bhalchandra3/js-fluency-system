@@ -5,9 +5,10 @@
 
 .app-shell {
   min-height: 100vh;
-  background: #eef2f5;
-  color: #15202b;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--app-bg);
+  color: var(--app-ink);
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .app-shell__header {
@@ -17,8 +18,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.85rem 1.1rem;
-  border-bottom: 1px solid #d5dde3;
-  background: #ffffff;
+  border-bottom: 1px solid var(--header-border);
+  background: var(--header-bg);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .app-shell__brand {
@@ -36,43 +38,121 @@
 }
 
 .app-shell__nav a {
-  color: #334155;
+  color: var(--nav-link-ink);
   text-decoration: none;
   font-weight: 600;
   padding: 0.2rem 0;
   border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.app-shell__nav a:hover {
+  color: var(--nav-link-hover);
 }
 
 .app-shell__nav a.is-active {
-  color: #0b6e4f;
-  border-bottom-color: #0b6e4f;
+  color: var(--nav-link-active);
+  border-bottom-color: var(--nav-link-active);
 }
 
 .app-shell__nav a:focus-visible,
 .app-shell__brand:focus-visible,
-.app-shell__disconnect:focus-visible {
-  outline: 2px solid #1d4ed8;
+.app-shell__disconnect:focus-visible,
+.app-shell__theme-btn:focus-visible {
+  outline: 2px solid var(--app-focus);
   outline-offset: 2px;
+}
+
+.app-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-shell__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-line);
+  border-radius: 6px;
+  color: var(--app-ink);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-height: 2.2rem;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: var(--app-accent);
+    color: var(--app-accent);
+  }
+}
+
+.app-shell__theme-icon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .app-shell__disconnect {
   background: none;
-  border: 1px solid #d5dde3;
-  border-radius: 4px;
-  color: #5b6770;
+  border: 1px solid var(--app-line);
+  border-radius: 6px;
+  color: var(--app-muted);
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  padding: 0.15rem 0.5rem;
+  min-height: 2.2rem;
+  padding: 0.25rem 0.65rem;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 
   &:hover {
-    color: #9b1c1c;
-    border-color: #f0b4b4;
+    color: var(--status-red-ink);
+    border-color: var(--status-red-line);
   }
 }
 
 .app-shell__main {
   padding: 0.25rem 0 2rem;
+}
+
+@media (max-width: 640px) {
+  .app-shell__header {
+    padding: 0.75rem 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .app-shell__brand {
+    font-size: 1.1rem;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .app-shell__nav {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.45rem 0.65rem;
+  }
+
+  .app-shell__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.25rem 0.45rem;
+    font-size: 0.95rem;
+  }
+
+  .app-shell__theme-btn,
+  .app-shell__disconnect {
+    min-height: 2.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .app-shell__main {
+    padding: 0 0 2rem;
+  }
 }

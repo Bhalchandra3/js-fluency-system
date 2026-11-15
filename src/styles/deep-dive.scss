@@ -1,27 +1,28 @@
 .deep-dive {
-  --ink: #15202b;
-  --muted: #5b6770;
-  --line: #d5dde3;
-  --surface: #f7f9fb;
-  --accent: #0b6e4f;
-  --error: #9b1c1c;
-  --ok: #0b6e4f;
-  --focus: #1d4ed8;
-  --warn-bg: #fff4e5;
-  --warn-ink: #8a4b00;
-  --due-bg: #e7f3ec;
-  --red-bg: #fdecec;
-  --red-ink: #9b1c1c;
-  --yellow-bg: #fff4e5;
-  --yellow-ink: #8a4b00;
-  --green-bg: #e7f3ec;
-  --green-ink: #0b6e4f;
+  --ink: var(--app-ink);
+  --muted: var(--app-muted);
+  --line: var(--app-line);
+  --surface: var(--app-surface);
+  --surface-subtle: var(--app-surface-subtle);
+  --accent: var(--app-accent);
+  --error: var(--status-red-ink);
+  --ok: var(--status-green-ink);
+  --focus: var(--app-focus);
+  --warn-bg: var(--status-yellow-bg);
+  --warn-ink: var(--status-yellow-ink);
+  --due-bg: var(--status-green-bg);
+  --red-bg: var(--status-red-bg);
+  --red-ink: var(--status-red-ink);
+  --yellow-bg: var(--status-yellow-bg);
+  --yellow-ink: var(--status-yellow-ink);
+  --green-bg: var(--status-green-bg);
+  --green-ink: var(--status-green-ink);
 
   max-width: 64rem;
   margin: 0 auto;
   padding: 1.25rem 1rem 3rem;
   color: var(--ink);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
 }
 
@@ -106,7 +107,7 @@
   padding: 0.85rem 0.95rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: #fff;
+  background: var(--app-card-bg);
   cursor: pointer;
   font: inherit;
   color: inherit;
@@ -143,7 +144,8 @@
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--surface);
+  color: var(--ink);
   font-weight: 600;
   font-size: 0.85rem;
 }
@@ -151,19 +153,19 @@
 .deep-dive__pill--red {
   background: var(--red-bg);
   color: var(--red-ink);
-  border-color: #f0b4b4;
+  border-color: var(--status-red-line);
 }
 
 .deep-dive__pill--yellow {
   background: var(--yellow-bg);
   color: var(--yellow-ink);
-  border-color: #f0c48a;
+  border-color: var(--status-yellow-line);
 }
 
 .deep-dive__pill--green {
   background: var(--green-bg);
   color: var(--green-ink);
-  border-color: #9ec9b3;
+  border-color: var(--status-green-line);
 }
 
 .deep-dive__form {
@@ -178,13 +180,15 @@
 
 .deep-dive__textarea {
   width: 100%;
-  padding: 0.55rem 0.7rem;
-  border: 1px solid #9aa7b2;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
   border-radius: 8px;
   font: inherit;
-  background: #fff;
+  background: var(--app-surface);
+  color: var(--app-ink);
   resize: vertical;
   min-height: 3.5rem;
+  box-sizing: border-box;
 }
 
 .deep-dive__actions {
@@ -199,18 +203,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.4rem;
-  padding: 0.45rem 0.9rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
   border-radius: 8px;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
 .deep-dive__btn {
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--app-card-bg);
   color: var(--ink);
 }
 
@@ -226,12 +231,13 @@
 }
 
 .deep-dive__btn--secondary {
-  background: #fff;
+  background: var(--app-card-bg);
+  color: var(--ink);
 }
 
 .deep-dive__btn--danger {
-  background: #fff;
-  border-color: #f0b4b4;
+  background: var(--app-card-bg);
+  border-color: var(--status-red-line);
   color: var(--error);
 }
 
@@ -264,12 +270,25 @@
 }
 
 @media (max-width: 640px) {
-  .deep-dive__btn {
+  .deep-dive {
+    padding: 0.85rem 0.65rem 2.5rem;
+  }
+
+  .deep-dive__actions {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .deep-dive__btn,
+  .deep-dive__link {
     width: 100%;
+    min-height: 3rem;
+    box-sizing: border-box;
+    justify-content: center;
   }
 
   .deep-dive__link {
     margin-left: 0;
-    display: flex;
+    display: inline-flex;
   }
 }

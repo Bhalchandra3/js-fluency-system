@@ -1,0 +1,134 @@
+/* Design Tokens for JavaScript Fluency System */
+/* Single source of truth for color palette, theming, and layout tokens */
+
+:root,
+[data-theme='light'] {
+  --app-bg: #eef2f5;
+  --app-surface: #ffffff;
+  --app-surface-subtle: #f7f9fb;
+  --app-card-bg: #ffffff;
+  --app-line: #d5dde3;
+  --app-line-subtle: #e5ebf0;
+  --app-ink: #15202b;
+  --app-muted: #5b6770;
+  --app-focus: #1d4ed8;
+  --app-accent: #0b6e4f;
+  --app-accent-hover: #085039;
+  --app-accent-bg: #e7f3ec;
+
+  /* Semantic status colors */
+  --status-green-ink: #0b6e4f;
+  --status-green-bg: #e7f3ec;
+  --status-green-line: #9ec9b3;
+
+  --status-yellow-ink: #8a4b00;
+  --status-yellow-bg: #fff4e5;
+  --status-yellow-line: #f0c48a;
+
+  --status-red-ink: #9b1c1c;
+  --status-red-bg: #fdecec;
+  --status-red-line: #f0b4b4;
+
+  /* Code blocks */
+  --code-bg: #101820;
+  --code-ink: #e8eef3;
+  --code-line: #24303c;
+
+  /* Shell header */
+  --header-bg: #ffffff;
+  --header-border: #d5dde3;
+  --nav-link-ink: #334155;
+  --nav-link-hover: #0b6e4f;
+  --nav-link-active: #0b6e4f;
+
+  /* Shadows */
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --app-bg: #0d1117;
+    --app-surface: #161b22;
+    --app-surface-subtle: #1c2128;
+    --app-card-bg: #161b22;
+    --app-line: #30363d;
+    --app-line-subtle: #21262d;
+    --app-ink: #e6edf3;
+    --app-muted: #8b949e;
+    --app-focus: #388bfd;
+    --app-accent: #2ea043;
+    --app-accent-hover: #3fb950;
+    --app-accent-bg: #122619;
+
+    /* Semantic status colors */
+    --status-green-ink: #3fb950;
+    --status-green-bg: #0d2818;
+    --status-green-line: #1f6f3a;
+
+    --status-yellow-ink: #d29922;
+    --status-yellow-bg: #281d06;
+    --status-yellow-line: #6e4e08;
+
+    --status-red-ink: #f85149;
+    --status-red-bg: #281112;
+    --status-red-line: #6e2024;
+
+    /* Code blocks */
+    --code-bg: #030712;
+    --code-ink: #e6edf3;
+    --code-line: #30363d;
+
+    /* Shell header */
+    --header-bg: #161b22;
+    --header-border: #30363d;
+    --nav-link-ink: #c9d1d9;
+    --nav-link-hover: #3fb950;
+    --nav-link-active: #2ea043;
+
+    /* Shadows */
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+[data-theme='dark'] {
+  --app-bg: #0d1117;
+  --app-surface: #161b22;
+  --app-surface-subtle: #1c2128;
+  --app-card-bg: #161b22;
+  --app-line: #30363d;
+  --app-line-subtle: #21262d;
+  --app-ink: #e6edf3;
+  --app-muted: #8b949e;
+  --app-focus: #388bfd;
+  --app-accent: #2ea043;
+  --app-accent-hover: #3fb950;
+  --app-accent-bg: #122619;
+
+  /* Semantic status colors */
+  --status-green-ink: #3fb950;
+  --status-green-bg: #0d2818;
+  --status-green-line: #1f6f3a;
+
+  --status-yellow-ink: #d29922;
+  --status-yellow-bg: #281d06;
+  --status-yellow-line: #6e4e08;
+
+  --status-red-ink: #f85149;
+  --status-red-bg: #281112;
+  --status-red-line: #6e2024;
+
+  /* Code blocks */
+  --code-bg: #030712;
+  --code-ink: #e6edf3;
+  --code-line: #30363d;
+
+  /* Shell header */
+  --header-bg: #161b22;
+  --header-border: #30363d;
+  --nav-link-ink: #c9d1d9;
+  --nav-link-hover: #3fb950;
+  --nav-link-active: #2ea043;
+
+  /* Shadows */
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

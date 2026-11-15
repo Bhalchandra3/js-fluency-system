@@ -2,14 +2,14 @@
   max-width: 28rem;
   margin: 2rem auto;
   padding: 0 1rem;
-  font-family: system-ui, sans-serif;
-  color: #1a1a1a;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--app-ink);
 }
 
 .token-setup__lead,
 .token-setup__saved {
   line-height: 1.45;
-  color: #333;
+  color: var(--app-muted);
 }
 
 .token-setup__form {
@@ -24,10 +24,18 @@
 }
 
 .token-setup__input {
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #888;
-  border-radius: 4px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--app-line);
+  border-radius: 8px;
   font-size: 1rem;
+  background: var(--app-surface);
+  color: var(--app-ink);
+  box-sizing: border-box;
+}
+
+.token-setup__input:focus-visible {
+  outline: 2px solid var(--app-focus);
+  outline-offset: 2px;
 }
 
 .token-setup__actions {
@@ -39,21 +47,28 @@
 
 .token-setup__primary,
 .token-setup__secondary {
-  padding: 0.5rem 0.9rem;
-  border-radius: 4px;
-  border: 1px solid #333;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--app-line);
   cursor: pointer;
   font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
 .token-setup__primary {
-  background: #1a1a1a;
+  background: var(--app-accent);
+  border-color: var(--app-accent);
   color: #fff;
 }
 
 .token-setup__secondary {
-  background: #fff;
-  color: #1a1a1a;
+  background: var(--app-card-bg);
+  color: var(--app-ink);
 }
 
 .token-setup__status {
@@ -62,9 +77,9 @@
 }
 
 .token-setup__status--success {
-  color: #0b5;
+  color: var(--status-green-ink);
 }
 
 .token-setup__status--error {
-  color: #b00;
+  color: var(--status-red-ink);
 }

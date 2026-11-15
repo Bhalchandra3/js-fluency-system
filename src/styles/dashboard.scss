@@ -1,21 +1,22 @@
 .dashboard {
-  --ink: #15202b;
-  --muted: #5b6770;
-  --line: #d5dde3;
-  --surface: #f7f9fb;
-  --accent: #0b6e4f;
-  --warn-bg: #fff4e5;
-  --warn-ink: #8a4b00;
-  --due-bg: #e7f3ec;
-  --error: #9b1c1c;
-  --bad-bg: #fdecec;
-  --focus: #1d4ed8;
+  --ink: var(--app-ink);
+  --muted: var(--app-muted);
+  --line: var(--app-line);
+  --surface: var(--app-surface);
+  --surface-subtle: var(--app-surface-subtle);
+  --accent: var(--app-accent);
+  --warn-bg: var(--status-yellow-bg);
+  --warn-ink: var(--status-yellow-ink);
+  --due-bg: var(--status-green-bg);
+  --error: var(--status-red-ink);
+  --bad-bg: var(--status-red-bg);
+  --focus: var(--app-focus);
 
   max-width: 52rem;
   margin: 0 auto;
   padding: 1.25rem 1rem 3rem;
   color: var(--ink);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
 }
 
@@ -79,7 +80,7 @@
   padding: 0.85rem 0.95rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--app-card-bg);
 }
 
 .dashboard__count-label {
@@ -128,7 +129,7 @@
 }
 
 .dashboard__btn--secondary {
-  background: #fff;
+  background: var(--app-card-bg);
   color: var(--ink);
 }
 
@@ -162,7 +163,8 @@
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--surface);
+  color: var(--ink);
   font-weight: 600;
   font-size: 0.85rem;
 }
@@ -170,14 +172,14 @@
 .dashboard__pill--overdue {
   background: var(--warn-bg);
   color: var(--warn-ink);
-  border-color: #f0c48a;
+  border-color: var(--status-yellow-line);
 }
 
 .dashboard__pill--due,
 .dashboard__pill--ready {
   background: var(--due-bg);
   color: var(--accent);
-  border-color: #9ec9b3;
+  border-color: var(--status-green-line);
 }
 
 .dashboard__hint {
@@ -189,18 +191,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.4rem;
-  padding: 0.45rem 0.9rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
   border-radius: 8px;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
 .dashboard__btn {
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--app-card-bg);
   color: var(--ink);
 }
 
@@ -229,11 +232,17 @@
 }
 
 @media (max-width: 640px) {
+  .dashboard {
+    padding: 0.85rem 0.65rem 2.5rem;
+  }
+
   .dashboard__btn,
   .dashboard__link {
     width: 100%;
+    min-height: 3rem;
     margin-left: 0;
     margin-top: 0.5rem;
+    box-sizing: border-box;
   }
 
   .dashboard__secondary-ctas .dashboard__btn {

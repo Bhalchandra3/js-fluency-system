@@ -9,6 +9,16 @@
       <a routerLink="/mistakes" routerLinkActive="is-active">Mistakes</a>
       <a routerLink="/deep-dive" routerLinkActive="is-active">Deep Dive</a>
       <a routerLink="/setup" routerLinkActive="is-active">Access token</a>
+      <button
+        type="button"
+        class="app-shell__theme-btn"
+        (click)="toggleTheme()"
+        [attr.aria-label]="'Current theme is ' + themeService.theme() + '. Click to switch theme.'"
+        [title]="themeButtonLabel()"
+      >
+        <span class="app-shell__theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
+        <span class="app-shell__theme-text">{{ themeButtonLabel() }}</span>
+      </button>
       @if (tokenStore.hasToken()) {
         <button type="button" class="app-shell__disconnect" (click)="disconnect()" title="Clear saved token and disconnect">
           Disconnect
