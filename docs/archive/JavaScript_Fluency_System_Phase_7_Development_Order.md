@@ -2,11 +2,10 @@
 
 > Canonical detailed plan for **Phase 7 — Learning-flow algorithm & MCQ-only revision** (post-MVP).
 > Product phase label in the specification remains “AI assistance”; **delivery is zero-cost and non-LLM** (tiered escalate + C1 MCQ revision + offline bank batches).
-> Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
-> Overall progress: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md)
-> Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §§8–9, 11
-> Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
-> Phase 6 completed baseline: [`docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md)
+> Status: **Complete (2026-11-15).** Working record cleared; history in [`PROJECT_TRACKER.md`](../../PROJECT_TRACKER.md) §11.
+> Product/architecture: [`PROJECT_SPECIFICATION.md`](../../PROJECT_SPECIFICATION.md) §§8–9, 11
+> Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](../../prisma/seed-data/QUESTION_BANK_FORMAT.md)
+> Phase 6 completed baseline: [`JavaScript_Fluency_System_Phase_6_Development_Order.md`](./JavaScript_Fluency_System_Phase_6_Development_Order.md)
 >
 > **Rule:** Complete and verify each step before moving to the next.
 
@@ -148,7 +147,7 @@ Deterministic, read-only over existing rows. **No new Prisma models.** Policy ve
 | **4** | Pattern-gate helpers + tests (deterministic) | ✅ Complete (2026-11-15) |
 | **5** | In-app escalate signals (Dashboard / Deep Dive / Mistakes) when gate fires | ✅ Complete (2026-11-15) |
 | **6** | Local verification (tests, bank validation, build; no Neon spam) | ✅ Complete (2026-11-15) |
-| **7** | Production smoke + documentation closeout | ⬜ Next |
+| **7** | Production smoke + documentation closeout | ✅ Complete (2026-11-15) |
 
 ---
 
@@ -200,10 +199,12 @@ Deterministic, read-only over existing rows. **No new Prisma models.** Policy ve
 - Backend: scheduling 30/30, status 10/10, pattern-gate 8/8, prisma-guards 1/1, revision-write 23/23, mistakes 11/11, deep-dive 10/10, progress 5/5 (handler/unit; disposable-DB integrations skipped without `DATABASE_URL_TEST`).
 - No LLM packages in dependencies; no seed/migrate during Step 6.
 
-### Step 7: Production smoke + closeout
+### Step 7: Production smoke + closeout (Complete — 2026-11-15)
 
-- Deploy/smoke MCQ-only revision + escalate signals (as delivered).
-- Transfer history to tracker; clear `CURRENT_STEP.md` per §6.3.
+- Owner-authorized production seed: C1 OK (`REVISION` MCQ=105, SA=0).
+- Commit `67480b9` pushed to `origin/master`; Vercel production Ready (`dpl_HxvoVEK5sqRpFMWFqaetbMEYUjLr`).
+- Smoke on `https://js-fluency-system.vercel.app`: `/api/health` `200` (`dbConnected`, `topicCount: 52`); live bundle `main-TGQOGEZD.js`; `GET /api/progress` unauthenticated `401`.
+- Tracker §11 closeout; `CURRENT_STEP.md` cleared per §6.3; this file archived under `docs/archive/`.
 
 ---
 
@@ -218,12 +219,12 @@ Deterministic, read-only over existing rows. **No new Prisma models.** Policy ve
 - [x] Pattern-gate thresholds locked, implemented, and tested (`test:pattern-gate` 8/8).
 - [x] Pattern-gate wired into `GET /api/progress` + Dashboard (Step 5).
 - [x] Escalate signals usable without LLM.
-- [ ] Offline MCQ batch runbook + validation path documented and exercised at least once (or N/A if no expansion batch needed after conversion).
-- [ ] G5 / Phase 4 status behavior unchanged.
-- [ ] $0 / no LLM / Neon write discipline held.
+- [x] Offline MCQ batch runbook — **N/A** (no post-conversion expansion batch required; C1 conversion + seed covered the bank change).
+- [x] G5 / Phase 4 status behavior unchanged (no G5/status policy edits; `test:scheduling` 30/30, `test:status` 10/10).
+- [x] $0 / no LLM / Neon write discipline held (no LLM deps; rare authorized seed only).
 - [x] Local verification recorded (Step 6).
-- [ ] Production smoke + closeout recorded (Step 7).
-- [ ] Tracker history + handoff complete; `CURRENT_STEP.md` cleared per §6.3.
+- [x] Production smoke + closeout recorded (Step 7).
+- [x] Tracker history + handoff complete; `CURRENT_STEP.md` cleared per §6.3.
 
 ---
 
@@ -231,8 +232,8 @@ Deterministic, read-only over existing rows. **No new Prisma models.** Policy ve
 
 | Resource | Path |
 |---|---|
-| Tracker | [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md) |
-| Active working record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) |
-| Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
-| Question-bank format | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md) |
-| Questions seed | [`prisma/seed-data/questions.json`](./prisma/seed-data/questions.json) |
+| Tracker | [`PROJECT_TRACKER.md`](../../PROJECT_TRACKER.md) |
+| Working record (cleared) | [`CURRENT_STEP.md`](../../CURRENT_STEP.md) |
+| Specification | [`PROJECT_SPECIFICATION.md`](../../PROJECT_SPECIFICATION.md) |
+| Question-bank format | [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](../../prisma/seed-data/QUESTION_BANK_FORMAT.md) |
+| Questions seed | [`prisma/seed-data/questions.json`](../../prisma/seed-data/questions.json) |

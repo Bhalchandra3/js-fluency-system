@@ -271,7 +271,7 @@ Build incrementally so each phase yields a usable application:
 | 4 | Progress + mistakes | Confidence, status algorithm, Mistake Log, Deep Dive |
 | 5 | Persistent cloud data | Full laptop ↔ mobile sync verification |
 | 6 | Mobile optimization | Responsive/touch/theme polish |
-| 7 | AI assistance | Optional in-app AI enhancements |
+| 7 | AI assistance | Delivered as zero-cost learning-flow (C1 MCQ-only revision + `phase7-pattern-gate-v1` escalate; **no hosted LLM**) — complete 2026-11-15 |
 
 Detailed status and Phase 2 steps: [`PROJECT_TRACKER.md`](./PROJECT_TRACKER.md).
 

@@ -4,7 +4,7 @@
 > Product/architecture: [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md)
 > Active phase working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared when no phase is active — see §6.3)
 > Question-bank contract: [`prisma/seed-data/QUESTION_BANK_FORMAT.md`](./prisma/seed-data/QUESTION_BANK_FORMAT.md)
-> Phase 4 plan (canonical): [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md)
+> Phase 4 plan (completed baseline): [`docs/archive/JavaScript_Fluency_System_Phase_4_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_4_Development_Order.md)
 
 ---
 
@@ -12,22 +12,22 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 7 — Learning-flow algorithm & MCQ-only revision** (post-MVP) |
-| **Active step** | **Step 7 — Production smoke + documentation closeout** (`CURRENT_STEP.md` active) |
-| **Completed through** | Phase 1–6 complete; Phase 7 Steps 0–6 complete; prod C1 seed verified (2026-11-15) |
-| **Next action** | Step 7 deploy/smoke + documentation closeout |
-| **Backend on master** | `978cbca` — `feat: complete Phase 6 mobile optimization and dark/light theme system` (pushed to `origin/master` 2026-11-15) |
+| **Current phase** | **None** — Phases 1–7 complete (`CURRENT_STEP.md` cleared) |
+| **Active step** | None |
+| **Completed through** | Phase 7 complete (2026-11-15) — C1 MCQ revision + `phase7-pattern-gate-v1` escalate |
+| **Next action** | No planned phase in the product roadmap; optional offline MCQ bank batches as needed |
+| **Backend on master** | `67480b9` — `feat: complete Phase 7 MCQ-only revision and pattern-gate escalate` (pushed to `origin/master` 2026-11-15) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
 | **Phase 4 complete?** | **Yes** — all governing Phase 4 exit criteria verified (2026-11-12) |
 | **Phase 5 complete?** | **Yes** — all governing Phase 5 exit criteria verified (2026-11-15) |
 | **Phase 6 complete?** | **Yes** — all governing Phase 6 exit criteria verified (2026-11-15) |
-| **Phase 7 complete?** | **No** — Steps 0–6 done; prod seed ✅; Step 7 deploy/smoke/closeout in progress |
-| **Phase 3 baseline (completed)** | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
-| **Phase 4 baseline (completed)** | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
-| **Phase 5 baseline (completed)** | [`JavaScript_Fluency_System_Phase_5_Development_Order.md`](./JavaScript_Fluency_System_Phase_5_Development_Order.md) |
+| **Phase 7 complete?** | **Yes** — all governing Phase 7 exit criteria verified (2026-11-15) |
+| **Phase 3 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_3_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_3_Development_Order.md) |
+| **Phase 4 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_4_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_4_Development_Order.md) |
+| **Phase 5 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_5_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_5_Development_Order.md) |
 | **Phase 6 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md) |
-| **Phase 7 baseline (active)** | [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md) |
+| **Phase 7 baseline (completed)** | [`docs/archive/JavaScript_Fluency_System_Phase_7_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_7_Development_Order.md) |
 
 ---
 
@@ -41,7 +41,7 @@
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
 | **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | ✅ Complete (2026-11-15) |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ✅ Complete (2026-11-15) |
-| **7 — Learning-flow & MCQ revision** | Zero-cost tiered escalate + C1 MCQ-only revision + offline bank batches (spec label: AI assistance; **no LLM**) | 🔄 In progress (Step 0 complete 2026-11-15) |
+| **7 — Learning-flow & MCQ revision** | Zero-cost tiered escalate + C1 MCQ-only revision + offline bank batches (spec label: AI assistance; **no LLM**) | ✅ Complete (2026-11-15) |
 
 Phase 1 product wording in the original website spec (“static learning dashboard”) is superseded for tracking by the skeleton/infra definition above; later phase intents align with the product specification.
 
@@ -384,10 +384,8 @@ Operational process for every phase. Product requirements remain in [`PROJECT_SP
 | Resource | Path |
 |---|---|
 | Specification | [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) |
-| Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (Phase 7 active) |
-| Phase 3 Development Order (completed baseline) | [`JavaScript_Fluency_System_Phase_3_Development_Order.md`](./JavaScript_Fluency_System_Phase_3_Development_Order.md) |
-| Phase 4 Development Order (canonical plan) | [`JavaScript_Fluency_System_Phase_4_Development_Order.md`](./JavaScript_Fluency_System_Phase_4_Development_Order.md) |
-| Phase 7 Development Order (active canonical plan) | [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md) |
+| Active phase record | [`CURRENT_STEP.md`](./CURRENT_STEP.md) (cleared — no active phase) |
+| Phase 3–7 Development Orders (completed baselines) | [`docs/archive/`](./docs/archive/) |
 | Local runbook | [`LOCAL_README.md`](./LOCAL_README.md) |
 | Postman Git-native collection | [`postman/collections/Backend/`](./postman/collections/Backend/) |
 | Postman Desktop export script | [`postman/scripts/export_v21_for_desktop.py`](./postman/scripts/export_v21_for_desktop.py) |
@@ -593,7 +591,7 @@ Transform the system into a premier mobile learning experience optimized for dai
 - **Touch Target Ergonomics (44×44px minimum):** Question navigation pills, radio choice cards, action buttons, navigation links, and shell controls hardened to satisfy WCAG 2.1 AAA touch target guidelines for one-handed commute navigation.
 - **Commute Layout Hardening & Zero Horizontal Scroll:** Constrained code snippets (`.revision__code`) with internal scrolling and touch momentum (`-webkit-overflow-scrolling: touch`), adjusted mobile side paddings, and implemented responsive action button stacking for screens `<640px`.
 
-Canonical plan source: [`JavaScript_Fluency_System_Phase_6_Development_Order.md`](./JavaScript_Fluency_System_Phase_6_Development_Order.md)
+Canonical plan source: [`docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_6_Development_Order.md)
 
 ### 10.2 Execution Order and Verified Delivery
 
@@ -627,19 +625,18 @@ Phase 6 completed (2026-11-15). Phase 7 started (2026-11-15) with owner-approved
 
 ---
 
-## 11. Phase 7 — Learning-flow algorithm & MCQ-only revision (in progress)
+## 11. Phase 7 — Learning-flow algorithm & MCQ-only revision (Complete 2026-11-15)
 
 ### 11.1 Objective & framing
 
-Post-MVP phase. Specification phase intent remains “AI assistance” ([`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §11), but **delivery does not use hosted LLMs**. Scope:
+Post-MVP phase. Specification phase intent remains “AI assistance” ([`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §11), but **delivery does not use hosted LLMs**. Scope delivered:
 
-- **C1:** Today’s Revision = **MCQ only**; convert REVISION `SHORT_ANSWER` → MCQ; block SHORT_ANSWER on the revision path.
-- **Tiers 0–3:** Deterministic escalate using existing G5 / status / Mistake / Deep Dive — no per-mistake AI.
-- **Offline MCQ JSON batches** when a topic needs more coverage; manual seed/DB update; Neon free-tier safe.
-- Preserve $0 stack, finalize-once G5, and core learning without Phase 7 UI.
+- **C1:** Today’s Revision = **MCQ only**; converted REVISION `SHORT_ANSWER` → MCQ; block SHORT_ANSWER on new freezes.
+- **Tiers 0–3:** Deterministic escalate (`phase7-pattern-gate-v1`) using existing G5 / status / Mistake / Deep Dive — no per-mistake AI.
+- **Offline MCQ JSON batches** remain the growth path when a topic needs more coverage (no expansion batch required in this phase after C1 conversion).
+- Preserved $0 stack, finalize-once G5, and `phase4-status-v1`.
 
-Canonical plan: [`JavaScript_Fluency_System_Phase_7_Development_Order.md`](./JavaScript_Fluency_System_Phase_7_Development_Order.md)  
-Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
+Canonical completed baseline: [`docs/archive/JavaScript_Fluency_System_Phase_7_Development_Order.md`](./docs/archive/JavaScript_Fluency_System_Phase_7_Development_Order.md)
 
 ### 11.2 Locked decisions (Step 0, 2026-11-15)
 
@@ -651,55 +648,64 @@ Active working record: [`CURRENT_STEP.md`](./CURRENT_STEP.md)
 | Bank growth | Offline JSON batches → review → seed/manual DB |
 | Non-goals | LLM grading; SHORT_ANSWER as revision grading path; per-mistake generation; auto Question insert; G5 changes |
 
-### 11.3 Step 1 architecture lock (complete 2026-11-15)
+### 11.3 Architecture lock (Step 1) — summary
 
-Canonical detail: Phase 7 Development Order **§2.5**. Summary:
+Canonical detail: Development Order **§2.5**. C1 new freezes = `REVISION` + `MULTIPLE_CHOICE` only; Decision B keeps legacy OPEN SHORT_ANSWER; `phase7-pattern-gate-v1` thresholds (unresolved≥3; last 2 completed RED; question miss≥2; thin MCQ&lt;3 when RED or unresolved≥1; cap 5); `GET /api/progress` gains read-only `escalations`; rare Neon batch seeds only.
 
-- **C1:** New Today’s Revision freezes = `REVISION` + `MULTIPLE_CHOICE` only; grading = server index compare.
-- **Legacy OPEN sessions:** Decision B — do not rewrite freeze; SHORT_ANSWER answer path only for already-frozen questions.
-- **Safe mid-conversion:** seed bank has **0** topics with zero REVISION MCQ.
-- **Pattern policy `phase7-pattern-gate-v1`:** unresolved≥3; last 2 completed both RED outcomes (`RESET`/`REINFORCE_AT_1`); same question incorrect≥2; thin MCQ&lt;3 when RED or any unresolved mistake.
-- **API:** extend `GET /api/progress` with read-only `escalations` (max 5 topics); no new tables / no LLM.
-- **Neon:** batch seed only for bank work; no AI write paths.
-- **Step 1 verification:** docs only; no application code changed.
-
-### 11.4 Step 2 bank conversion (JSON complete 2026-11-15)
+### 11.4 Bank conversion & seeds (Step 2)
 
 | Fact | Evidence |
 |---|---|
 | Converted | 50 `REVISION` SHORT_ANSWER → MULTIPLE_CHOICE |
 | Counts | `REVISION\|MULTIPLE_CHOICE` = 105; `REVISION\|SHORT_ANSWER` = 0 |
 | PRACTICE SHORT_ANSWER | 2 unchanged (not in Today’s Revision) |
-| Contract validation | 0 errors (options + index `correctAnswer`) |
 | Script | [`scripts/phase7-c1-convert-sa-to-mcq.mjs`](./scripts/phase7-c1-convert-sa-to-mcq.mjs) |
-| Neon **dev** seed | ✅ `created=0, updated=10, skipped=250` after abandoning empty OPEN Classes session; REVISION MCQ=105, SA=0 |
-| Neon **production** seed | ✅ Owner-authorized 2026-11-15 via `vercel env run --environment production`; idempotent `skipped=260`; MCQ=105, SA=0 (`c1Ok`) |
+| Neon seed (shared host) | After OPEN Classes abandon: `updated=10, skipped=250`; then production-env idempotent `skipped=260`; MCQ=105, SA=0 |
 
-### 11.5 Execution status
+### 11.5 Execution order and verified delivery
 
-| Step | Status |
+| # | Step | Verified evidence |
+|---|---|---|
+| **0** | Plan approval + docs sync | Development Order + tracker §11 |
+| **1** | Architecture lock | §2.5; docs only |
+| **2** | C1 bank conversion + seed | JSON + owner-authorized Neon seed; C1 assert |
+| **3** | MCQ-only freeze guard | `REVISION_FREEZE_QUESTION_WHERE`; Decision B legacy path |
+| **4** | Pattern-gate helpers | `test:pattern-gate` 8/8 |
+| **5** | Escalate on progress + Dashboard | `patternGateVersion` + `escalations`; Needs attention UI |
+| **6** | Local verification | ng test 110/110; ng build `main-TGQOGEZD.js`; backend suites green; no LLM deps |
+| **7** | Production smoke + closeout | Commit `67480b9`; Vercel Ready; health 200; bundle `main-TGQOGEZD.js`; progress 401 unauth |
+
+### 11.6 Completion checklist & exit criteria
+
+- [x] C1 revision bank and Neon production synced (MCQ=105, SA=0).
+- [x] New Today’s Revision freezes are MCQ-only; legacy OPEN SHORT_ANSWER retained (Decision B).
+- [x] `phase7-pattern-gate-v1` implemented, tested, and exposed via progress + Dashboard.
+- [x] Escalate usable without LLM; $0 / Neon write discipline held.
+- [x] G5 / `phase4-status-v1` unchanged (`test:scheduling` 30/30, `test:status` 10/10).
+- [x] Offline expansion batch **N/A** for this phase (conversion covered bank change).
+- [x] Production smoke recorded; tracker handoff complete; `CURRENT_STEP.md` cleared per §6.3.
+
+### 11.7 Conclusions and known limitations
+
+**Conclusions:** Phase 7 exit criteria are satisfied. Spec “AI assistance” is delivered as zero-cost tiered escalate + MCQ-only revision, not hosted LLMs.
+
+**Known limitations (carry forward):**
+
+| Limitation | Notes |
 |---|---|
-| **0** Approve Development Order + docs sync | ✅ Complete (2026-11-15) |
-| **1** Architecture lock | ✅ Complete (2026-11-15) |
-| **2** Bank C1 conversion | ✅ JSON + Neon seed (dev + production C1 verified 2026-11-15) |
-| **3** App/API MCQ-only guard | ✅ Complete (2026-11-15) |
-| **4** Pattern-gate helpers + tests | ✅ Complete (2026-11-15) — `test:pattern-gate` 8/8 |
-| **5** Escalate signals API + UI | ✅ Complete (2026-11-15) |
-| **6** Local verification | ✅ Complete (2026-11-15) — ng test 110/110; ng build OK |
-| **7** Production smoke + closeout | 🔄 Prod seed ✅; deploy/smoke/closeout next |
+| Thin REVISION MCQ coverage | Many topics still have &lt;3 REVISION MCQs → thin-MCQ escalations expected until offline batches expand the bank |
+| Authenticated production progress UI | Step 7 verified health + bundle + unauthenticated progress `401`; full logged-in Dashboard escalate smoke left to owner |
+| PRACTICE SHORT_ANSWER residual | 2 PRACTICE items remain; out of Today’s Revision by design |
 
-### 11.6 Recommended next action
+### 11.8 Post-Phase 7 handoff
 
-**Step 7 — Production smoke + closeout:** push Phase 7 to Vercel; smoke production; transfer history to tracker; clear `CURRENT_STEP.md`.
+No further phase is defined in [`PROJECT_SPECIFICATION.md`](./PROJECT_SPECIFICATION.md) §11 after Phase 7.
 
-### 11.8 Step 5 notes (2026-11-15)
-
-- Progress payload includes `patternGateVersion` + `escalations` (cap 5); Dashboard **Needs attention** panel.
-- Verified: handler 5/5; FE focused specs 15/15; Neon `.env` smoke returned 5 thin-MCQ escalations (expected while many topics still have &lt;3 REVISION MCQs).
-
-### 11.7 Step 3 notes (2026-11-15)
-
-- `REVISION_FREEZE_QUESTION_WHERE` on new freezes/backfill; Decision B legacy OPEN SHORT_ANSWER retained.
-- Verified: `c1FreezeFilter` + today handler tests; Neon `.env` disposable smoke `ok: true`.
+| Handoff item | Detail |
+|---|---|
+| **Next phase** | None planned |
+| **Recommended next action** | Daily use; expand REVISION MCQ bank offline for thin topics when escalate signals fire |
+| **Do not** | Add hosted LLM keys/APIs without a new owner-approved phase; weaken C1 MCQ-only freezes; change G5 finalize-once |
+| **Working record** | [`CURRENT_STEP.md`](./CURRENT_STEP.md) cleared — initialize only when a new phase starts (§6.1) |
 
 
