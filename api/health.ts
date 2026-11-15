@@ -14,10 +14,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             timestamp: new Date().toISOString(),
         });
     } catch (error) {
+        console.error('[api/health] Database connection error:', error);
+
         res.status(500).json({
             status: 'error',
             dbConnected: false,
-            message: error instanceof Error ? error.message : 'Unknown error',
+            message: 'Database connection unavailable',
         });
     }
 }

@@ -6,6 +6,15 @@
         See what is due, check confidence signals, then start Today’s Revision when you are ready.
       </p>
     </div>
+    <button
+      type="button"
+      class="dashboard__btn dashboard__btn--secondary dashboard__btn--refresh"
+      (click)="loadDashboard()"
+      [disabled]="viewState() === 'loading'"
+      aria-label="Refresh dashboard data"
+    >
+      Refresh
+    </button>
   </header>
 
   @if (viewState() === 'loading') {

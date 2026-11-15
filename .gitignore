@@ -19,8 +19,10 @@ yarn-error.log
 
 # Local agent/ops artifacts (backups, scratch) — not source
 /.local/
+/backups/
 
 # IDEs and editors
+.cursor/
 .idea/
 .project
 .classpath

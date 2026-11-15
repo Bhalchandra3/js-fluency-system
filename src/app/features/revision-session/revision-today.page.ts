@@ -92,6 +92,7 @@ export class RevisionTodayPage {
   );
 
   private loadGeneration = 0;
+  private lastLoadedAt = 0;
   private submitGeneration = 0;
   private completeGeneration = 0;
 
@@ -173,6 +174,24 @@ export class RevisionTodayPage {
 
   constructor() {
     this.loadToday();
+
+    if (typeof document !== 'undefined') {
+      const handleVisibilityChange = () => {
+        if (
+          document.visibilityState === 'visible' &&
+          Date.now() - this.lastLoadedAt > 60_000 &&
+          this.viewState() !== 'loading' &&
+          !this.submitting() &&
+          !this.completing()
+        ) {
+          this.loadToday();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      this.destroyRef.onDestroy(() => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      });
+    }
   }
 
   loadToday(): void {
@@ -192,6 +211,7 @@ export class RevisionTodayPage {
           if (generation !== this.loadGeneration) {
             return;
           }
+          this.lastLoadedAt = Date.now();
           this.applyTodayResponse(response);
         },
         error: (error: unknown) => {
@@ -446,11 +466,41 @@ export class RevisionTodayPage {
     this.session.set(response.session);
     this.viewState.set('session');
 
+    // Build hydrated feedback and drafts from server answers map
+    const serverFeedback: Record<string, QuestionFeedback> = {};
+    const serverDrafts: Record<string, QuestionDraft> = {};
+
+    if (response.session.answers) {
+      for (const [qId, ans] of Object.entries(response.session.answers)) {
+        serverFeedback[qId] = {
+          correct: ans.correct,
+          correctAnswer: ans.correctAnswer,
+          explanation: ans.explanation,
+        };
+        serverDrafts[qId] = {
+          selectedAnswer: ans.selectedAnswer,
+          confidence: (ans.confidence as ConfidenceLevel) || null,
+          selfAssessedCorrect: ans.correct,
+        };
+      }
+    }
+
     if (previousSessionId !== response.session.id) {
-      this.drafts.set({});
-      this.feedbackByQuestion.set({});
-      this.currentIndex.set(0);
+      this.feedbackByQuestion.set(serverFeedback);
+      this.drafts.set(serverDrafts);
+
+      // Default to first unanswered question, or 0 if all answered
+      const firstUnansweredIndex = response.session.questions.findIndex(
+        (q) => !serverFeedback[q.id],
+      );
+      this.currentIndex.set(
+        firstUnansweredIndex >= 0 ? firstUnansweredIndex : 0,
+      );
     } else {
+      // Merge server answers into existing local state on reload
+      this.feedbackByQuestion.update((map) => ({ ...serverFeedback, ...map }));
+      this.drafts.update((map) => ({ ...serverDrafts, ...map }));
+
       const maxIndex = Math.max(response.session.questions.length - 1, 0);
       if (this.currentIndex() > maxIndex) {
         this.currentIndex.set(maxIndex);

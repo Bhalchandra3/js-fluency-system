@@ -31,6 +31,7 @@
 .app-shell__nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.75rem 1rem;
 }
 
@@ -48,9 +49,28 @@
 }
 
 .app-shell__nav a:focus-visible,
-.app-shell__brand:focus-visible {
+.app-shell__brand:focus-visible,
+.app-shell__disconnect:focus-visible {
   outline: 2px solid #1d4ed8;
   outline-offset: 2px;
+}
+
+.app-shell__disconnect {
+  background: none;
+  border: 1px solid #d5dde3;
+  border-radius: 4px;
+  color: #5b6770;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: #9b1c1c;
+    border-color: #f0b4b4;
+  }
 }
 
 .app-shell__main {

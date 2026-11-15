@@ -51,9 +51,26 @@ export class DashboardPage {
   readonly unresolvedMistakeCount = signal<number | null>(null);
 
   private loadGeneration = 0;
+  private lastLoadedAt = 0;
 
   constructor() {
     this.loadDashboard();
+
+    if (typeof document !== 'undefined') {
+      const handleVisibilityChange = () => {
+        if (
+          document.visibilityState === 'visible' &&
+          Date.now() - this.lastLoadedAt > 60_000 &&
+          this.viewState() !== 'loading'
+        ) {
+          this.loadDashboard();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      this.destroyRef.onDestroy(() => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      });
+    }
   }
 
   loadDashboard(): void {
@@ -86,6 +103,7 @@ export class DashboardPage {
           if (generation !== this.loadGeneration) {
             return;
           }
+          this.lastLoadedAt = Date.now();
           this.applyTodayResponse(today);
           if (!progress.ok) {
             this.progressState.set('error');

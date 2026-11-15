@@ -277,4 +277,46 @@ describe('RevisionTodayPage', () => {
     page.confirmCompleteSession();
     expect(page.scheduling()).toEqual(completeSessionFixture.scheduling);
   });
+
+  it('hydrates existing session answers, displays feedback, and focuses first unanswered question on resume', () => {
+    const q1 = todayRevisionFixture.session!.questions[0]!;
+    const q2 = todayRevisionFixture.session!.questions[1]!;
+
+    createPage(() =>
+      of({
+        ...todayRevisionFixture,
+        session: {
+          ...todayRevisionFixture.session!,
+          answers: {
+            [q1.id]: {
+              selectedAnswer: '0',
+              correct: true,
+              confidence: 'EASY',
+              correctAnswer: '0',
+              explanation: 'Scope retains outer variables.',
+            },
+          },
+          progress: { answered: 1, total: 2 },
+          canComplete: false,
+        },
+      }),
+    );
+
+    // Question 1 should be marked as answered
+    expect(page.isAnswered(q1.id)).toBeTrue();
+    // Question 2 should be unanswered
+    expect(page.isAnswered(q2.id)).toBeFalse();
+    // Automatically selects index 1 (the first unanswered question)
+    expect(page.currentIndex()).toBe(1);
+
+    // Switch to Question 1 to inspect hydrated feedback
+    page.selectQuestion(0);
+    expect(page.currentFeedback()).toEqual({
+      correct: true,
+      correctAnswer: '0',
+      explanation: 'Scope retains outer variables.',
+    });
+    expect(page.currentDraft().selectedAnswer).toBe('0');
+    expect(page.currentDraft().confidence).toBe('EASY');
+  });
 });

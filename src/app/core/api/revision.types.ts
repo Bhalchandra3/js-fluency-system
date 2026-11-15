@@ -39,11 +39,20 @@ export type TodaySessionTopicDto = {
   isOverdue: boolean;
 };
 
+export type TodayAnsweredQuestionDto = {
+  selectedAnswer: string;
+  correct: boolean;
+  confidence: ConfidenceLevel | string;
+  correctAnswer?: string;
+  explanation?: string;
+};
+
 export type TodaySessionDto = {
   id: string;
   status: 'OPEN';
   topic: TodaySessionTopicDto;
   questions: TodayQuestionDto[];
+  answers?: Record<string, TodayAnsweredQuestionDto>;
   progress: { answered: number; total: number };
   canComplete: boolean;
 };

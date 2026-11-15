@@ -6,6 +6,7 @@ import { afterEach, describe, it } from 'node:test';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { handleTodayRevision } from './today.js';
 import type { TodayRevisionResponse } from '../_lib/revision/todayService.js';
+import { QuestionFormat } from '../../generated/prisma/client.js';
 
 type MockRes = VercelResponse & {
     statusCode: number;
@@ -140,5 +141,64 @@ describe('GET /api/revision/today handler', () => {
 
         assert.equal(res.statusCode, 200);
         assert.deepEqual(res.body, payload);
+    });
+
+    it('returns 200 with hydrated answers map for session resumption', async () => {
+        process.env['BEARER_TOKEN'] = 'test-token';
+        const payload: TodayRevisionResponse = {
+            status: 'ok',
+            dueCount: 1,
+            overdueCount: 0,
+            session: {
+                id: 'sess_active_123',
+                status: 'OPEN',
+                topic: {
+                    id: 'top_1',
+                    name: 'Closures',
+                    slug: 'closures',
+                    intervalDays: 1,
+                    nextRevisionDate: '2026-10-15T12:00:00.000Z',
+                    isOverdue: false,
+                },
+                questions: [
+                    {
+                        id: 'q1',
+                        format: QuestionFormat.MULTIPLE_CHOICE,
+                        prompt: 'What is a closure?',
+                        options: ['A', 'B'],
+                    },
+                    {
+                        id: 'q2',
+                        format: QuestionFormat.SHORT_ANSWER,
+                        prompt: 'Explain lexical scope.',
+                    },
+                ],
+                answers: {
+                    q1: {
+                        selectedAnswer: '0',
+                        correct: true,
+                        confidence: 'EASY',
+                        correctAnswer: '0',
+                        explanation: 'A closure retains scope.',
+                    },
+                },
+                progress: { answered: 1, total: 2 },
+                canComplete: false,
+            },
+        };
+
+        const res = mockRes();
+        await handleTodayRevision(mockReq('GET', 'Bearer test-token'), res, {
+            prisma: {} as never,
+            getTodayRevision: async () => payload,
+            now: () => new Date('2026-10-15T12:00:00.000Z'),
+        });
+
+        assert.equal(res.statusCode, 200);
+        assert.deepEqual(res.body, payload);
+        const session = (res.body as TodayRevisionResponse).session;
+        assert.ok(session?.answers['q1']);
+        assert.equal(session.answers['q1']?.correct, true);
+        assert.equal(session.answers['q1']?.explanation, 'A closure retains scope.');
     });
 });

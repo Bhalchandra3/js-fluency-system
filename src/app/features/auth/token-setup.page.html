@@ -24,14 +24,17 @@
       autocapitalize="off"
       spellcheck="false"
       [(ngModel)]="tokenInput"
+      [disabled]="validating()"
       [attr.aria-invalid]="statusKind() === 'error' ? true : null"
       [attr.aria-describedby]="statusMessage() ? 'token-setup-status' : null"
     />
 
     <div class="token-setup__actions">
-      <button type="submit" class="token-setup__primary">Save token</button>
+      <button type="submit" class="token-setup__primary" [disabled]="validating()">
+        {{ validating() ? 'Validating…' : 'Save token' }}
+      </button>
       @if (hasSavedToken()) {
-        <button type="button" class="token-setup__secondary" (click)="clearSavedToken()">
+        <button type="button" class="token-setup__secondary" (click)="clearSavedToken()" [disabled]="validating()">
           Remove saved token
         </button>
       }

@@ -12,10 +12,10 @@
 
 | Field | Value |
 |---|---|
-| **Current phase** | **Phase 4 complete** (2026-11-12); **Phase 5 — Persistent Cloud Data** not started |
+| **Current phase** | **Phase 5 — Persistent Cloud Data & Cross-Device Quality** (In Progress) |
 | **Active step** | None (`CURRENT_STEP.md` cleared per §6.3) |
-| **Completed through** | Phase 2 Steps 1–12; Phase 3 Steps 0–11 (Step 5 N/A); Phase 4 Steps 0–14 |
-| **Next action** | Start Phase 5 — Persistent Cloud Data (when authorized; see §8.8 handoff) |
+| **Completed through** | Phase 1–4 complete; Phase 5 Steps 0–6 complete (2026-11-13) |
+| **Next action** | Execute Phase 5 Step 1 tasks |
 | **Backend on master** | `e4ef947` — `feat: complete Phase 4 backend APIs` (pushed to `origin/master` 2026-10-24) |
 | **Phase 2 complete?** | **Yes** — all governing Phase 2 exit criteria verified |
 | **Phase 3 complete?** | **Yes** — Steps 0–11 complete; tracker handoff verified |
@@ -33,7 +33,7 @@
 | **2 — Topics + Questions** | Locked models, topic/question seed data, local authenticated `GET /api/topics`, production verification | ✅ Complete |
 | **3 — Revision Scheduling** | 1/3/7/14/30 intervals, Today’s Revision API + screen, dashboard MVP | ✅ Complete |
 | **4 — Progress + Mistakes** | Confidence tracking, status algorithm v1, Mistake Log, Deep Dive Queue | ✅ Complete (2026-11-12) |
-| **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync verification | ⬜ Not started |
+| **5 — Persistent Cloud Data** | Full laptop ↔ mobile sync & engineering quality | 🔄 In Progress |
 | **6 — Mobile Optimization** | Responsive/touch/theme polish | ⬜ Not started |
 | **7 — AI Assistance** | Optional in-app generation, mistake analysis, difficulty adjustment | ⬜ Post-MVP |
 

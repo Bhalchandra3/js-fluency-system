@@ -9,6 +9,11 @@
       <a routerLink="/mistakes" routerLinkActive="is-active">Mistakes</a>
       <a routerLink="/deep-dive" routerLinkActive="is-active">Deep Dive</a>
       <a routerLink="/setup" routerLinkActive="is-active">Access token</a>
+      @if (tokenStore.hasToken()) {
+        <button type="button" class="app-shell__disconnect" (click)="disconnect()" title="Clear saved token and disconnect">
+          Disconnect
+        </button>
+      }
     </nav>
   </header>
   <main class="app-shell__main">

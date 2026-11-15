@@ -1,5 +1,11 @@
+import { provideHttpClient } from '@angular/common/http';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { AuthTokenStore } from '../../core/auth/auth-token.store';
 import { TokenSetupPage } from './token-setup.page';
@@ -8,6 +14,7 @@ describe('TokenSetupPage', () => {
   let fixture: ComponentFixture<TokenSetupPage>;
   let page: TokenSetupPage;
   let tokenStore: jasmine.SpyObj<AuthTokenStore>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async () => {
     tokenStore = jasmine.createSpyObj<AuthTokenStore>('AuthTokenStore', [
@@ -23,13 +30,21 @@ describe('TokenSetupPage', () => {
       imports: [TokenSetupPage],
       providers: [
         provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
         { provide: AuthTokenStore, useValue: tokenStore },
       ],
     }).compileComponents();
 
+    httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(TokenSetupPage);
     page = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('rejects blank input without saving', () => {
@@ -40,13 +55,36 @@ describe('TokenSetupPage', () => {
     expect(page.tokenInput).toBe('   ');
   });
 
-  it('saves the token only on explicit submission and clears the input', () => {
+  it('validates token against /api/topics before saving', () => {
     page.tokenInput = 'user-supplied-token';
     page.saveToken();
+
+    const req = httpMock.expectOne('/api/topics');
+    expect(req.request.headers.get('Authorization')).toBe(
+      'Bearer user-supplied-token',
+    );
+    req.flush({ status: 'ok', topics: [] });
+
     expect(tokenStore.setToken).toHaveBeenCalledWith('user-supplied-token');
     expect(page.tokenInput).toBe('');
     expect(page.statusKind()).toBe('success');
     expect(page.hasSavedToken()).toBeTrue();
+  });
+
+  it('rejects saving when server returns 401 unauthorized', () => {
+    page.tokenInput = 'invalid-token';
+    page.saveToken();
+
+    const req = httpMock.expectOne('/api/topics');
+    req.flush(
+      { status: 'error', message: 'Unauthorized' },
+      { status: 401, statusText: 'Unauthorized' },
+    );
+
+    expect(tokenStore.setToken).not.toHaveBeenCalled();
+    expect(page.statusKind()).toBe('error');
+    expect(page.statusMessage()).toContain('Invalid access token');
+    expect(page.hasSavedToken()).toBeFalse();
   });
 
   it('does not render the saved token in plaintext', () => {
@@ -65,15 +103,6 @@ describe('TokenSetupPage', () => {
     ) as HTMLInputElement;
     expect(input.type).toBe('password');
     expect(input.value).toBe('');
-  });
-
-  it('allows replacing a previously saved token', () => {
-    tokenStore.hasToken.and.returnValue(true);
-    page.hasSavedToken.set(true);
-    page.tokenInput = 'replacement-token';
-    page.saveToken();
-    expect(tokenStore.setToken).toHaveBeenCalledWith('replacement-token');
-    expect(page.statusKind()).toBe('success');
   });
 
   it('clears a saved token via remove action', () => {

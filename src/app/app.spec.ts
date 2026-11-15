@@ -1,15 +1,22 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 
 import { App } from './app';
+import { AuthTokenStore } from './core/auth/auth-token.store';
 
 describe('App', () => {
+  let tokenStore: AuthTokenStore;
+  let router: Router;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [provideZonelessChangeDetection(), provideRouter([])],
     }).compileComponents();
+
+    tokenStore = TestBed.inject(AuthTokenStore);
+    router = TestBed.inject(Router);
   });
 
   it('should create the app shell', () => {
@@ -27,5 +34,16 @@ describe('App', () => {
     expect(compiled.textContent).toContain('Mistakes');
     expect(compiled.textContent).toContain('Deep Dive');
     expect(compiled.textContent).toContain('Access token');
+  });
+
+  it('should disconnect and clear token when disconnect is invoked', () => {
+    spyOn(tokenStore, 'clearToken');
+    spyOn(router, 'navigateByUrl');
+
+    const fixture = TestBed.createComponent(App);
+    fixture.componentInstance.disconnect();
+
+    expect(tokenStore.clearToken).toHaveBeenCalled();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/setup');
   });
 });

@@ -1,5 +1,5 @@
 // api/_lib/revision/todayService.ts
-// Today's Revision read: due classification, sticky OPEN resume, freeze-on-create.
+// Today's Revision read: due classification, sticky OPEN resume, freeze-on-create, answer hydration.
 
 import {
     Prisma,
@@ -21,6 +21,14 @@ export type TodayQuestionDto = {
     codeSnippet?: string | null;
 };
 
+export type TodayAnsweredQuestionDto = {
+    selectedAnswer: string;
+    correct: boolean;
+    confidence: string;
+    correctAnswer?: string;
+    explanation?: string;
+};
+
 export type TodaySessionDto = {
     id: string;
     status: 'OPEN';
@@ -33,6 +41,7 @@ export type TodaySessionDto = {
         isOverdue: boolean;
     };
     questions: TodayQuestionDto[];
+    answers: Record<string, TodayAnsweredQuestionDto>;
     progress: { answered: number; total: number };
     canComplete: boolean;
 };
@@ -66,7 +75,16 @@ type SessionLoad = {
             codeSnippet: string | null;
         };
     }>;
-    logs: Array<{ questionId: string }>;
+    logs: Array<{
+        questionId: string;
+        selectedAnswer: string;
+        correct: boolean | null;
+        confidence: string;
+        question: {
+            correctAnswer: string | null;
+            explanation: string | null;
+        };
+    }>;
 };
 
 const questionSelect = {
@@ -95,7 +113,18 @@ const sessionInclude = {
         },
     },
     logs: {
-        select: { questionId: true },
+        select: {
+            questionId: true,
+            selectedAnswer: true,
+            correct: true,
+            confidence: true,
+            question: {
+                select: {
+                    correctAnswer: true,
+                    explanation: true,
+                },
+            },
+        },
     },
 };
 
@@ -132,8 +161,25 @@ function mapQuestion(question: {
 
 function mapSession(session: SessionLoad, now: Date): TodaySessionDto {
     const frozenIds = new Set(session.questions.map((row) => row.question.id));
-    const answered = session.logs.filter((log) => frozenIds.has(log.questionId)).length;
+    const validLogs = session.logs.filter((log) => frozenIds.has(log.questionId));
+    const answered = validLogs.length;
     const total = session.questions.length;
+
+    const answers: Record<string, TodayAnsweredQuestionDto> = {};
+    for (const log of validLogs) {
+        const item: TodayAnsweredQuestionDto = {
+            selectedAnswer: log.selectedAnswer,
+            correct: log.correct ?? false,
+            confidence: log.confidence,
+        };
+        if (log.question.correctAnswer !== null && log.question.correctAnswer !== undefined) {
+            item.correctAnswer = log.question.correctAnswer;
+        }
+        if (log.question.explanation) {
+            item.explanation = log.question.explanation;
+        }
+        answers[log.questionId] = item;
+    }
 
     return {
         id: session.id,
@@ -147,6 +193,7 @@ function mapSession(session: SessionLoad, now: Date): TodaySessionDto {
             isOverdue: isRevisionOverdue(session.topic.nextRevisionDate, now),
         },
         questions: session.questions.map((row) => mapQuestion(row.question)),
+        answers,
         progress: { answered, total },
         canComplete: total > 0 && answered === total,
     };
